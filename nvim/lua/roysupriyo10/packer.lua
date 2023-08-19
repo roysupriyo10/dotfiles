@@ -41,6 +41,5 @@ return require('packer').startup(function(use)
 	}
   use { "ellisonleao/gruvbox.nvim" }
   use "folke/tokyonight.nvim"
-  use { '0x100101/lab.nvim', run = 'cd js && npm ci', requires = { 'nvim-lua/plenary.nvim' } }
 
 end)
