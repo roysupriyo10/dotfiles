@@ -118,7 +118,11 @@ case ":$PATH:" in
 esac
 # pnpm end
 #
+#
+
 export PATH=$PATH:~/bin:~/.fly/bin/
-alias vim=nvim
-alias vim.=nvim .
-alias vim.=nvim .
+alias vi=nvim
+alias vim.="NVIM_APPNAME=nvim-custom nvim ."
+
+alias vim="NVIM_APPNAME=nvim-custom nvim"
+
