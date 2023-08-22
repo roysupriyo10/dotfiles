@@ -35,7 +35,7 @@ local default_plugins = {
       require("core.utils").lazy_load "nvim-colorizer.lua"
     end,
     config = function(_, opts)
-      require("colorizer").setup(opts)
+      require("colorizer").setup(opts, { mode = 'foreground' })
 
       -- execute colorizer as soon as possible
       vim.defer_fn(function()

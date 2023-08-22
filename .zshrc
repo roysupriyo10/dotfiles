@@ -126,3 +126,4 @@ alias vim.="NVIM_APPNAME=nvim-custom nvim ."
 
 alias vim="NVIM_APPNAME=nvim-custom nvim"
 
+alias nv=nvim
