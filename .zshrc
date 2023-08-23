@@ -123,7 +123,4 @@ esac
 export PATH=$PATH:~/bin:~/.fly/bin/
 alias vi=nvim
 alias vim.="NVIM_APPNAME=nvim-custom nvim ."
-
-alias vim="NVIM_APPNAME=nvim-custom nvim"
-
 alias nv=nvim
