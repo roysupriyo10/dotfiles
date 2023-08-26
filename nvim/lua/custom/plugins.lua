@@ -13,7 +13,7 @@ local plugins = {
     },
     config = function()
       require("chatgpt").setup({
-        api_key_cmd = "echo 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"
+        api_key_cmd = "echo \"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\""
 
       })
     end

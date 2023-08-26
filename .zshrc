@@ -124,3 +124,7 @@ export PATH=$PATH:~/bin:~/.fly/bin/
 alias vi=nvim
 alias vim.="NVIM_APPNAME=nvim-custom nvim ."
 alias nv=nvim
+
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)

@@ -1,4 +1,4 @@
-date_formatted=$(date +"%Y-%m-%d %I:%M:%S %p")
+date_formatted=$(date +"%Y-%m-%d %A %I:%M:%S %p")
 
 battery_status=$(cat /sys/class/power_supply/BAT0/status)
 

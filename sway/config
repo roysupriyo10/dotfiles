@@ -108,6 +108,8 @@ bindsym XF86AudioMute exec pamixer -t
 
 bindsym $mod+Alt+s exec grim
 
+bindsym $mod+Shift+d exec wofi --show drun
+
 bindsym $mod+Shift+s exec grim -g "$(slurp)"
 
 #
