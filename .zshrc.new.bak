@@ -1,0 +1,14 @@
+# Created by newuser for 5.9
+
+
+
+# PROMPT='[%n@%m%k on %B%F{cyan}%(4~|...|)%1~%F{white}]%# %b%f%k'
+PROMPT='[%B%F{cyan}%1~%F{white}]%# %b%f%k'
+
+# PROMPT='%n@%m%k '
+
+
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /home/roysupriyo10/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+alias nv=nvim
