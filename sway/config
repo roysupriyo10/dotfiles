@@ -14,7 +14,7 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term alacritty
+set $term foot
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
@@ -23,7 +23,7 @@ set $menu wofi --show run
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /home/roysupriyo10/Pictures/wallpaper-zoro.png fill
+output * bg /home/roysupriyo10/Pictures/Wallpapers/wallpaper.png fill
 #
 # Example configuration:
 #
@@ -106,11 +106,11 @@ bindsym $mod+Shift+XF86AudioRaiseVolume exec pamixer -i 20
 bindsym $mod+Shift+XF86AudioLowerVolume exec pamixer -d 20
 bindsym XF86AudioMute exec pamixer -t
 
-bindsym $mod+Alt+s exec grim
+bindsym $mod+Alt+s exec grim "$HOME/Pictures/Screenshots/$(date '+%d-%m-%y_%H-%M-%S').png"
 
 bindsym $mod+Shift+d exec wofi --show drun
 
-bindsym $mod+Shift+s exec grim -g "$(slurp)"
+bindsym $mod+Shift+s exec grim -g "$(slurp)" "$HOME/Pictures/Screenshots/$(date '+%d-%m-%y_%H-%M-%S').png"
 
 #
 # Basics:
@@ -249,10 +249,10 @@ mode "resize" {
     bindsym $right resize grow width 10px
 
     # Ditto, with arrow keys
-    bindsym Left resize shrink width 10px
-    bindsym Down resize grow height 10px
-    bindsym Up resize shrink height 10px
-    bindsym Right resize grow width 10px
+    bindsym Left resize shrink width 20px
+    bindsym Down resize grow height 20px
+    bindsym Up resize shrink height 20px
+    bindsym Right resize grow width 20px
 
     # Return to default mode
     bindsym Return mode "default"
