@@ -21,8 +21,19 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /home/roysupriyo10/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 alias nv=nvim
+alias vim=nvim
 alias ls=lsd
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# pnpm
+export PNPM_HOME="/home/roysupriyo10/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+alias google-chrome-stable=google-chrome-stable --enable-features=TouchpadOverscrollHistoryNavigation
