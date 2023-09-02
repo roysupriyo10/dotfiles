@@ -7,6 +7,35 @@ lsp.on_attach(function(client, bufnr)
 end)
 
 -- (Optional) Configure lua language server for neovim
-require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
+local lspconfig = require('lspconfig')
+
+lspconfig.emmet_language_server.setup({
+  filestypes = {
+    'css',
+    'html','javascript',
+    'javascriptreact',
+    'less',
+    'sass',
+    'scss',
+    'pug',
+    'typescriptreact',
+    'vue'
+  },
+  init_options = {
+    pereferences = {},
+
+    showexpandedabbreviation = "always",
+    showabbreviationsuggestions = true,
+    showsuggestionsassnippets = false,
+    syntaxprofiles = {},
+    variables = {},
+    excludelanguages = {},
+
+  }
+
+})
+
+lspconfig.lua_ls.setup(lsp.nvim_lua_ls())
+
 
 lsp.setup()

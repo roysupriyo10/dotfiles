@@ -22,7 +22,7 @@ source /home/roysupriyo10/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.z
 
 alias nv=nvim
 alias vim=nvim
-alias ls=lsd
+alias l='lsd -la'
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
