@@ -20,7 +20,7 @@ fi
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /home/roysupriyo10/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-alias nv=nvim
+alias v=nvim
 alias vim=nvim
 alias l='lsd -la'
 source ~/powerlevel10k/powerlevel10k.zsh-theme
@@ -35,5 +35,10 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+export ANDROID_HOME=$HOME/.android-tools
+export PATH=$ANDROID_HOME/cmdline-tools/tools/bin/:$PATH
+export PATH=$ANDROID_HOME/emulator/:$PATH
+export PATH=$ANDROID_HOME/platform-tools/:$PATH
 
 alias google-chrome-stable=google-chrome-stable --enable-features=TouchpadOverscrollHistoryNavigation
