@@ -1,2 +1,4 @@
-require("roysupriyo10.mappings")
-require("roysupriyo10.set")
+require("roysupriyo10.remap")
+require("roysupriyo10.lazy")
+require("roysupriyo10.setdefaults")
+
