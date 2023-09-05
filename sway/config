@@ -23,7 +23,7 @@ set $menu wofi --show run
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /home/roysupriyo10/Pictures/Wallpapers/wallpaper.jpg fill
+output * bg /home/roysupriyo10/Pictures/Wallpapers/ArchWallpapers/Arch_Wallpaper_1.jpg fill
 #
 # Example configuration:
 #

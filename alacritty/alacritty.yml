@@ -23,7 +23,7 @@ window:
 #     x: 4
 #     y: 10
 #   dynamic_padding: false
-  opacity: 0.9
+  opacity: 0.8
 #   decorations_theme_variant: Dark
 
 # colors:
