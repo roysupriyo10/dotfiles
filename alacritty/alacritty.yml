@@ -1,19 +1,19 @@
 # adding customs
 font:
   normal:
-    family: JetBrainsMono NF
+    family: MesloLGS NF
     style: Regular
 
   bold:
-    family: JetBrainsMono NF
+    family: MesloLGS NF
     style: Bold
 
   italic:
-    family: JetBrainsMono NF
+    family: MesloLGS NF
     style: Italic
 
   bold_italic:
-    family: JetBrainsMono NF
+    family: MesloLGS NF
     style: Bold Italic
 
   size: 10

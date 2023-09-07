@@ -128,7 +128,10 @@ local plugins = {
 				extensions = {}
 			}
 		end
-	}
+	},
+  {
+    'theprimeagen/vim-be-good'
+  }
 }
 
 require('lazy').setup({plugins, { import = "roysupriyo10.lsp" }}, {
