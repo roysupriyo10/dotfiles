@@ -129,9 +129,37 @@ local plugins = {
 			}
 		end
 	},
+  --[[
   {
-    'theprimeagen/vim-be-good'
+    'malbertzard/inline-fold.nvim',
+    lazy = {
+      defaultPlaceHolder = "...",
+      queries = {
+        html = {
+          { pattern = 'class="([^"]*)"', placeholder = "@" }, -- classes in html
+          { pattern = 'href="(.-)"' }, -- hrefs in html
+          { pattern = 'src="(.-)"' }, -- HTML img src attribute
+        },
+        typescriptreact = {
+          { pattern = 'className="([^"]*)"', placeholder = "@" }, -- classes in html
+          { pattern = 'href="(.-)"' }, -- hrefs in html
+          { pattern = 'src="(.-)"' }, -- HTML img src attribute
+        }
+      }
+    },
+    config = function ()
+      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
+        pattern = { '*.html', '*.tsx' },
+        callback = function(_)
+          if not require('inline-fold.module').isHidden then
+            vim.cmd('InlineFoldToggle')
+          end
+        end,
+      })
+      require('inline-fold')
+    end
   }
+  --]]
 }
 
 require('lazy').setup({plugins, { import = "roysupriyo10.lsp" }}, {
