@@ -83,7 +83,7 @@ source $ZSH/oh-my-zsh.sh
 
 alias ls="lsd"
 alias v="NVIM_APPNAME=nvim-supriyo nvim"
-alias lazyvim=nvim
+alias lazyvim="NVIM_APPNAME=nvim-lazy nvim"
 
 # User configuration
 
