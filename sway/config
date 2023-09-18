@@ -14,16 +14,18 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term alacritty
+set $term foot
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu wofi --show run
+set $rofi_cmd rofi \
+        -terminal '$term'
+set $menu $rofi_cmd -show combi -combi-modes #run -mode combi
 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /home/roysupriyo10/Pictures/Wallpapers/ArchWallpapers/Arch_Wallpaper_1.jpg fill
+output * bg /home/roysupriyo10/Pictures/Wallpapers/arch_wallpaper_2.jpg fill
 #
 # Example configuration:
 #
@@ -267,16 +269,13 @@ bindsym $mod+r mode "resize"
 bar {
     position top
     
-    
-
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
-    status_command while /home/roysupriyo10/.config/sway/status.sh; do sleep 1; done
+
+    status_command while /home/roysupriyo10/.config/sway/status.sh; do sleep 10; done
 
     mode hide
     hidden_state hide
-
-    
 
     # colors {
     #     statusline #ffffff
@@ -294,4 +293,5 @@ bar {
 
 # exec nm-applet
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 include /etc/sway/config.d/*
