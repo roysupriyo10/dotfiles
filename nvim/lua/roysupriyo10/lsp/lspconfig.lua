@@ -75,6 +75,7 @@ return {
 			filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
 			capabilities = capabilities,
 			on_attach = on_attach,
+      root_dir = lspconfig.util.root_pattern('.git')
 		})
 		lspconfig['cssls'].setup({
 			capabilities = capabilities,
