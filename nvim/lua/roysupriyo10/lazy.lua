@@ -128,38 +128,20 @@ local plugins = {
 				extensions = {}
 			}
 		end
-	},
-  --[[
+  },
   {
-    'malbertzard/inline-fold.nvim',
-    lazy = {
-      defaultPlaceHolder = "...",
-      queries = {
-        html = {
-          { pattern = 'class="([^"]*)"', placeholder = "@" }, -- classes in html
-          { pattern = 'href="(.-)"' }, -- hrefs in html
-          { pattern = 'src="(.-)"' }, -- HTML img src attribute
-        },
-        typescriptreact = {
-          { pattern = 'className="([^"]*)"', placeholder = "@" }, -- classes in html
-          { pattern = 'href="(.-)"' }, -- hrefs in html
-          { pattern = 'src="(.-)"' }, -- HTML img src attribute
-        }
-      }
-    },
-    config = function ()
-      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
-        pattern = { '*.html', '*.tsx' },
-        callback = function(_)
-          if not require('inline-fold.module').isHidden then
-            vim.cmd('InlineFoldToggle')
-          end
-        end,
-      })
-      require('inline-fold')
-    end
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    init = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 750
+    end,
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
   }
-  --]]
 }
 
 require('lazy').setup({plugins, { import = "roysupriyo10.lsp" }}, {
