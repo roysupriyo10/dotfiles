@@ -141,7 +141,7 @@ local plugins = {
       -- or leave it empty to use the default settings
       -- refer to the configuration section below
     }
-  }
+  },
 }
 
 require('lazy').setup({plugins, { import = "roysupriyo10.lsp" }}, {
