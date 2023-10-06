@@ -82,7 +82,7 @@ plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
 alias ls="lsd"
-alias v="NVIM_APPNAME=nvim-supriyo nvim"
+alias v="nvim"
 alias lazyvim="NVIM_APPNAME=nvim-lazy nvim"
 
 # User configuration
