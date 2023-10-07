@@ -24,7 +24,7 @@ set $term kitty
 
 set $menu dmenu_path | wmenu | xargs swaymsg exec --
 
-output * bg /home/roysupriyo10/Pictures/Wallpapers/arch_wallpaper_1.png fill
+output * bg /home/work/Pictures/Wallpapers/arch_wallpaper_1.png fill
 
 ### Output configuration
 #
@@ -115,7 +115,7 @@ bindsym $mod+Alt+s exec grim "$HOME/Pictures/Screenshots/$(date '+%d-%m-%y_%H-%M
 
 bindsym $mod+Shift+d exec wofi --show drun
 
-bindsym $mod+b exec chromium
+bindsym $mod+b exec google-chrome-unstable
 
 bindsym $mod+Shift+s exec grim -g "$(slurp)" "$HOME/Pictures/Screenshots/$(date '+%d-%m-%y_%H-%M-%S').png"
 
@@ -277,7 +277,7 @@ bar {
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
 
-    status_command while /home/roysupriyo10/.config/sway/status.sh; do sleep 10; done
+    status_command while /home/work/.config/sway/status.sh; do sleep 10; done
 
     mode hide
     hidden_state hide

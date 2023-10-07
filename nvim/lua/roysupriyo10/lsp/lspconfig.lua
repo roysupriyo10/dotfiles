@@ -72,7 +72,14 @@ return {
 		})
 
 		lspconfig['tsserver'].setup({
-			filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+			filetypes = {
+        "typescript",
+        "typescriptreact",
+        "typescript.tsx",
+        "javascript",
+        "javascriptreact",
+        "javascript.jsx"
+      },
 			capabilities = capabilities,
 			on_attach = on_attach,
 		})
