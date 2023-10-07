@@ -101,12 +101,11 @@ return {
 				"css",
 				"sass",
 				"scss",
-				"less", 
+				"less",
 				"svelte",
 			},
 		})
 		lspconfig['lua_ls'].setup({
-
 			capabilities = capabilities,
 			on_attach = on_attach,
 			settings = {
@@ -118,7 +117,6 @@ return {
 						library = {
 							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
 							[vim.fn.stdpath("config") .. "/lua"] = true,
-
 						}
 					}
 				}
