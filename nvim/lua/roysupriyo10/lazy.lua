@@ -7,8 +7,7 @@ if not vim.loop.fs_stat(lazypath) then
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
     "--branch=stable", -- latest stable release
-    lazypath,
-  })
+    lazypath, })
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -142,6 +141,17 @@ local plugins = {
       -- refer to the configuration section below
     }
   },
+  {
+    "terrortylor/nvim-comment",
+    event = "VeryLazy",
+    config = function ()
+      require('nvim_comment').setup({
+        comment_empty = true,
+        live_mapping = "gcc",
+        operator_mapping = "gc",
+      })
+    end
+  }
 }
 
 require('lazy').setup({plugins, { import = "roysupriyo10.lsp" }}, {
