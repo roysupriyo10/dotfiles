@@ -83,6 +83,7 @@ source $ZSH/oh-my-zsh.sh
 
 alias ls="lsd"
 alias gs="git status"
+alias gpl="git pull"
 alias v="NVIM_APPNAME=nvim-supriyo nvim"
 alias lazyvim="NVIM_APPNAME=nvim-lazy nvim"
 
