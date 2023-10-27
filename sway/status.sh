@@ -1,10 +1,10 @@
 date_formatted=$(date +"%Y-%m-%d %A %I:%M:%S %p")
 
-battery_status=$(cat /sys/class/power_supply/BAT0/status)
+battery_status=$(cat /sys/class/power_supply/BAT1/status)
 
 volume_percentage=$(pamixer --get-volume)
 
-battery_percentage=$(cat /sys/class/power_supply/BAT0/capacity)%
+battery_percentage=$(cat /sys/class/power_supply/BAT1/capacity)%
 
 maximum_brightness=$(brightnessctl m)
 
