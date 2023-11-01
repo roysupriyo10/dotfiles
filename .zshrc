@@ -84,8 +84,7 @@ source $ZSH/oh-my-zsh.sh
 alias ls="lsd"
 alias gs="git status"
 alias gpl="git pull"
-alias v="NVIM_APPNAME=nvim-supriyo nvim"
-alias lazyvim="NVIM_APPNAME=nvim-lazy nvim"
+alias v="nvim"
 
 # User configuration
 
@@ -113,33 +112,5 @@ alias lazyvim="NVIM_APPNAME=nvim-lazy nvim"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# pnpm
-export PNPM_HOME="/home/roysupriyo10/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-export SCRIPTS_DIR="/home/roysupriyo10/Developer/scripts"
-export PATH="$SCRIPTS_DIR:$PATH"
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# bun completions
-[ -s "/home/roysupriyo10/.bun/_bun" ] && source "/home/roysupriyo10/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/roysupriyo10/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/home/roysupriyo10/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/home/roysupriyo10/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/roysupriyo10/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

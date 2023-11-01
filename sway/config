@@ -27,7 +27,7 @@ set $menu dmenu_path | wmenu | xargs swaymsg exec --
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /home/roysupriyo10/Pictures/Wallpapers/arch_wallpaper_1.jpg fill
+output * bg /home/roysupriyo10/Pictures/Wallpapers/arch_wallpaper_1.png fill
 #
 # Example configuration:
 #
@@ -40,10 +40,10 @@ output HDMI-A-1 resolution 1920x1080 position 1920,0
 #
 # Example configuration:
 #
-exec swayidle -w \
-   timeout 300 'swaylock -f -c 000000' \
-   timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-   before-sleep 'swaylock -f -c 000000'
+# exec swayidle -w \
+#    timeout 300 'swaylock -f -c 000000' \
+#    timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+#    before-sleep 'swaylock -f -c 000000'
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
@@ -213,7 +213,8 @@ bindsym $mod+Control+Shift+Right move workspace to output eDP-1
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
-    bindsym $mod+b splith
+    bindsym $mod+Shift+b splith
+    bindsym $mod+b exec google-chrome-stable
     bindsym $mod+v splitv
 
     # Switch the current container between different layout styles
