@@ -87,6 +87,13 @@ return {
 		lspconfig['cssls'].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
+      settings = {
+        css = {
+          lint = {
+            unkwownAtRules = "ignore",
+          }
+        }
+      }
 		})
 		lspconfig['tailwindcss'].setup({
 			capabilities = capabilities,
@@ -107,7 +114,6 @@ return {
 			},
 		})
 		lspconfig['lua_ls'].setup({
-
 			capabilities = capabilities,
 			on_attach = on_attach,
 			settings = {
@@ -119,7 +125,6 @@ return {
 						library = {
 							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
 							[vim.fn.stdpath("config") .. "/lua"] = true,
-
 						}
 					}
 				}
