@@ -31,3 +31,17 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "80"
+
+local create_autocmd = vim.api.nvim_create_autocmd
+local create_augroup = vim.api.nvim_create_augroup
+
+create_augroup("Prettier", {clear=true})
+create_autocmd("BufWritePost", {
+  pattern = {"*.js", "*.ts", "*.jsx", "*.tsx"},
+  group = "Prettier",
+  callback = function()
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    vim.cmd("silent!%!prettier %")
+    vim.api.nvim_win_set_cursor(0, cursor)
+  end
+})
