@@ -117,7 +117,7 @@ bindsym $mod+Alt+s exec grim "$HOME/Pictures/Screenshots/$(date '+%d-%m-%y_%H-%M
 
 bindsym $mod+Shift+d exec wofi --show drun
 
-bindsym $mod+Shift+s exec grim -g "$(slurp)" "$HOME/Pictures/Screenshots/$(date '+%d-%m-%y_%H-%M-%S').png"
+bindsym $mod+Shift+s exec grim -g "$(slurp)" "$HOME/Pictures/Screenshots/$(date '+%d-%m-%y_%H-%M-%S').png" | wl-copy
 
 bindsym $mod+Control+Shift+Left move workspace to output HDMI-A-1
 bindsym $mod+Control+Shift+Right move workspace to output eDP-1
