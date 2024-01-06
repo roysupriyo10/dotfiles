@@ -15,7 +15,8 @@ esac
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
-export PATH=$BUN_INSTALL/bin:$PATH
+export LOCAL_BINARIES="$HOME/.local/bin"
+export PATH=$BUN_INSTALL/bin:$LOCAL_BINARIES:$PATH
 
 alias g='git'
 alias gc='git commit'
@@ -25,6 +26,13 @@ alias gd='git diff'
 alias gs='git status'
 alias v='nvim'
 alias ls='lsd'
+
+export QT_QPA_PLATFORM=wayland
+export XDG_CURRENT_DESKTOP=sway
+export XDG_SESSION_DESKTOP=sway
+export XDG_CURRENT_SESSION_TYPE=wayland
+export GDK_BACKEND="wayland,x11"
+
 
 source /home/developer/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 
