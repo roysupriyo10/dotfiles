@@ -29,9 +29,8 @@ alias gpl='git pull'
 alias gd='git diff'
 alias gc='git commit'
 alias gs='git status'
-alias code='code-insiders'
 
-alias sway='sway --unsupported-gpu'
+alias sway='sway'
 
 # pnpm
 export PNPM_HOME="/home/roysupriyo10/.local/share/pnpm"
@@ -39,6 +38,4 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-
-neofetch
 # pnpm end
