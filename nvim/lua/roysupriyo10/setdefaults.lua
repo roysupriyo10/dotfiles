@@ -37,7 +37,7 @@ local create_augroup = vim.api.nvim_create_augroup
 
 create_augroup("Prettier", {clear=true})
 create_autocmd("BufWritePost", {
-  pattern = {"*.js", "*.ts", "*.jsx", "*.tsx"},
+  pattern = {"*.js", "*.ts", "*.jsx", "*.tsx", "*.service.ts", "*.entity.ts", "*.controller.ts", "*.module.ts", "*.dto.ts", "*.response.ts", "*.request.ts"},
   group = "Prettier",
   callback = function()
     local cursor = vim.api.nvim_win_get_cursor(0)
