@@ -27,6 +27,9 @@ set $menu dmenu_path | wmenu | xargs swaymsg exec --
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
+
+output eDP-1 scale 0.8
+
 output * bg /home/roysupriyo10/Pictures/Wallpapers/arch_wallpaper_1.png fill
 #
 # Example configuration:
@@ -103,8 +106,8 @@ default_floating_border none
 
 # bindsym XF86AudioMute exec brightnessctl s 100%
 bindsym XF86Sleep exec systemctl suspend
-bindsym XF86MonBrightnessUp exec brightnessctl s 20+
-bindsym XF86MonBrightnessDown exec brightnessctl s 20-
+bindsym XF86MonBrightnessUp exec brightnessctl s 5000+
+bindsym XF86MonBrightnessDown exec brightnessctl s 5000-
 
 bindsym XF86AudioRaiseVolume exec pamixer -i 5
 bindsym XF86AudioLowerVolume exec pamixer -d 5
