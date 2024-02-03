@@ -5,40 +5,37 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Created by newuser for 5.9
+source ~/powerlevel10k/powerlevel10k.zsh-theme
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+source /home/roysupriyo10/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /home/roysupriyo10/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# bun completions
+[ -s "/home/roysupriyo10/.bun/_bun" ] && source "/home/roysupriyo10/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+alias v='nvim'
+alias g='git'
+alias ls='lsd'
+alias l='lsd -al'
+alias gp='git push'
+alias gpl='git pull'
+alias gd='git diff'
+alias gc='git commit'
+alias gs='git status'
+
+alias sway='sway'
+
 # pnpm
-export PNPM_HOME="/home/developer/.local/share/pnpm"
+export PNPM_HOME="/home/roysupriyo10/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export LOCAL_BINARIES="$HOME/.local/bin"
-export PATH=$BUN_INSTALL/bin:$LOCAL_BINARIES:$PATH
-
-alias g='git'
-alias gc='git commit'
-alias gp='git push'
-alias gpl='git pull'
-alias gd='git diff'
-alias gs='git status'
-alias v='nvim'
-alias ls='lsd'
-
-export QT_QPA_PLATFORM=wayland
-export XDG_CURRENT_DESKTOP=sway
-export XDG_SESSION_DESKTOP=sway
-export XDG_CURRENT_SESSION_TYPE=wayland
-export GDK_BACKEND="wayland,x11"
-
-
-source /home/developer/.zsh/powerlevel10k/powerlevel10k.zsh-theme
-
-source /home/developer/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-source /home/developer/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
