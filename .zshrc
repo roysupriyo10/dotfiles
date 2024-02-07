@@ -29,6 +29,8 @@ alias gpl='git pull'
 alias gd='git diff'
 alias gc='git commit'
 alias gs='git status'
+alias sl='sl -eG'
+alias mysql='/usr/bin/mariadb'
 
 alias sway='sway'
 
