@@ -22,7 +22,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 alias v='nvim'
 alias g='git'
-alias ls='lsd'
+alias ls='lsd -l'
 alias l='lsd -al'
 alias gp='git push'
 alias gpl='git pull'
