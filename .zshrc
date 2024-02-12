@@ -31,6 +31,7 @@ alias gd='git diff'
 alias gc='git commit'
 alias gs='git status'
 alias code='code-insiders'
+alias sl="sl -Ge"
 
 alias sway='sway --unsupported-gpu'
 
