@@ -27,15 +27,33 @@ set $menu dmenu_path | wmenu | xargs swaymsg exec --
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-exec_always setwall random ~/Pictures/Wallpapers -c sway
-# output * bg /home/roysupriyo10/Pictures/Wallpapers/arch_wallpaper_1.png fill
+# exec_always setwall random ~/Pictures/Wallpapers -c sway -o eDP-1
+# exec_always setwall random ~/Pictures/Wallpapers -c sway -o HDMI-A-1
+# output eDP-1 bg 
+# output eDP-1 bg /home/roysupriyo10/Pictures/Wallpapers/goku-musculoso-dragon-ball-z-amoled-minimal-black-5120x2880-4945.png fill #cccccc
+# output HDMI-A-1 bg /home/roysupriyo10/Pictures/Wallpapers/goku-musculoso-dragon-ball-z-amoled-minimal-black-5120x2880-4945.png fill #cccccc
+# output eDP-1 bg /home/roysupriyo10/Pictures/Wallpapers/call-of-duty-modern-3840x2160-11312.png fill
+# output HDMI-A-1 bg /home/roysupriyo10/Pictures/Wallpapers/call-of-duty-modern-3840x2160-11312.png fill
 #
 # Example configuration:
 #
 
+output eDP-1 {
+  background /home/roysupriyo10/Pictures/Wallpapers/superman-dc-superheroes-henry-cavill-dc-comics-black-7680x4320-8980.jpg fill
+  resolution 2880x1800@60.001Hz
+  position 1920,0
+}
+
+output HDMI-A-1 {
+  background /home/roysupriyo10/Pictures/Wallpapers/call-of-duty-modern-3840x2160-11312.png fill 
+  resolution 1920x1080@74.973Hz
+  position 0,0
+}
+
 output * adaptive_sync on
 
-output eDP-1 resolution 2880x1800@60.001Hz position 0,0
+# output eDP-1 resolution 2880x1800@60.001Hz position 1920,0
+# output HDMI-A-1 resolution 1920x1080@74.973Hz position 0,0
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
