@@ -26,6 +26,7 @@ alias ls='lsd -l'
 alias l='lsd -al'
 alias gp='git push'
 alias gpl='git pull'
+alias nf='neofetch'
 alias gd='git diff'
 alias gc='git commit'
 alias gs='git status'
@@ -41,6 +42,4 @@ case ":$PATH:" in
 esac
 
 export ELECTRON_OZONE_PLATFORM_HINT=auto
-
-neofetch
 # pnpm end
