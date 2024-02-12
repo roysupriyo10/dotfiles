@@ -77,7 +77,7 @@ input "1267:12921:ASUE1307:00_04F3:3279_Touchpad" {
 
 ### window gaps
 
-gaps inner 1
+# gaps inner 1
 # gaps outer 1
 
 ### disable title bar
