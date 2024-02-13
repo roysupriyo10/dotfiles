@@ -95,11 +95,6 @@ return {
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
 
-    lspconfig['gopls'].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
-
     lspconfig['html'].setup({
       capabilities = capabilities,
       on_attach = on_attach,
@@ -128,10 +123,6 @@ return {
           }
         }
       }
-    })
-    lspconfig['jdtls'].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
     })
     lspconfig['tailwindcss'].setup({
       capabilities = capabilities,
