@@ -36,6 +36,16 @@ vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
 vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
+vim.keymap.set("n", "<leader>1", "<cmd>tabn 1<CR>")
+vim.keymap.set("n", "<leader>2", "<cmd>tabn 2<CR>")
+vim.keymap.set("n", "<leader>3", "<cmd>tabn 3<CR>")
+vim.keymap.set("n", "<leader>4", "<cmd>tabn 4<CR>")
+vim.keymap.set("n", "<leader>5", "<cmd>tabn 5<CR>")
+vim.keymap.set("n", "<leader>6", "<cmd>tabn 6<CR>")
+vim.keymap.set("n", "<leader>7", "<cmd>tabn 7<CR>")
+vim.keymap.set("n", "<leader>8", "<cmd>tabn 8<CR>")
+vim.keymap.set("n", "<leader>9", "<cmd>tabn 9<CR>")
+
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 -- vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
