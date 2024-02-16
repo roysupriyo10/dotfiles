@@ -18,7 +18,7 @@ source /home/roysupriyo10/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$BUN_INSTALL/bin:/home/roysupriyo10/.local/bin:$PATH"
 
 alias v='nvim'
 alias g='git'
