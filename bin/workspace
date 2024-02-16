@@ -2,14 +2,14 @@
 
 NUM_WINDOWS=3
 
-tmux new-session -d -s "chart-server" -c "/home/roysupriyo10/Developer/typescript/zerodha-api"
-tmux new-session -d -s "chart-client" -c "/home/roysupriyo10/Developer/typescript/chart-palette"
+tmux new-session -d -s "chart-server" -c "/home/roysupriyo10/Developer/typescript/palette/server"
+tmux new-session -d -s "chart-client" -c "/home/roysupriyo10/Developer/typescript/palette/client"
 tmux new-session -d -s "interface-server" -c "/home/roysupriyo10/Developer/typescript/interface/server"
 tmux new-session -d -s "interface-client" -c "/home/roysupriyo10/Developer/typescript/interface/client"
 
 for ((j=1; j<=2; j++)); do
-  tmux new-window -d -t "chart-server" -c "/home/roysupriyo10/Developer/typescript/zerodha-api"
-  tmux new-window -d -t "chart-client" -c "/home/roysupriyo10/Developer/typescript/chart-palette"
+  tmux new-window -d -t "chart-server" -c "/home/roysupriyo10/Developer/typescript/palette/server"
+  tmux new-window -d -t "chart-client" -c "/home/roysupriyo10/Developer/typescript/palette/client"
   tmux new-window -d -t "interface-server" -c "/home/roysupriyo10/Developer/typescript/interface/server"
   tmux new-window -d -t "interface-client" -c "/home/roysupriyo10/Developer/typescript/interface/client"
 done
