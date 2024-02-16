@@ -1,0 +1,17 @@
+#!/bin/bash
+
+tmux new-session -d -s "c-server" -c "/home/roysupriyo10/Developer/compareling/server"
+tmux new-session -d -s "c-file-server" -c "/home/roysupriyo10/Developer/compareling/file-server"
+tmux new-session -d -s "c-user-client" -c "/home/roysupriyo10/Developer/compareling/user-client"
+tmux new-session -d -s "c-agency-client" -c "/home/roysupriyo10/Developer/compareling/agency-client"
+tmux new-session -d -s "c-admin-client" -c "/home/roysupriyo10/Developer/compareling/admin-client"
+
+for ((j=1; j<=2; j++)); do
+  tmux new-window -d -t "c-server" -c "/home/roysupriyo10/Developer/compareling/server"
+  tmux new-window -d -t "c-file-server" -c "/home/roysupriyo10/Developer/compareling/file-server"
+  tmux new-window -d -t "c-user-client" -c "/home/roysupriyo10/Developer/compareling/user-client"
+  tmux new-window -d -t "c-agency-client" -c "/home/roysupriyo10/Developer/compareling/agency-client"
+  tmux new-window -d -t "c-admin-client" -c "/home/roysupriyo10/Developer/compareling/admin-client"
+done
+
+tmux a
