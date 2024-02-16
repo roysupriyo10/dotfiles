@@ -112,15 +112,10 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:/home/roysupriyo10/.local/bin:$PATH"
 
 alias v='nvim'
-alias g='git'
-alias ls='lsd -l'
-alias l='lsd -al'
-alias gp='git push'
+alias ls='lsd'
 alias gpl='git pull'
-alias nf='neofetch'
-alias gd='git diff'
-alias gc='git commit'
 alias gs='git status'
+alias nf='neofetch'
 alias code='code-insiders'
 alias sl="sl -Ge"
 alias binance='gtk-launch binance'
