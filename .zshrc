@@ -123,6 +123,7 @@ alias gc='git commit'
 alias gs='git status'
 alias code='code-insiders'
 alias sl="sl -Ge"
+alias binance='gtk-launch binance'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
