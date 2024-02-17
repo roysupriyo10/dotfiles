@@ -2,16 +2,23 @@
 
 NUM_WINDOWS=3
 
-tmux new-session -d -s "chart-server" -c "/home/roysupriyo10/Developer/typescript/palette/server"
-tmux new-session -d -s "chart-client" -c "/home/roysupriyo10/Developer/typescript/palette/client"
+tmux new-session -d -s "palette-server" -c "/home/roysupriyo10/Developer/typescript/palette/server"
+tmux new-session -d -s "palette-client" -c "/home/roysupriyo10/Developer/typescript/palette/client"
 tmux new-session -d -s "interface-server" -c "/home/roysupriyo10/Developer/typescript/interface/server"
 tmux new-session -d -s "interface-client" -c "/home/roysupriyo10/Developer/typescript/interface/client"
 
 for ((j=1; j<=2; j++)); do
-  tmux new-window -d -t "chart-server" -c "/home/roysupriyo10/Developer/typescript/palette/server"
-  tmux new-window -d -t "chart-client" -c "/home/roysupriyo10/Developer/typescript/palette/client"
+  tmux new-window -d -t "palette-server" -c "/home/roysupriyo10/Developer/typescript/palette/server"
+  tmux new-window -d -t "palette-client" -c "/home/roysupriyo10/Developer/typescript/palette/client"
   tmux new-window -d -t "interface-server" -c "/home/roysupriyo10/Developer/typescript/interface/server"
   tmux new-window -d -t "interface-client" -c "/home/roysupriyo10/Developer/typescript/interface/client"
+  
+  if [[ $(j -eq 1) ]]; then
+    tmux send-keys -t palette-server:1 bun dev Enter
+    tmux send-keys -t palette-client:1 bun dev Enter
+    tmux send-keys -t interface-server:1 bun dev Enter
+    tmux send-keys -t interface-client:1 bun dev Enter
+  fi
 done
 
 tmux a
