@@ -41,14 +41,20 @@ set $menu dmenu_path | wmenu | xargs swaymsg exec --
 output eDP-1 {
   background /home/roysupriyo10/Pictures/Wallpapers/superman-dc-superheroes-henry-cavill-dc-comics-black-7680x4320-8980.jpg fill
   resolution 2880x1800@60.001Hz
-  position 1920,0
+  position 0,0
 }
 
 output HDMI-A-1 {
   background /home/roysupriyo10/Pictures/Wallpapers/call-of-duty-modern-3840x2160-11312.png fill 
-  resolution 1920x1080@74.973Hz
-  position 0,0
+  resolution 1366x768@59.790Hz
+  position 1440,0
 }
+
+# output HDMI-A-1 {
+#   background /home/roysupriyo10/Pictures/Wallpapers/call-of-duty-modern-3840x2160-11312.png fill 
+#   resolution 1920x1080@74.973Hz
+#   position 0,0
+# }
 
 output * adaptive_sync on
 
