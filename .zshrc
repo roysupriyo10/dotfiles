@@ -112,13 +112,15 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:/home/roysupriyo10/.local/bin:$PATH"
 
 alias v='nvim'
-alias ls='lsd'
+alias ls='lsd -l'
 alias gpl='git pull'
 alias gs='git status'
 alias nf='neofetch'
 alias code='code-insiders'
 alias sl="sl -Ge"
 alias binance='gtk-launch binance'
+alias open='tmux new -s dir -c $(dirname $(fd --type file | fzf))'
+alias get_symbols="cat /home/roysupriyo10/Developer/typescript/palette/server/data/zerodha/all_trading_symbols.json | jq '.[]' -r | fzf | tr -d '\n' | wl-copy"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
