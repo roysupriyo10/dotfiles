@@ -122,7 +122,7 @@ alias nf='neofetch'
 alias code='code-insiders'
 alias sl="sl -Ge"
 alias binance='gtk-launch binance'
-alias ts='tmux-sessionizer'
+alias tms='tmux-sessionizer'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
