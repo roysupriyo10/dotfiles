@@ -1,17 +1,17 @@
 #!/bin/bash
 
-tmux new-session -d -s "p40-server" -c "/home/roysupriyo10/Developer/pitch-40/server"
-tmux new-session -d -s "p40-remote-upload" -c "/home/roysupriyo10/Developer/pitch-40/remote-upload-client"
-tmux new-session -d -s "p40-user-client" -c "/home/roysupriyo10/Developer/pitch-40/user-client"
-tmux new-session -d -s "p40-mobile-client" -c "/home/roysupriyo10/Developer/pitch-40/mobile-client"
-tmux new-session -d -s "p40-admin-client" -c "/home/roysupriyo10/Developer/pitch-40/admin-client"
+tmux new-session -ds "p40-server" -c "/home/roysupriyo10/Developer/pitch40/server"
+tmux new-session -ds "p40-remote-upload" -c "/home/roysupriyo10/Developer/pitch40/remote-upload-client"
+tmux new-session -ds "p40-user-client" -c "/home/roysupriyo10/Developer/pitch40/user-client"
+tmux new-session -ds "p40-mobile-client" -c "/home/roysupriyo10/Developer/pitch40/mobile-client"
+tmux new-session -ds "p40-admin-client" -c "/home/roysupriyo10/Developer/pitch40/admin-client"
 
 for ((j=1; j<=2; j++)); do
-  tmux new-window -d -t "p40-server" -c "/home/roysupriyo10/Developer/pitch-40/server"
-  tmux new-window -d -t "p40-remote-upload" -c "/home/roysupriyo10/Developer/pitch-40/remote-upload-client"
-  tmux new-window -d -t "p40-user-client" -c "/home/roysupriyo10/Developer/pitch-40/user-client"
-  tmux new-window -d -t "p40-mobile-client" -c "/home/roysupriyo10/Developer/pitch-40/mobile-client"
-  tmux new-window -d -t "p40-admin-client" -c "/home/roysupriyo10/Developer/pitch-40/admin-client"
+  tmux new-window -dt "p40-server" -c "/home/roysupriyo10/Developer/pitch40/server"
+  tmux new-window -dt "p40-remote-upload" -c "/home/roysupriyo10/Developer/pitch40/remote-upload-client"
+  tmux new-window -dt "p40-user-client" -c "/home/roysupriyo10/Developer/pitch40/user-client"
+  tmux new-window -dt "p40-mobile-client" -c "/home/roysupriyo10/Developer/pitch40/mobile-client"
+  tmux new-window -dt "p40-admin-client" -c "/home/roysupriyo10/Developer/pitch40/admin-client"
 done
 
 tmux a
