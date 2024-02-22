@@ -126,6 +126,7 @@ alias get_symbols="cat /home/roysupriyo10/Developer/typescript/palette/server/da
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # pnpm
+export EDITOR=nvim
 export PNPM_HOME="/home/roysupriyo10/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
