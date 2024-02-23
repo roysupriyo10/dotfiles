@@ -1,4 +1,5 @@
 function ColorSlate(color)
+  -- color = color or "tokyonight-night"
 	color = color or "catppuccin"
 	-- color = color or "rose-pine"
 
