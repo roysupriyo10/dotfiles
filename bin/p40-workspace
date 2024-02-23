@@ -2,7 +2,7 @@
 
 tmux new-session -ds "p40-server" -c "/home/roysupriyo10/Developer/pitch40/server"
 tmux new-session -ds "p40-remote-upload" -c "/home/roysupriyo10/Developer/pitch40/remote-upload-client"
-tmux new-session -ds "p40-user-client" -c "/home/roysupriyo10/Developer/pitch40/user-client"
+tmux new-session -ds "p40-investor-client" -c "/home/roysupriyo10/Developer/pitch40/investor-client"
 tmux new-session -ds "p40-mobile-client" -c "/home/roysupriyo10/Developer/pitch40/mobile-client"
 tmux new-session -ds "p40-admin-client" -c "/home/roysupriyo10/Developer/pitch40/admin-client"
 
