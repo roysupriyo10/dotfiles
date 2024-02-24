@@ -80,6 +80,7 @@ local plugins = {
 				sources = cmp.config.sources({
 					{ name = 'nvim_lsp' },
 					{ name = 'luasnip' },
+          { name = 'codeium' },
 					{ name = 'buffer' },
 					{ name = 'path' },
 				}),
@@ -155,6 +156,19 @@ local plugins = {
         operator_mapping = "gc",
       })
     end
+  },
+  {
+    "Exafunction/codeium.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "hrsh7th/nvim-cmp",
+    },
+    config = function()
+      require("codeium").setup({})
+    end
+  },
+  {
+    "github/copilot.vim"
   }
 }
 
