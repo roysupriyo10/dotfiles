@@ -167,9 +167,6 @@ if not vim.loop.fs_stat(lazypath) then
       end
     },
     {
-      "github/copilot.vim"
-    },
-    {
       'NvChad/nvim-colorizer.lua',
       config = function()
         require('colorizer').setup({
