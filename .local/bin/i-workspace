@@ -2,20 +2,16 @@
 
 NUM_WINDOWS=3
 
-tmux new-session -ds "palette-server" -c "/home/roysupriyo10/developer/typescript/palette/server"
-tmux new-session -ds "palette-client" -c "/home/roysupriyo10/developer/typescript/palette/client"
-tmux new-session -ds "interface-server" -c "/home/roysupriyo10/developer/typescript/interface/server"
-tmux new-session -ds "interface-client" -c "/home/roysupriyo10/developer/typescript/interface/client"
-tmux new-session -ds "notif-algo-server" -c "/home/roysupriyo10/developer/javascript/notif-algo/server"
-tmux new-session -ds "notif-algo-client" -c "/home/roysupriyo10/developer/javascript/notif-algo/client"
+tmux new-session -ds "palette-server" -c "/home/roysupriyo10/developer/palette/server"
+tmux new-session -ds "palette-client" -c "/home/roysupriyo10/developer/palette/client"
+tmux new-session -ds "interface-server" -c "/home/roysupriyo10/developer/interface/server"
+tmux new-session -ds "interface-client" -c "/home/roysupriyo10/developer/interface/client"
 
 for ((j=1; j<=2; j++)); do
-  tmux new-window -dt "palette-server" -c "/home/roysupriyo10/developer/typescript/palette/server"
-  tmux new-window -dt "palette-client" -c "/home/roysupriyo10/developer/typescript/palette/client"
-  tmux new-window -dt "interface-server" -c "/home/roysupriyo10/developer/typescript/interface/server"
-  tmux new-window -dt "interface-client" -c "/home/roysupriyo10/developer/typescript/interface/client"
-tmux new-window -dt "notif-algo-server" -c "/home/roysupriyo10/developer/javascript/notif-algo/server"
-tmux new-window -dt "notif-algo-client" -c "/home/roysupriyo10/developer/javascript/notif-algo/client"
+  tmux new-window -dt "palette-server" -c "/home/roysupriyo10/developer/palette/server"
+  tmux new-window -dt "palette-client" -c "/home/roysupriyo10/developer/palette/client"
+  tmux new-window -dt "interface-server" -c "/home/roysupriyo10/developer/interface/server"
+  tmux new-window -dt "interface-client" -c "/home/roysupriyo10/developer/interface/client"
   
 done
 
