@@ -320,11 +320,13 @@ bar {
     # }
 
     colors {
-        statusline #ffffff
+        statusline #cccccc
         focused_workspace #cccccc #cccccc #000000
         background #111111
-        inactive_workspace #323232 #323232 #5c5c5c
+        inactive_workspace #323232 #323232 #9c9c9c
     }
+
+    # font pango:Iosevka Term Slab 10
 }
 
 # exec nm-applet
