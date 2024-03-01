@@ -25,39 +25,10 @@ return {
       keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
 
       opts.desc = "Show LSP definitions"
-      keymap.set("n", "gd", vim.lsp.buf.definition, opts
-      -- {
-      --   noremap = true,
-      --   silent = true,
-      --   reuse_win = true,
-      --   on_list = function (options)
-      --     local function filter(arr, fn)
-      --       if type(arr) ~= "table" then
-      --         return arr
-      --       end
-      --       local filtered = {}
-      --       for k, v in pairs(arr) do
-      --         if fn(v, k, arr) then
-      --           table.insert(filtered, v)
-      --         end
-      --       end
-      --       return filtered
-      --     end
-      --     local function filterReactDTS(value)
-      --       return string.match(value.filename, 'react/index.d.ts') == nil
-      --     end
-      --     local items = options.items
-      --     if #items > 1 then
-      --       items = filter(items, filterReactDTS)
-      --     end
-      --     vim.fn.setqflist({}, " ", { title = options.title, items = items, context = options.context })
-      --     vim.fn.nvim_command("cfirst")
-      --   end
-      -- }
-      ) -- show lsp definitions
+      keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 
       opts.desc = "Show LSP implementations"
-      keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
+      keymap.set("n", "gI", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
 
       opts.desc = "Show LSP type definitions"
       keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
