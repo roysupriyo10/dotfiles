@@ -3,15 +3,15 @@
 NUM_WINDOWS=3
 
 tmux new-session -ds "p40-server" -c "/home/roysupriyo10/developer/pitch40/server"
-tmux new-session -ds "p40-admin-client" -c "/home/roysupriyo10/developer/pitch40/admin-client"
 tmux new-session -ds "p40-remote-upload-client" -c "/home/roysupriyo10/developer/pitch40/remote-upload-client"
+tmux new-session -ds "p40-admin-client" -c "/home/roysupriyo10/developer/pitch40/admin-client"
 # tmux new-session -ds "p40-server" -c "/home/roysupriyo10/developer/typescript/interface/server"
 # tmux new-session -ds "p40-client" -c "/home/roysupriyo10/developer/typescript/interface/client"
 
 for ((j=1; j<=2; j++)); do
   tmux new-window -dt "p40-server" -c "/home/roysupriyo10/developer/pitch40/server"
-  tmux new-window -dt "p40-admin-client" -c "/home/roysupriyo10/developer/pitch40/admin-client"
   tmux new-window -dt "p40-remote-upload-client" -c "/home/roysupriyo10/developer/pitch40/remote-upload-client"
+  tmux new-window -dt "p40-admin-client" -c "/home/roysupriyo10/developer/pitch40/admin-client"
 done
 
 tmux a
