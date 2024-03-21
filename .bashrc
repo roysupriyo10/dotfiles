@@ -1,8 +1,5 @@
 [[ $- != *i* ]] && return
 
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
-
 export LANG=en_US.UTF-8
 export EDITOR=nvim
 
@@ -31,7 +28,10 @@ esac
 export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
 
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
 alias ls="lsd -l"
+alias l="lsd -al"
 alias v="nvim"
 alias vim="nvim"
 alias gd="git diff --oneline"
