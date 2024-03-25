@@ -7,6 +7,7 @@ tmux new-session -ds "palette-client" -c "/home/roysupriyo10/developer/typescrip
 tmux new-session -ds "interface-server" -c "/home/roysupriyo10/developer/typescript/interface/server"
 tmux new-session -ds "interface-client" -c "/home/roysupriyo10/developer/typescript/interface/client"
 tmux new-session -ds "rss-aggregator" -c "/home/roysupriyo10/developer/go/rss-aggregator"
+tmux new-session -ds "palette-server-go" -c "/home/roysupriyo10/developer/go/palette"
 
 for ((j=1; j<=2; j++)); do
   tmux new-window -dt "palette-server-nest" -c "/home/roysupriyo10/developer/typescript/palette/server"
@@ -14,7 +15,7 @@ for ((j=1; j<=2; j++)); do
   tmux new-window -dt "interface-server" -c "/home/roysupriyo10/developer/typescript/interface/server"
   tmux new-window -dt "interface-client" -c "/home/roysupriyo10/developer/typescript/interface/client"
   tmux new-window -dt "rss-aggregator" -c "/home/roysupriyo10/developer/go/rss-aggregator"
-  
+  tmux new-window -dt "palette-server-go" -c "/home/roysupriyo10/developer/go/palette"
 done
 
 tmux a
