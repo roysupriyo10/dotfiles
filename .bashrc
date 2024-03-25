@@ -28,6 +28,10 @@ esac
 export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
 
+# go path
+export GOPATH="/home/roysupriyo10/go"
+export PATH=$GOPATH/bin:$PATH
+
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias ls="lsd -l"
