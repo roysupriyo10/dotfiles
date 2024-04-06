@@ -3,11 +3,11 @@
 export LANG=en_US.UTF-8
 export EDITOR=nvim
 
-export QHOME="/home/roysupriyo10/.local/share/q/l64"
-case ":$PATH:" in
-  *":$QHOME:"*) ;;
-  *) export PATH="$QHOME:$PATH" ;;
-esac
+# export QHOME="/home/roysupriyo10/.local/share/q/l64"
+# case ":$PATH:" in
+#   *":$QHOME:"*) ;;
+#   *) export PATH="$QHOME:$PATH" ;;
+# esac
 
 export SCRIPTS_HOME="/home/roysupriyo10/.local/bin"
 # export PATH="$SCRIPTS_HOME:$PATH"
@@ -32,13 +32,12 @@ export PATH=$BUN_INSTALL/bin:$PATH
 export GOPATH="/home/roysupriyo10/go"
 export PATH=$GOPATH/bin:$PATH
 
-alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias ls="lsd -l"
 alias l="lsd -al"
 alias v="nvim"
 alias vim="nvim"
-alias gd="git diff --oneline"
+alias gd="git diff"
 alias gs="git status"
 alias gpl="git pull"
 alias gp="git push"
@@ -46,6 +45,8 @@ alias g="git"
 alias ga="git add"
 alias gc="git commit -am"
 alias blesh="source ~/.local/share/blesh/ble.sh"
+alias bitch='sudo $(history -p !!)'
+alias please='sudo'
 
 source /usr/share/git/git-prompt.sh
 source /usr/share/fzf/completion.bash
