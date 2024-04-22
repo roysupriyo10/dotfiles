@@ -51,6 +51,7 @@ alias please='sudo'
 source /usr/share/git/git-prompt.sh
 source /usr/share/fzf/completion.bash
 source /usr/share/fzf/key-bindings.bash
+source /usr/share/git/completion/git-completion.bash
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
