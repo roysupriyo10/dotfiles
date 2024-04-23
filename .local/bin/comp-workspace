@@ -2,25 +2,17 @@
 
 NUM_WINDOWS=3
 
-
-
-tmux new-session -d -s "comp-agency-client" -c "/home/roysupriyo10/developer/compareling/agency-client"
-# tmux new-session -d -s "palette-client" -c "/home/roysupriyo10/Developer/typescript/palette/client"
-# tmux new-session -d -s "interface-server" -c "/home/roysupriyo10/Developer/typescript/interface/server"
-# tmux new-session -d -s "interface-client" -c "/home/roysupriyo10/Developer/typescript/interface/client"
-
+tmux new-session -ds "comp-server" -c "/home/roysupriyo10/developer/compareling/server"
+tmux new-session -ds "comp-admin-client" -c "/home/roysupriyo10/developer/compareling/admin-client"
+tmux new-session -ds "comp-agency-client" -c "/home/roysupriyo10/developer/compareling/agency-client"
+tmux new-session -ds "comp-user-client" -c "/home/roysupriyo10/developer/compareling/user-client"
+tmux new-session -ds "comp-file-server" -c "/home/roysupriyo10/developer/compareling/file-server"
 for ((j=1; j<=2; j++)); do
-tmux new-window -d -t "comp-agency-client" -c "/home/roysupriyo10/developer/compareling/agency-client"
-  # tmux new-window -d -t "palette-client" -c "/home/roysupriyo10/Developer/typescript/palette/client"
-  # tmux new-window -d -t "interface-server" -c "/home/roysupriyo10/Developer/typescript/interface/server"
-  # tmux new-window -d -t "interface-client" -c "/home/roysupriyo10/Developer/typescript/interface/client"
-  
-  # if [[ $(j -eq 1) ]]; then
-  #   tmux send-keys -t palette-server:0 bun dev Enter
-  #   tmux send-keys -t palette-client:0 bun dev Enter
-  #   tmux send-keys -t interface-server:0 bun dev Enter
-  #   tmux send-keys -t interface-client:0 bun dev Enter
-  # fi
+  tmux new-window -dt "comp-server" -c "/home/roysupriyo10/developer/compareling/server"
+  tmux new-window -dt "comp-admin-client" -c "/home/roysupriyo10/developer/compareling/admin-client"
+  tmux new-window -dt "comp-agency-client" -c "/home/roysupriyo10/developer/compareling/agency-client"
+  tmux new-window -dt "comp-user-client" -c "/home/roysupriyo10/developer/compareling/user-client"
+  tmux new-window -dt "comp-file-server" -c "/home/roysupriyo10/developer/compareling/file-server"
 done
 
 tmux a
