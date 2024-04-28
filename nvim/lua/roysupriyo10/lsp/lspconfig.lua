@@ -25,7 +25,7 @@ return {
       keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
 
       opts.desc = "Show LSP definitions"
-      keymap.set("n", "gd", vim.lsp.buf.definition, opts) -- show lsp definitions
+      keymap.set("n", "gd", require('telescope.builtin').lsp_definitions, opts) -- show lsp definitions
 
       opts.desc = "Show LSP references"
       keymap.set("n", 'gr', require('telescope.builtin').lsp_references, opts)
@@ -68,6 +68,17 @@ return {
       local hl = "DiagnosticSign" .. type
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
+
+
+    lspconfig['clangd'].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+    })
+
+    lspconfig['pyright'].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+    })
 
     lspconfig['gopls'].setup({
       capabilities = capabilities,

@@ -12,7 +12,5 @@ for ((j=1; j<=2; j++)); do
   tmux new-window -dt "palette-client" -c "/home/roysupriyo10/developer/palette/client"
   # tmux new-window -dt "interface-server" -c "/home/roysupriyo10/developer/interface/server"
   # tmux new-window -dt "interface-client" -c "/home/roysupriyo10/developer/interface/client"
-  
-done
 
 tmux a
