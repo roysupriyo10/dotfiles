@@ -33,6 +33,7 @@ export GOPATH="/home/roysupriyo10/go"
 export PATH=$GOPATH/bin:$PATH
 
 alias grep='grep --color=auto'
+alias cat='bat'
 alias ls="lsd -l"
 alias l="lsd -al"
 alias v="nvim"
@@ -47,6 +48,10 @@ alias gc="git commit -am"
 alias blesh="source ~/.local/share/blesh/ble.sh"
 alias bitch='sudo $(history -p !!)'
 alias please='sudo'
+
+# electron extra flags
+alias mongodb-comp="mongodb-compass --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --ignore-additional-command-line-flags"
+
 
 source /usr/share/git/git-prompt.sh
 source /usr/share/fzf/completion.bash
