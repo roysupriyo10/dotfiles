@@ -1,5 +1,9 @@
 [[ $- != *i* ]] && return
 
+# if [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
+#   exec sway
+# fi
+
 export LANG=en_US.UTF-8
 export EDITOR=nvim
 
