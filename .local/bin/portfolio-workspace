@@ -1,0 +1,15 @@
+#!/bin/bash
+
+NUM_WINDOWS=3
+
+# source /home/roysupriyo10/developer/typescript/new-portfolio/.env
+#
+# echo $DB_CONNECTION_STRING
+
+tmux new-session -d -s "portfolio" -c "/home/roysupriyo10/developer/typescript/new-portfolio-ssg"
+
+for ((j=1; j<=2; j++)); do
+  tmux new-window -d -t "portfolio" -c "/home/roysupriyo10/developer/typescript/new-portfolio-ssg"
+done
+
+tmux a

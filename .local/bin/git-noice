@@ -10,6 +10,11 @@ MAIN_BRANCH=$1
 MERGE_INTO_BRANCH=$2
 COMMIT_MESSAGE=$3
 
+if [ $MAIN_BRANCH != "master" ]; then
+  echo "main branch must be master"
+  exit 1
+fi
+
 # Add all changes
 git add -A
 
