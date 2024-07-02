@@ -57,10 +57,11 @@ alias please='sudo'
 alias mongodb-comp="mongodb-compass --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --ignore-additional-command-line-flags"
 
 
-source /usr/share/git/git-prompt.sh
-source /usr/share/fzf/completion.bash
-source /usr/share/fzf/key-bindings.bash
-source /usr/share/git/completion/git-completion.bash
+source /usr/share/git-core/contrib/completion/git-prompt.sh
+# source /usr/share/git-core/contrib/completion/git-completion.tcsh
+# source /usr/share/fzf/completion.bash
+source /usr/share/fzf/shell/key-bindings.bash
+# source /usr/share/git/completion/git-completion.bash
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
