@@ -36,6 +36,11 @@ export PATH=$BUN_INSTALL/bin:$PATH
 export GOPATH="/home/roysupriyo10/go"
 export PATH=$GOPATH/bin:$PATH
 
+# adb and fastboot location
+if [ -d "$HOME/.adb-fastboot/platform-tools" ] ; then
+ export PATH="$HOME/.adb-fastboot/platform-tools:$PATH"
+fi
+
 alias grep='grep --color=auto'
 alias cat='bat'
 alias ls="lsd -l"
@@ -74,3 +79,4 @@ eval "$(zoxide init --cmd cd bash)"
 #
 # bind 'set show-all-if-ambiguous on'
 # bind 'TAB:menu-complete'
+

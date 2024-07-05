@@ -18,9 +18,9 @@ set $term kitty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-# set $rofi_cmd rofi \
-#         -terminal '$term'
-# set $menu $rofi_cmd -show combi -combi-modes #run -mode combi
+set $rofi_cmd wofi \
+        -terminal '$term'
+set $desktop_menu $rofi_cmd -show combi -combi-modes #run -mode combi
 
 set $menu dmenu_path | wmenu | xargs swaymsg exec --
 
@@ -160,6 +160,8 @@ bindsym $mod+Control+Shift+Right move workspace to output eDP-1
 
     # Start your launcher
     bindsym $mod+d exec $menu
+
+    # bindsym $mod+Shift+d exec $desktop_menu
 
     bindsym $mod+e exec nautilus
 

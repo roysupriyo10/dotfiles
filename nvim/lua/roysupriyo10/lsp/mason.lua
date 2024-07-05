@@ -14,7 +14,6 @@ return {
 					package_installed = "✓",
 					package_pending = "→",
 					package_uninstalled = "×"
-
 				}
 			}
 		})
@@ -25,7 +24,8 @@ return {
 				"cssls",
 				"tailwindcss",
 				"lua_ls",
-				"emmet_language_server"
+				"emmet_language_server",
+        "tsserver"
 			},
 			automatic_installation = true,
 		})
