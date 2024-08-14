@@ -30,6 +30,13 @@ vim.keymap.set("i", "<C-c>", "<Esc>")
 vim.keymap.set("n", "Q", "<nop>")
 -- vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 vim.keymap.set("n", "<leader>ff", vim.lsp.buf.format)
+-- vim.keymap.set("n", "<leader>ff", function ()
+--     local cursor = vim.api.nvim_win_get_cursor(0)
+--     vim.cmd("silent!%!prettier %")
+--     vim.api.nvim_win_set_cursor(0, cursor)
+-- end)
+
+vim.keymap.set("n", "<leader>ef", "mF:%!eslint_d --stdin --fix-to-stdout --stdin-filename %<CR>`F")
 
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")

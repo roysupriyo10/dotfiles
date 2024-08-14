@@ -52,6 +52,7 @@ alias gc="git commit -am"
 alias blesh="source ~/.local/share/blesh/ble.sh"
 alias bitch='sudo $(history -p !!)'
 alias please='sudo'
+alias 'cover-letter'='cat ~/misc/cover-letter.pdf | wl-copy'
 
 # electron extra flags
 alias mongodb-comp="mongodb-compass --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --ignore-additional-command-line-flags"
@@ -67,9 +68,18 @@ export GIT_PS1_SHOWUNTRACKEDFILES=1
 export GIT_PS1_SHOWUPSTREAM="auto"
 export GIT_PS1_SHOWCOLORHINTS=1
 export PS1='[\u \[\033[01;34m\]\W\[\033[00m\]]$(__git_ps1 " %s" | sed "s/ =//") $ '
+
+# atac config
+export ATAC_MAIN_DIR=/home/roysupriyo10/developer/atac-files
+export ATAC_KEY_BINDINGS=$ATAC_MAIN_DIR/vim-bindings.toml
+
 # export PS1='[\u \[\033[01;34m\]\W\[\033[00m\]]$(__git_ps1 " %s") $ '
 
 eval "$(zoxide init --cmd cd bash)"
 #
 # bind 'set show-all-if-ambiguous on'
 # bind 'TAB:menu-complete'
+
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)

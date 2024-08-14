@@ -6,10 +6,10 @@ NUM_WINDOWS=3
 #
 # echo $DB_CONNECTION_STRING
 
-tmux new-session -d -s "portfolio" -c "/home/roysupriyo10/developer/typescript/new-portfolio-ssg"
+tmux new-session -d -s "portfolio" -c "/home/roysupriyo10/developer/typescript/portfolio"
 
 for ((j=1; j<=2; j++)); do
-  tmux new-window -d -t "portfolio" -c "/home/roysupriyo10/developer/typescript/new-portfolio-ssg"
+  tmux new-window -d -t "portfolio" -c "/home/roysupriyo10/developer/typescript/portfolio"
 done
 
 tmux a
