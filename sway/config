@@ -30,27 +30,27 @@ set $menu dmenu_path | wmenu | xargs swaymsg exec --
 # exec_always setwall random ~/Pictures/Wallpapers -c sway -o eDP-1
 # exec_always setwall random ~/Pictures/Wallpapers -c sway -o HDMI-A-1
 # output eDP-1 bg 
-# output eDP-1 bg /home/roysupriyo10/Pictures/Wallpapers/goku-musculoso-dragon-ball-z-amoled-minimal-black-5120x2880-4945.png fill #cccccc
-# output HDMI-A-1 bg /home/roysupriyo10/Pictures/Wallpapers/goku-musculoso-dragon-ball-z-amoled-minimal-black-5120x2880-4945.png fill #cccccc
-# output eDP-1 bg /home/roysupriyo10/Pictures/Wallpapers/call-of-duty-modern-3840x2160-11312.png fill
-# output HDMI-A-1 bg /home/roysupriyo10/Pictures/Wallpapers/call-of-duty-modern-3840x2160-11312.png fill
+# output eDP-1 bg /home/roysupriyo10figr/Pictures/Wallpapers/goku-musculoso-dragon-ball-z-amoled-minimal-black-5120x2880-4945.png fill #cccccc
+# output HDMI-A-1 bg /home/roysupriyo10figr/Pictures/Wallpapers/goku-musculoso-dragon-ball-z-amoled-minimal-black-5120x2880-4945.png fill #cccccc
+# output eDP-1 bg /home/roysupriyo10figr/Pictures/Wallpapers/call-of-duty-modern-3840x2160-11312.png fill
+# output HDMI-A-1 bg /home/roysupriyo10figr/Pictures/Wallpapers/call-of-duty-modern-3840x2160-11312.png fill
 #
 # Example configuration:
 #
 
 output eDP-1 {
-  background /home/roysupriyo10/Pictures/Wallpapers/itachi-uchiha-naruto-amoled-black-background-5k-5800x3197-4962.png fill
+  background /home/roysupriyo10figr/Pictures/Wallpapers/itachi-uchiha-naruto-amoled-black-background-5k-5800x3197-4962.png fill
   resolution 2880x1800@90.001Hz
 }
 
 output HDMI-A-1 {
-  background /home/roysupriyo10/Pictures/Wallpapers/call-of-duty-modern-3840x2160-11312.png fill 
+  background /home/roysupriyo10figr/Pictures/Wallpapers/call-of-duty-modern-3840x2160-11312.png fill 
   resolution 1920x1080@75.000Hz
   position 0,0
 }
 
 # output HDMI-A-1 {
-#   background /home/roysupriyo10/Pictures/Wallpapers/call-of-duty-modern-3840x2160-11312.png fill 
+#   background /home/roysupriyo10figr/Pictures/Wallpapers/call-of-duty-modern-3840x2160-11312.png fill 
 #   resolution 1920x1080@74.973Hz
 #   position 0,0
 # }
@@ -307,7 +307,7 @@ bar {
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
 
-    status_command while /home/roysupriyo10/.config/sway/status.sh; do sleep 1; done
+    status_command while /home/roysupriyo10figr/.config/sway/status.sh; do sleep 1; done
 
     mode hide
     hidden_state hide

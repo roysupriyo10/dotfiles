@@ -8,6 +8,14 @@ vim.keymap.set('n', '<leader>rf', builtin.oldfiles, {})
 vim.keymap.set('n', '<C-p>', builtin.git_files, {})
 vim.keymap.set('n', '<leader>fc', builtin.grep_string, {})
 vim.keymap.set('n', '<leader>ps', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>pb', builtin.buffers, {})
+vim.keymap.set('n', '<leader>pa', function()
+  builtin.live_grep({
+    additional_args = {
+      "--sort modified"
+    }
+  })
+end, {})
 vim.keymap.set('n', '<leader>pw', function()
 	builtin.grep_string({ search = vim.fn.input("Grep > ") });
 end, {})
@@ -25,5 +33,5 @@ telescope.setup({
 		}
 	},
 
-	telescope.load_extension('fzf')
+	telescope.load_extension('fzf');
 })

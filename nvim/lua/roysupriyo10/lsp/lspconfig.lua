@@ -22,7 +22,15 @@ return {
       keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts) -- show definition, references
 
       opts.desc = "Go to declaration"
-      keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
+      keymap.set("n", "gD", function ()
+        vim.cmd.vsplit();
+        vim.cmd("wincmd l");
+        require('telescope.builtin').lsp_definitions(
+--         {
+--           jump_type = "never",
+--         }
+        )
+      end, opts) -- go to declaration
 
       opts.desc = "Show LSP definitions"
       keymap.set("n", "gd", require('telescope.builtin').lsp_definitions, opts) -- show lsp definitions
