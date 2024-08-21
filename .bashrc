@@ -35,6 +35,7 @@ export PATH=$BUN_INSTALL/bin:$PATH
 # go path
 export GOPATH="/home/roysupriyo10figr/go"
 export PATH=$GOPATH/bin:$PATH
+PROMPT_COMMAND='history -a'
 
 alias grep='grep --color=auto'
 alias cat='bat'
@@ -50,10 +51,13 @@ alias gp="git push"
 alias g="git"
 alias ga="git add"
 alias gc="git commit -am"
+alias gfo="git fetch origin"
+alias gplo="git pull origin"
 alias blesh="source ~/.local/share/blesh/ble.sh"
 alias bitch='sudo $(history -p !!)'
 alias please='sudo'
 alias 'cover-letter'='cat ~/misc/cover-letter.pdf | wl-copy'
+alias code='code-insiders'
 
 # electron extra flags
 alias mongodb-comp="mongodb-compass --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --ignore-additional-command-line-flags"

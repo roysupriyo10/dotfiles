@@ -1,9 +1,17 @@
 #!/bin/bash
 
+if [ "$#" -ne 1 ]; then
+  echo "Usage: update-aaaa <dnsrecord>"
+  exit 1
+fi
+
 # Cloudflare zone is the zone which holds the record
 zone=supriyo.cloud
 # dnsrecord is the A record which will be updated
-dnsrecord=bael.supriyo.cloud
+maindomain=supriyo.cloud
+dnsrecord="$1.$maindomain"
+
+echo $dnsrecord
 
 ## Cloudflare authentication details
 cloudflare_auth_email=roysupriyo10@gmail.com
