@@ -26,6 +26,7 @@ vim.keymap.set('n', '<leader>fe', function()
     find_command = {
       "fd",
       ".",
+      "--hidden",
       "--extension",
       search,
       "--no-ignore",

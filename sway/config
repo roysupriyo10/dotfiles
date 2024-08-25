@@ -39,8 +39,9 @@ set $menu dmenu_path | wmenu | xargs swaymsg exec --
 #
 
 output eDP-1 {
-  background /home/roysupriyo10/Pictures/Wallpapers/itachi-uchiha-naruto-amoled-black-background-5k-5800x3197-4962.png fill
+  background /home/roysupriyo10/Pictures/Wallpapers/itachi-uchiha-naruto-amoled-black-background-minimal-art-3840x2160-6478.jpg fill
   resolution 2880x1800@90.001Hz
+  scale 1.8
 }
 
 output HDMI-A-1 {
