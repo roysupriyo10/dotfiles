@@ -47,7 +47,6 @@
     },
     "hyprland/workspaces": {
         "disable-scroll": true,
-        "all-outputs": true,
         "warp-on-scroll": false,
         "format": "{name}",
         // "format-icons": {
@@ -86,7 +85,8 @@
         },
         "interval": 5,
         "format": "BAT: {capacity}% (No AC)",
-        "format-charging": "BAT: {capacity}% (AC)",
+        "format-alt": "{time} left",
+        "format-charging": "BAT: {capacity}% (AC) {time} left",
         "format-plugged": "BAT: {capacity}% (Plugged)",
     },
     "temperature": {
