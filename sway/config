@@ -39,14 +39,19 @@ set $menu dmenu_path | wmenu | xargs swaymsg exec --
 #
 
 output eDP-1 {
-  background /home/roysupriyo10figr/Pictures/Wallpapers/itachi-uchiha-naruto-amoled-black-background-5k-5800x3197-4962.png fill
+  # background /home/roysupriyo10figr/Pictures/Wallpapers/itachi-uchiha-naruto-amoled-black-background-5k-5800x3197-4962.png fill
+  background /home/roysupriyo10figr/Pictures/Wallpapers/itachi-uchiha-naruto-amoled-black-background-minimal-art-3840x2160-6478.jpg fill
   resolution 2880x1800@90.001Hz
+  # position 0,0
 }
 
 output HDMI-A-1 {
   background /home/roysupriyo10figr/Pictures/Wallpapers/call-of-duty-modern-3840x2160-11312.png fill 
-  resolution 1920x1080@75.000Hz
+  # resolution 1920x1080@75.000Hz
+  resolution 3840x2160@60.000Hz
   position 0,0
+  # scale 2
+  # position 2880,0
 }
 
 # output HDMI-A-1 {
@@ -149,6 +154,8 @@ bindsym $mod+Shift+a exec grim -g "$(slurp -d)" - | wl-copy
 
 bindsym $mod+Control+Shift+Left move workspace to output HDMI-A-1
 bindsym $mod+Control+Shift+Right move workspace to output eDP-1
+# bindsym $mod+Control+Shift+Right move workspace to output HDMI-A-1
+# bindsym $mod+Control+Shift+Left move workspace to output eDP-1
 #
 # Basics:
 #
@@ -222,6 +229,16 @@ bindsym $mod+Control+Shift+Right move workspace to output eDP-1
     bindsym $mod+8 workspace number 8
     bindsym $mod+9 workspace number 9
     bindsym $mod+0 workspace number 10
+    bindsym $mod+Alt+1 workspace number 11
+    bindsym $mod+Alt+2 workspace number 12
+    bindsym $mod+Alt+3 workspace number 13
+    bindsym $mod+Alt+4 workspace number 14
+    bindsym $mod+Alt+5 workspace number 15
+    bindsym $mod+Alt+6 workspace number 16
+    bindsym $mod+Alt+7 workspace number 17
+    bindsym $mod+Alt+8 workspace number 18
+    bindsym $mod+Alt+9 workspace number 19
+    bindsym $mod+Alt+0 workspace number 20
     # Move focused container to workspace
     bindsym $mod+Shift+1 move container to workspace number 1, workspace number 1
     bindsym $mod+Shift+2 move container to workspace number 2, workspace number 2
@@ -233,6 +250,16 @@ bindsym $mod+Control+Shift+Right move workspace to output eDP-1
     bindsym $mod+Shift+8 move container to workspace number 8, workspace number 8
     bindsym $mod+Shift+9 move container to workspace number 9, workspace number 9
     bindsym $mod+Shift+0 move container to workspace number 10, workspace number 10
+    bindsym $mod+Shift+Alt+1 move container to workspace number 11, workspace number 11
+    bindsym $mod+Shift+Alt+2 move container to workspace number 12, workspace number 12
+    bindsym $mod+Shift+Alt+3 move container to workspace number 13, workspace number 13
+    bindsym $mod+Shift+Alt+4 move container to workspace number 14, workspace number 14
+    bindsym $mod+Shift+Alt+5 move container to workspace number 15, workspace number 15
+    bindsym $mod+Shift+Alt+6 move container to workspace number 16, workspace number 16
+    bindsym $mod+Shift+Alt+7 move container to workspace number 17, workspace number 17
+    bindsym $mod+Shift+Alt+8 move container to workspace number 18, workspace number 18
+    bindsym $mod+Shift+Alt+9 move container to workspace number 19, workspace number 19
+    bindsym $mod+Shift+Alt+0 move container to workspace number 20, workspace number 20
     # Note: workspaces can have any name you want, not just numbers.
     # We just use 1-10 as the default.
 #
