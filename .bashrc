@@ -74,6 +74,22 @@ export GIT_PS1_SHOWUPSTREAM="auto"
 export GIT_PS1_SHOWCOLORHINTS=1
 export PS1='[\u \[\033[01;34m\]\W\[\033[00m\]]$(__git_ps1 " %s" | sed "s/ =//") $ '
 
+# nvidia specific
+export GBM_BACKEND=nvidia-drm
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
+export QT_QPA_PLATFORM=wayland
+export CLUTTER_BACKEND=wayland
+export XDG_SESSION_TYPE=wayland
+export ELECTRON_OZONE_PLATFORM_HINT=auto
+export LIBVA_DRIVER_NAME=nvidia
+export VDPAU_DRIVER=nvidia
+export MOZ_DISABLE_RDD_SANDBOX=1
+export MOZ_X11_EGL=1
+
+
+# set environment variables
+# export DISPLAY=:1
+
 # atac config
 export ATAC_MAIN_DIR=/home/roysupriyo10figr/developer/atac-files
 export ATAC_KEY_BINDINGS=$ATAC_MAIN_DIR/vim-bindings.toml

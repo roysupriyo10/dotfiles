@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+require 'json'
+
+command = ARGV.shift
+workspace = ARGV.shift
+
+pid = Process.fork
+if pid.nil?
+  exec command
+else
+  Process.detach(pid)
+
+  50.times do
+    windows = JSON.parse `hyprctl clients -j`
+    found = windows.any? { |win| win['pid'] == pid }
+    if found
+      `hyprctl dispatch movetoworkspace "#{workspace},pid:#{pid}"`
+      break
+    end
+
+    sleep 0.1
+  end
+end

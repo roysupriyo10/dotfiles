@@ -61,9 +61,9 @@
         // }
     },
     "bluetooth": {
-        "format": "Bluetooth: {device_alias} {num_connections}",
+        "format": "BT: {device_alias} {num_connections}",
         "format-connected": "BT: {device_alias} ({device_battery_percentage}%)",
-        "format-disconnected": "Bluetooth: N/A",
+        "format-disconnected": "BT: N/A",
         "format-off": "Bluetooth: Off",
         "on-click": "blueman-manager"
     },

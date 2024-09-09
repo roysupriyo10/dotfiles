@@ -42,6 +42,7 @@ output eDP-1 {
   # background /home/roysupriyo10figr/Pictures/Wallpapers/itachi-uchiha-naruto-amoled-black-background-5k-5800x3197-4962.png fill
   background /home/roysupriyo10figr/Pictures/Wallpapers/itachi-uchiha-naruto-amoled-black-background-minimal-art-3840x2160-6478.jpg fill
   resolution 2880x1800@90.001Hz
+  scale 1.8
   # position 0,0
 }
 
@@ -152,8 +153,8 @@ bindsym $mod+Shift+s exec grim -g "$(slurp)" "$HOME/Pictures/Screenshots/$(date 
 
 bindsym $mod+Shift+a exec grim -g "$(slurp -d)" - | wl-copy
 
-bindsym $mod+Control+Shift+Left move workspace to output HDMI-A-1
-bindsym $mod+Control+Shift+Right move workspace to output eDP-1
+bindsym $mod+Control+Shift+h move workspace to output HDMI-A-1
+bindsym $mod+Control+Shift+l move workspace to output eDP-1
 # bindsym $mod+Control+Shift+Right move workspace to output HDMI-A-1
 # bindsym $mod+Control+Shift+Left move workspace to output eDP-1
 #
@@ -330,6 +331,7 @@ bindsym $mod+r mode "resize"
 # Read `man 5 sway-bar` for more information about this section.
 bar {
     position top
+
     
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
@@ -338,6 +340,7 @@ bar {
 
     mode hide
     hidden_state hide
+
 
     # colors {
     #     statusline #ffffff
@@ -348,11 +351,12 @@ bar {
     colors {
         statusline #cccccc
         focused_workspace #cccccc #cccccc #000000
+        focused_background #323232
         background #111111
         inactive_workspace #323232 #323232 #9c9c9c
     }
 
-    # font pango:Iosevka Regular 10
+    font pango:IosevkaNF Bold 11
 }
 
 # exec nm-applet
