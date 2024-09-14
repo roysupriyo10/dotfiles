@@ -218,9 +218,9 @@ local plugins = {
       require("codeium").setup({})
     end,
   },
-  {
-    "github/copilot.vim",
-  },
+  -- {
+  --   "github/copilot.vim",
+  -- },
   {
     "NvChad/nvim-colorizer.lua",
     config = function()

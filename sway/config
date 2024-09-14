@@ -14,7 +14,7 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term kitty
+set $term alacritty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
@@ -46,7 +46,7 @@ output eDP-1 {
 
 output HDMI-A-1 {
   background /home/roysupriyo10/Pictures/Wallpapers/call-of-duty-modern-3840x2160-11312.png fill 
-  resolution 1920x1080@75.000Hz
+  resolution 1920x1080@100.000Hz
   position 0,0
 }
 
@@ -139,6 +139,7 @@ bindsym XF86AudioLowerVolume exec pamixer -d 5
 bindsym $mod+Shift+XF86AudioRaiseVolume exec pamixer -i 20
 bindsym $mod+Shift+XF86AudioLowerVolume exec pamixer -d 20
 bindsym XF86AudioMute exec pamixer -t
+bindsym XF86AudioMicMute exec pamixer -t --source 59
 
 bindsym $mod+Alt+s exec grim "$HOME/Pictures/Screenshots/$(date '+%d-%m-%y_%H-%M-%S').png"
 
@@ -148,8 +149,8 @@ bindsym $mod+Shift+s exec grim -g "$(slurp)" "$HOME/Pictures/Screenshots/$(date 
 
 bindsym $mod+Shift+a exec grim -g "$(slurp -d)" - | wl-copy
 
-bindsym $mod+Control+Shift+Left move workspace to output HDMI-A-1
-bindsym $mod+Control+Shift+Right move workspace to output eDP-1
+bindsym $mod+Control+Shift+h move workspace to output HDMI-A-1
+bindsym $mod+Control+Shift+l move workspace to output eDP-1
 #
 # Basics:
 #
@@ -308,7 +309,7 @@ bar {
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
 
-    status_command while /home/roysupriyo10/.config/sway/status.sh; do sleep 1; done
+    status_command while /home/roysupriyo10/.config/sway/status.sh; do sleep 10; done
 
     mode hide
     hidden_state hide
@@ -322,11 +323,12 @@ bar {
     colors {
         statusline #cccccc
         focused_workspace #cccccc #cccccc #000000
+        focused_background #323232
         background #111111
         inactive_workspace #323232 #323232 #9c9c9c
     }
 
-    # font pango:Iosevka Regular 10
+    font pango:IosevkaNF Bold 11
 }
 
 # exec nm-applet
