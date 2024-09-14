@@ -219,9 +219,6 @@ local plugins = {
     end,
   },
   {
-    "github/copilot.vim",
-  },
-  {
     "NvChad/nvim-colorizer.lua",
     config = function()
       require("colorizer").setup({
