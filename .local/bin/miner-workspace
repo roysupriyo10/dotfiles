@@ -1,0 +1,13 @@
+#!/bin/bash
+
+NUM_WINDOWS=3
+
+tmux new-session -ds "miner" -c "/home/rs10/developer/miner/server"
+tmux new-session -ds "miner-remix" -c "/home/rs10/developer/miner/remix"
+
+for ((j=1; j<=2; j++)); do
+  tmux new-window -dt "miner" -c "/home/rs10/developer/miner/server"
+  tmux new-window -dt "miner-remix" -c "/home/rs10/developer/miner/remix"
+done
+
+tmux a
