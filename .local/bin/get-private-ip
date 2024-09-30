@@ -1,0 +1,7 @@
+#!/bin/bash
+
+private_ip=$(ip route get 1| head -1 | cut -d' ' -f7)
+
+echo
+echo $private_ip
+echo

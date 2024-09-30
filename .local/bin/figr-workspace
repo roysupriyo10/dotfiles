@@ -3,11 +3,13 @@
 NUM_WINDOWS=3
 
 tmux new-session -ds "identity-plugin" -c "/home/roysupriyo10figr/developer/identity-plugin"
+tmux new-session -ds "old-identity-plugin" -c "/home/roysupriyo10figr/developer/old-identity-plugin"
 tmux new-session -ds "identity-backend" -c "/home/roysupriyo10figr/developer/identity-backend"
 tmux new-session -ds "identity-internal" -c "/home/roysupriyo10figr/developer/identity-internal"
 
 for ((j=1; j<=2; j++)); do
   tmux new-window -dt "identity-plugin" -c "/home/roysupriyo10figr/developer/identity-plugin"
+  tmux new-window -dt "old-identity-plugin" -c "/home/roysupriyo10figr/developer/old-identity-plugin"
   tmux new-window -dt "identity-backend" -c "/home/roysupriyo10figr/developer/identity-backend"
   tmux new-window -dt "identity-internal" -c "/home/roysupriyo10figr/developer/identity-internal"
 done

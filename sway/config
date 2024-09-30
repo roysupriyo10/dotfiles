@@ -24,6 +24,8 @@ set $term alacritty
 
 set $menu dmenu_path | wmenu | xargs swaymsg exec --
 
+set $lock_bg /home/roysupriyo10figr/Pictures/Wallpapers/superman-dc-superheroes-henry-cavill-dc-comics-black-7680x4320-8980.jpg
+
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
@@ -80,6 +82,12 @@ output * adaptive_sync on
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
+
+exec swayidle -w \
+         timeout 2 'swaylock -f -c 000000 -i $lock_bg' \
+         timeout 2 'swaymsg "output * dpms off"' \
+              resume 'swaymsg "output * dpms on"' \
+         before-sleep 'swaylock -f -c 000000 -i $lock_bg'
 
 ### Input configuration
 #
@@ -356,7 +364,7 @@ bar {
         inactive_workspace #323232 #323232 #9c9c9c
     }
 
-    font pango:IosevkaNF Bold 11
+    font pango:JetBrainsMono NF Bold 10
 }
 
 # exec nm-applet
