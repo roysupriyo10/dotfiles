@@ -19,7 +19,7 @@
 # https://github.com/alacritty/alacritty/tree/master#configuration
 
 [window]
-opacity = 0.85
+opacity = 0.55
 
 [colors.primary]
   background = "#000000"
