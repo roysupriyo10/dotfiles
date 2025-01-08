@@ -17,6 +17,12 @@ vim.g.mapleader = " "
 -- list of plufins
 local plugins = {
   {
+      "supermaven-inc/supermaven-nvim",
+      config = function()
+        require("supermaven-nvim").setup({})
+      end,
+  },
+  {
     "nvim-telescope/telescope.nvim",
     -- tag = '0.1.2',
     branch = "0.1.x",

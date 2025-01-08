@@ -2,12 +2,12 @@
 
 NUM_WINDOWS=3
 
-tmux new-session -ds "miner" -c "/home/rs10/developer/miner/server"
-tmux new-session -ds "miner-remix" -c "/home/rs10/developer/miner/remix"
+tmux new-session -ds "miner/server" -c "/home/roysupriyo10/developer/typescript/miner/server"
+tmux new-session -ds "miner/client" -c "/home/roysupriyo10/developer/typescript/miner/client"
 
 for ((j=1; j<=2; j++)); do
-  tmux new-window -dt "miner" -c "/home/rs10/developer/miner/server"
-  tmux new-window -dt "miner-remix" -c "/home/rs10/developer/miner/remix"
+  tmux new-window -dt "miner/server" -c "/home/roysupriyo10/developer/typescript/miner/server"
+  tmux new-window -dt "miner/client" -c "/home/roysupriyo10/developer/typescript/miner/client"
 done
 
 tmux a

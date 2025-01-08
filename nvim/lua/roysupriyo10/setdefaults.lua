@@ -43,7 +43,7 @@ create_autocmd("BufWritePost", {
   group = "Prettier",
   callback = function()
     local cursor = vim.api.nvim_win_get_cursor(0)
-    vim.cmd("silent!%!prettier %")
+    vim.cmd("silent!%!prettier '%'")
     vim.api.nvim_win_set_cursor(0, cursor)
   end
 })
