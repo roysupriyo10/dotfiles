@@ -6,13 +6,19 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+
+zstyle ':completion:*' completer _complete _ignored
+zstyle :compinstall filename '/Users/rs10figr/.zshrc'
+
+autoload -Uz compinit
+compinit
+# Path to your Oh My Zsh installation.
+export ZSH="$HOME/dotfiles/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
+# load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
@@ -77,11 +83,62 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git fzf zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
+export LANG=en_US.UTF-8
+export EDITOR=nvim
+
+export SCRIPTS_HOME="/Users/rs10figr/.local/bin"
+export MACPORTS_PATH="/opt/local/bin:/opt/local/sbin"
+
+case ":$PATH:" in
+  *":$MACPORTS_PATH:"*) ;;
+  *) export PATH="$MACPORTS_PATH:$PATH" ;;
+esac
+
+case ":$PATH:" in
+  *":$SCRIPTS_HOME:"*) ;;
+  *) export PATH="$SCRIPTS_HOME:$PATH" ;;
+esac
+
+# pnpm
+export PNPM_HOME="/Users/rs10figr/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH=$BUN_INSTALL/bin:$PATH
 # User configuration
+
+alias grep='grep --color=auto'
+alias cat='bat'
+alias ls="lsd -l"
+alias l="lsd -al"
+alias v="nvim"
+alias default-vim="/usr/bin/vim"
+alias vim="nvim"
+alias gc="git commit -am"
+alias gs="git status"
+alias gpl="git pull"
+alias gfo="git fetch origin"
+alias gplo="git pull origin"
+alias please='sudo'
+alias prettier='noglob prettier'
+alias 'private-ip'="ipconfig getifaddr en0"
+alias zed="open -a /Applications/Zed.app -n"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(zoxide init --cmd cd bash)"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -92,47 +149,26 @@ source $ZSH/oh-my-zsh.sh
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
 # else
-#   export EDITOR='mvim'
+#   export EDITOR='nvim'
 # fi
 
 # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# export ARCHFLAGS="-arch $(uname -m)"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# Set personal aliases, overriding those provided by Oh My Zsh libs,
+# plugins, and themes. Aliases can be placed here, though Oh My Zsh
+# users are encouraged to define aliases within a top-level file in
+# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
+# - $ZSH_CUSTOM/aliases.zsh
+# - $ZSH_CUSTOM/macos.zsh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:/home/roysupriyo10/.local/bin:$PATH"
-
-alias v='nvim'
-alias ls='lsd -l'
-alias gpl='git pull'
-alias gs='git status'
-alias nf='neofetch'
-alias code='code-insiders'
-alias sl="sl -Ge"
-alias binance='gtk-launch binance'
-alias open='tmux new -s dir -c $(dirname $(fd --type file | fzf))'
-alias get_symbols="cat /home/roysupriyo10/Developer/typescript/palette/server/data/zerodha/all_trading_symbols.json | jq '.[]' -r | fzf | tr -d '\n' | wl-copy"
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# pnpm
-export EDITOR=nvim
-export PNPM_HOME="/home/roysupriyo10/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-
-eval "$(zoxide init --cmd cd zsh)"
+# The following lines were added by compinstall
+# End of lines added by compinstall

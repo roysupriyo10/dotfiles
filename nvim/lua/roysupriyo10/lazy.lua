@@ -17,6 +17,26 @@ vim.g.mapleader = " "
 -- list of plufins
 local plugins = {
   {
+    "Equilibris/nx.nvim",
+
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
+
+    opts  = {},
+
+    -- Plugin will load when you use these keys
+    keys = {
+      { "<leader>nx", "<cmd>Telescope nx actions<CR>", desc = "nx actions"}
+    },
+  },
+  {
+    "supermaven-inc/supermaven-nvim",
+    config = function()
+      require("supermaven-nvim").setup({})
+    end,
+  },
+  {
     "nvim-telescope/telescope.nvim",
     -- tag = '0.1.2',
     branch = "0.1.x",

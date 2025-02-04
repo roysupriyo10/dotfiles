@@ -98,7 +98,7 @@ return {
       on_attach = on_attach,
     })
 
-    lspconfig['tsserver'].setup({
+    lspconfig['ts_ls'].setup({
       filetypes = {
         "typescript",
         "typescriptreact",
