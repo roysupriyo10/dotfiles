@@ -47,3 +47,14 @@ create_autocmd("BufWritePost", {
     vim.api.nvim_win_set_cursor(0, cursor)
   end
 })
+
+create_augroup("RustFmt", {clear=true})
+create_autocmd("BufWritePre", {
+  pattern = {"*.rs"},
+  group = "RustFmt",
+  callback = function()
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    vim.cmd("silent!%!rustfmt")
+    vim.api.nvim_win_set_cursor(0, cursor)
+  end
+})

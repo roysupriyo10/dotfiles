@@ -47,7 +47,7 @@ output HDMI-A-1 {
   background /home/rs10/Pictures/Wallpapers/call-of-duty-modern-3840x2160-11312.png fill 
   # resolution 1920x1080@100.000Hz
   resolution 2560x1440@143.991Hz
-  # position 0,0
+  position 0,0
 }
 
 # output HDMI-A-1 {
