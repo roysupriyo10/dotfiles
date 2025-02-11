@@ -2,16 +2,16 @@
 
 NUM_WINDOWS=3
 
-tmux new-session -ds "identity-backend" -c "/Users/rs10figr/developer/identity-backend"
-tmux new-session -ds "identity-plugin" -c "/Users/rs10figr/developer/identity-new"
-tmux new-session -ds "identity-frontend" -c "/Users/rs10figr/developer/identity-frontend"
+tmux new-session -ds "identity/backend" -c "/Users/rs10figr/developer/identity/backend"
+tmux new-session -ds "identity/plugin" -c "/Users/rs10figr/developer/identity/plugin"
+tmux new-session -ds "identity/frontend" -c "/Users/rs10figr/developer/identity/frontend"
 tmux new-session -ds "nexus/client" -c "/Users/rs10figr/developer/nexus/client/design-lint"
 tmux new-session -ds "nexus/server" -c "/Users/rs10figr/developer/nexus/server"
 
 for ((j=1; j<=2; j++)); do
-  tmux new-window -dt "identity-backend" -c "/Users/rs10figr/developer/identity-backend"
-  tmux new-window -dt "identity-plugin" -c "/Users/rs10figr/developer/identity-new"
-  tmux new-window -dt "identity-frontend" -c "/Users/rs10figr/developer/identity-frontend"
+  tmux new-window -dt "identity/backend" -c "/Users/rs10figr/developer/identity/backend"
+  tmux new-window -dt "identity/plugin" -c "/Users/rs10figr/developer/identity/plugin"
+  tmux new-window -dt "identity/frontend" -c "/Users/rs10figr/developer/identity/frontend"
   tmux new-window -dt "nexus/client" -c "/Users/rs10figr/developer/nexus/client/design-lint"
   tmux new-window -dt "nexus/server" -c "/Users/rs10figr/developer/nexus/server"
 done

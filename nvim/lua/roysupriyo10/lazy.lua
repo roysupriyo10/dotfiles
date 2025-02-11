@@ -17,6 +17,16 @@ vim.g.mapleader = " "
 -- list of plufins
 local plugins = {
   {
+    "LunarVim/bigfile.nvim",
+    event = "BufReadPre",
+    opts = {
+      filesize = 2,
+    },
+    config = function(_, opts)
+      require("bigfile").setup(opts)
+    end
+  },
+  {
     "Equilibris/nx.nvim",
 
     dependencies = {
