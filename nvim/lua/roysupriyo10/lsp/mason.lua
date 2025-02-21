@@ -25,7 +25,8 @@ return {
 				"cssls",
 				"tailwindcss",
 				"lua_ls",
-				"emmet_language_server"
+				"emmet_language_server",
+        "ts_ls"
 			},
 			automatic_installation = true,
 		})

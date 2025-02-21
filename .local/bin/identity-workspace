@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Source the functions file (adjust path as needed)
+source "./create_workspace"
+
+# Number of additional windows to create per session
+NUM_WINDOWS=2
+
+add_kill_workspace_command "identity"
+
+# Define sessions in name:directory format
+cat << EOF | process_sessions $NUM_WINDOWS
+identity/plugin:/Users/rs10figr/developer/identity/plugin
+identity/frontend:/Users/rs10figr/developer/identity/frontend
+identity/backend:/Users/rs10figr/developer/identity/backend
+EOF
+
+# Attach to tmux
+tmux attach-session

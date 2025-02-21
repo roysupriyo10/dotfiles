@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+# Source the functions file (adjust path as needed)
+source "./create_workspace"
+
+# Number of additional windows to create per session
+NUM_WINDOWS=2
+
+add_kill_workspace_command "master/backend"
+
+# Define sessions in name:directory format
+cat << EOF | process_sessions $NUM_WINDOWS
+master/backend/root:/Users/rs10figr/developer/backend
+master/backend/uml:/Users/rs10figr/developer/backend/uml
+master/backend/authentication:/Users/rs10figr/developer/backend/apps/authentication
+master/backend/db:/Users/rs10figr/developer/backend/packages/db
+EOF
+
+# Attach to tmux
+tmux attach-session
