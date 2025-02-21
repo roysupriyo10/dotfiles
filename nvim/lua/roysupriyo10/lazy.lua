@@ -27,20 +27,6 @@ local plugins = {
     end
   },
   {
-    "Equilibris/nx.nvim",
-
-    dependencies = {
-      "nvim-telescope/telescope.nvim",
-    },
-
-    opts  = {},
-
-    -- Plugin will load when you use these keys
-    keys = {
-      { "<leader>nx", "<cmd>Telescope nx actions<CR>", desc = "nx actions"}
-    },
-  },
-  {
     "supermaven-inc/supermaven-nvim",
     config = function()
       require("supermaven-nvim").setup({})

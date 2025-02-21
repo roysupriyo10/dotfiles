@@ -172,3 +172,4 @@ eval "$(zoxide init --cmd cd bash)"
 
 # The following lines were added by compinstall
 # End of lines added by compinstall
+
