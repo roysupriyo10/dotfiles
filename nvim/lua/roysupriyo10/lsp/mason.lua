@@ -21,14 +21,22 @@ return {
 
 		mason_lspconfig.setup({
 			ensure_installed = {
+        "clangd",
+        "pyright",
+        "gopls",
 				"html",
-				"cssls",
-				"tailwindcss",
-				"lua_ls",
-				"emmet_language_server",
         "ts_ls",
+				"cssls",
+        "jdtls",
+				"tailwindcss",
+        "emmet_language_server",
+				"lua_ls",
         "eslint",
-        "jsonls"
+        "jsonls",
+        "yamlls",
+        "bashls",
+        "dockerls",
+        "rust_analyzer",
 			},
 			automatic_installation = true,
 		})
