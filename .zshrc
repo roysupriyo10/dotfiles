@@ -132,6 +132,7 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
+# pnpm end
 
 export GOPATH="$HOME/go"
 case ":$PATH:" in
@@ -158,4 +159,11 @@ alias g="git"
 alias ga="git add"
 alias gc="git commit -am"
 
-# pnpm end
+eval "$(zoxide init --cmd cd zsh)"
+
+# bun completions
+[ -s "/home/rs10/.bun/_bun" ] && source "/home/rs10/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
