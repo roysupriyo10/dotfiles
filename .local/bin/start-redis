@@ -1,1 +1,1 @@
-redis-server --daemonize yes
+redis-server --daemonize yes --dbfilename redis-dump.rdb --dir /var/lib/redis

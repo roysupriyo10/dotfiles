@@ -19,7 +19,7 @@
 # https://github.com/alacritty/alacritty/tree/master#configuration
 
 [window]
-opacity = 0.75
+opacity = 0.65
 option_as_alt = "Both"
 
 [colors.primary]
