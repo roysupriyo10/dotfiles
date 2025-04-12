@@ -20,6 +20,7 @@
 
 [window]
 opacity = 0.55
+decorations = "none"
 
 [colors.primary]
   background = "#000000"

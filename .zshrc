@@ -158,6 +158,7 @@ alias gp="git push"
 alias g="git"
 alias ga="git add"
 alias gc="git commit -am"
+alias tm="tmux-manager"
 
 eval "$(zoxide init --cmd cd zsh)"
 
