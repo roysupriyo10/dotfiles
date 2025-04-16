@@ -16,6 +16,7 @@ vim.g.mapleader = " "
 
 -- list of plufins
 local plugins = {
+  -- { 'augmentcode/augment.vim' },
   {
     "LunarVim/bigfile.nvim",
     event = "BufReadPre",
