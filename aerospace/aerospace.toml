@@ -1,7 +1,14 @@
 # start up commands
 after-login-command = []
-after-startup-command = []
+after-startup-command = [
+  # 'exec-and-forget sketchybar'
+]
 start-at-login = true
+
+# sketchybar integration
+exec-on-workspace-change = ['/bin/bash', '-c',
+    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE'
+]
 
 # normalizations
 enable-normalization-flatten-containers = true
@@ -10,7 +17,9 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 # for when accordion mode is enabled
 accordion-padding = 20
 
-default-root-container-orientation = 'auto'
+# defaults
+default-root-container-orientation = 'horizontal'
+default-root-container-layout = 'tiles'
 
 # background commands
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
@@ -30,6 +39,9 @@ automatically-unhide-macos-hidden-apps = true
   inner.vertical = 8
 
 [mode.main.binding]
+  cmd-slash = 'layout tiles horizontal vertical'
+  cmd-comma = 'layout accordion horizontal vertical'
+
   cmd-alt-h = []
   cmd-shift-c = ['reload-config', 'mode main']
 
@@ -37,8 +49,8 @@ automatically-unhide-macos-hidden-apps = true
   alt-shift-semicolon = 'mode service'
 
   # move workspaces to different monitors
-  alt-ctrl-shift-h = ['move-workspace-to-monitor left']
-  alt-ctrl-shift-l = ['move-workspace-to-monitor right']
+  cmd-ctrl-shift-h = ['move-workspace-to-monitor left']
+  cmd-ctrl-shift-l = ['move-workspace-to-monitor right']
 
   # basic window navigation
   cmd-h = 'focus left'
@@ -46,11 +58,21 @@ automatically-unhide-macos-hidden-apps = true
   cmd-k = 'focus up'
   cmd-l = 'focus right'
 
+  # app shortcuts
+  cmd-enter = ['exec-and-forget open -n /System/Volumes/Data/Applications/Alacritty.app']
+
   # move windows within workspaces
   cmd-shift-h = 'move left'
   cmd-shift-j = 'move down'
   cmd-shift-k = 'move up'
   cmd-shift-l = 'move right'
+
+  # basic monitor navigation
+  cmd-ctrl-alt-h = ['focus-monitor left']
+  cmd-ctrl-alt-l = ['focus-monitor right']
+
+  # window resizing
+  cmd-shift-r = ['mode resize']
 
   # basic workspace navigation
   cmd-1 = ['workspace 1', 'mode main']
@@ -63,6 +85,16 @@ automatically-unhide-macos-hidden-apps = true
   cmd-8 = ['workspace 8', 'mode main']
   cmd-9 = ['workspace 9', 'mode main']
   cmd-0 = ['workspace 10', 'mode main']
+  cmd-alt-1 = ['workspace 11', 'mode main']
+  cmd-alt-2 = ['workspace 12', 'mode main']
+  cmd-alt-3 = ['workspace 13', 'mode main']
+  cmd-alt-4 = ['workspace 14', 'mode main']
+  cmd-alt-5 = ['workspace 15', 'mode main']
+  cmd-alt-6 = ['workspace 16', 'mode main']
+  cmd-alt-7 = ['workspace 17', 'mode main']
+  cmd-alt-8 = ['workspace 18', 'mode main']
+  cmd-alt-9 = ['workspace 19', 'mode main']
+  cmd-alt-0 = ['workspace 20', 'mode main']
 
   # move windows to workspaces
   cmd-shift-1 = ['move-node-to-workspace 1', 'workspace 1']
@@ -85,3 +117,11 @@ automatically-unhide-macos-hidden-apps = true
   j = 'volume down'
   k = 'volume up'
   shift-j = ['volume set 0', 'mode main']
+
+[mode.resize.binding]
+  esc = ['mode main']
+
+  h = ['resize smart +10']
+  l = ['resize smart -10']
+
+  f = ['fullscreen', 'mode main']
