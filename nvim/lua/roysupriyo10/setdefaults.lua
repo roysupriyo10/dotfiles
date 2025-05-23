@@ -47,3 +47,14 @@ create_autocmd("BufWritePost", {
     vim.api.nvim_win_set_cursor(0, cursor)
   end
 })
+
+create_augroup("pyformat", {clear=true})
+create_autocmd("BufWritePost", {
+  pattern = {"*.py"},
+  group = "pyformat",
+  callback = function()
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    vim.cmd("silent!!black '%'")
+    vim.api.nvim_win_set_cursor(0, cursor)
+  end
+})

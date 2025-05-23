@@ -121,8 +121,6 @@ alias cat='bat'
 alias ls="lsd -l"
 alias l="lsd -al"
 alias v="nvim"
-alias default-vim="/usr/bin/vim"
-alias vim="nvim"
 alias gc="git commit -am"
 alias gs="git status"
 alias gpl="git pull"
@@ -131,7 +129,7 @@ alias gplo="git pull origin"
 alias please='sudo'
 alias prettier='noglob prettier'
 alias 'private-ip'="ipconfig getifaddr en0"
-alias zed="open -a /Applications/Zed.app -n"
+alias tm="tmux-manager"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -169,7 +167,3 @@ eval "$(zoxide init --cmd cd bash)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# The following lines were added by compinstall
-# End of lines added by compinstall
-

@@ -1,0 +1,8 @@
+// ~/.config/aerospace-swipe/config.json
+{
+  "haptic": true,
+  "natural_swipe": true,
+  "wrap_around": true,
+  "skip_empty": false,
+  "fingers": 3
+}

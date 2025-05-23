@@ -77,10 +77,24 @@ return {
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
       end
 
+      lspconfig['buf_ls'].setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+        filetypes = {
+          "proto"
+        },
+      })
 
       lspconfig['clangd'].setup({
         capabilities = capabilities,
         on_attach = on_attach,
+        filetypes = {
+          "c",
+          "cpp",
+          "objc",
+          "objcpp",
+          "cuda"
+        }, -- exclude "proto"
       })
 
       lspconfig['pyright'].setup({
