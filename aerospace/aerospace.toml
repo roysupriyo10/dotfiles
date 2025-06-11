@@ -22,7 +22,7 @@ default-root-container-orientation = 'horizontal'
 default-root-container-layout = 'tiles'
 
 # background commands
-on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+# on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
 # sweets
 automatically-unhide-macos-hidden-apps = true
@@ -39,24 +39,25 @@ automatically-unhide-macos-hidden-apps = true
   inner.vertical = 8
 
 [mode.main.binding]
-  cmd-slash = 'layout tiles horizontal vertical'
-  cmd-comma = 'layout accordion horizontal vertical'
+  alt-slash = 'layout tiles horizontal vertical'
+  alt-comma = 'layout accordion horizontal vertical'
 
   cmd-alt-h = []
+  cmd-h = []
   cmd-shift-c = ['reload-config', 'mode main']
 
   # move to service mode
-  alt-shift-semicolon = 'mode service'
+  alt-cmd-shift-semicolon = 'mode service'
 
   # move workspaces to different monitors
   cmd-ctrl-shift-h = ['move-workspace-to-monitor left']
   cmd-ctrl-shift-l = ['move-workspace-to-monitor right']
 
   # basic window navigation
-  cmd-h = 'focus left'
-  cmd-j = 'focus down'
-  cmd-k = 'focus up'
-  cmd-l = 'focus right'
+  alt-h = 'focus left'
+  alt-j = 'focus down'
+  alt-k = 'focus up'
+  alt-l = 'focus right'
 
   # app shortcuts
   cmd-enter = ['exec-and-forget open -n /System/Volumes/Data/Applications/Alacritty.app']
@@ -72,7 +73,7 @@ automatically-unhide-macos-hidden-apps = true
   cmd-ctrl-alt-l = ['focus-monitor right']
 
   # window resizing
-  cmd-shift-r = ['mode resize']
+  cmd-alt-shift-r = ['mode resize']
 
   # basic workspace navigation
   cmd-1 = ['workspace 1', 'mode main']
