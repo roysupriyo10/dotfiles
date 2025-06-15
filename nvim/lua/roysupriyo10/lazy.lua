@@ -16,6 +16,23 @@ vim.g.mapleader = " "
 
 -- list of plufins
 local plugins = {
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazu = false,
+    --@type snacks.Config
+    opts = {
+      bigfile = {
+        enabled = true
+      },
+      indent = {
+        enabled = true
+      },
+      image = {
+        enabled = true
+      }
+    }
+  },
   -- { 'augmentcode/augment.vim' },
   {
     "LunarVim/bigfile.nvim",

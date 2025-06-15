@@ -52,6 +52,8 @@ automatically-unhide-macos-hidden-apps = true
   # move workspaces to different monitors
   cmd-ctrl-shift-h = ['move-workspace-to-monitor left']
   cmd-ctrl-shift-l = ['move-workspace-to-monitor right']
+  cmd-ctrl-shift-k = ['move-workspace-to-monitor up']
+  cmd-ctrl-shift-j = ['move-workspace-to-monitor down']
 
   # basic window navigation
   alt-h = 'focus left'
@@ -60,7 +62,7 @@ automatically-unhide-macos-hidden-apps = true
   alt-l = 'focus right'
 
   # app shortcuts
-  cmd-enter = ['exec-and-forget open -n /System/Volumes/Data/Applications/Alacritty.app']
+  cmd-enter = ['exec-and-forget open -n /System/Volumes/Data/Applications/Ghostty.app']
 
   # move windows within workspaces
   cmd-shift-h = 'move left'

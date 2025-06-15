@@ -1,0 +1,14 @@
+cursor-style = block
+cursor-style-blink = false
+
+background = 000000
+background-opacity = 0.65
+background-blur = 30
+
+macos-option-as-alt = true
+macos-window-shadow = true
+
+shell-integration = none
+
+font-family = "Iosevka Nerd Font"
+font-size = 23
