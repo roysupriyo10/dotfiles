@@ -1,2 +1,4 @@
 .oh-my-zsh
 load-stripe-env
+
+.DS_Store
