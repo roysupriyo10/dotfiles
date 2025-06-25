@@ -16,6 +16,7 @@ autoload -Uz compinit
 compinit
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/dotfiles/.oh-my-zsh"
+export HOSTNAME="$(hostname)"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,

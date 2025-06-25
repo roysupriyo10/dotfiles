@@ -1,3 +1,8 @@
+-- Don't load color config in VSCode or Cursor
+if vim.g.vscode or vim.g.cursor then
+	return
+end
+
 function ColorSlate(color)
 	-- color = color or "gruvbox"
 	color = color or "catppuccin-mocha"

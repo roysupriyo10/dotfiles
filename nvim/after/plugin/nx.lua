@@ -1,3 +1,8 @@
+-- Don't load nx config in VSCode or Cursor
+if vim.g.vscode or vim.g.cursor then
+	return
+end
+
 -- require("nx").setup({
 --   nx_cmd_root = "nx",
 --   command_runner = require("nx.command-runners").terminal_command_runner(),

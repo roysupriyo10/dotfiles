@@ -13,32 +13,31 @@ return {
 				icons = {
 					package_installed = "✓",
 					package_pending = "→",
-					package_uninstalled = "×"
-
-				}
-			}
+					package_uninstalled = "×",
+				},
+			},
 		})
 
 		mason_lspconfig.setup({
 			ensure_installed = {
-        "clangd",
-        "pyright",
-        "gopls",
+				"clangd",
+				"pyright",
+				"gopls",
 				"html",
-        "ts_ls",
+				"ts_ls",
 				"cssls",
-        "jdtls",
+				"jdtls",
 				"tailwindcss",
-        "emmet_language_server",
+				"emmet_language_server",
 				"lua_ls",
-        "eslint",
-        "jsonls",
-        "yamlls",
-        "bashls",
-        "dockerls",
-        "rust_analyzer",
+				"eslint",
+				"jsonls",
+				"yamlls",
+				"bashls",
+				"dockerls",
+				"rust_analyzer",
 			},
 			automatic_installation = true,
 		})
-	end
+	end,
 }

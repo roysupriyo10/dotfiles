@@ -37,24 +37,24 @@ vim.opt.colorcolumn = "80"
 local create_autocmd = vim.api.nvim_create_autocmd
 local create_augroup = vim.api.nvim_create_augroup
 
-create_augroup("Prettier", {clear=true})
+create_augroup("Prettier", { clear = true })
 create_autocmd("BufWritePost", {
-  pattern = {"*.js", "*.ts", "*.jsx", "*.tsx", "*.vue", "*.html", "*.css", "*.scss", "*.less", "*.json", "*.md"},
-  group = "Prettier",
-  callback = function()
-    local cursor = vim.api.nvim_win_get_cursor(0)
-    vim.cmd("silent!%!prettier '%'")
-    vim.api.nvim_win_set_cursor(0, cursor)
-  end
+	pattern = { "*.js", "*.ts", "*.jsx", "*.tsx", "*.vue", "*.html", "*.css", "*.scss", "*.less", "*.json", "*.md" },
+	group = "Prettier",
+	callback = function()
+		local cursor = vim.api.nvim_win_get_cursor(0)
+		vim.cmd("silent!%!prettier '%'")
+		vim.api.nvim_win_set_cursor(0, cursor)
+	end,
 })
 
-create_augroup("pyformat", {clear=true})
+create_augroup("pyformat", { clear = true })
 create_autocmd("BufWritePost", {
-  pattern = {"*.py"},
-  group = "pyformat",
-  callback = function()
-    local cursor = vim.api.nvim_win_get_cursor(0)
-    vim.cmd("silent!!black '%'")
-    vim.api.nvim_win_set_cursor(0, cursor)
-  end
+	pattern = { "*.py" },
+	group = "pyformat",
+	callback = function()
+		local cursor = vim.api.nvim_win_get_cursor(0)
+		vim.cmd("silent!!black '%'")
+		vim.api.nvim_win_set_cursor(0, cursor)
+	end,
 })
