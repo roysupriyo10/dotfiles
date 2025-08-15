@@ -17,10 +17,19 @@ vim.g.mapleader = " "
 -- list of plufins
 local plugins = {
   {
-      "supermaven-inc/supermaven-nvim",
-      config = function()
-        require("supermaven-nvim").setup({})
-      end,
+    "greggh/claude-code.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim", -- Required for git operations
+    },
+    config = function()
+      require("claude-code").setup()
+    end
+  },
+  {
+    "supermaven-inc/supermaven-nvim",
+    config = function()
+      require("supermaven-nvim").setup({})
+    end,
   },
   {
     "nvim-telescope/telescope.nvim",
@@ -55,9 +64,9 @@ local plugins = {
       },
     }
   },
-  {
-    "rose-pine/neovim",
-  },
+  -- {
+  --   "rose-pine/neovim",
+  -- },
   {
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
@@ -225,26 +234,26 @@ local plugins = {
     end,
   },
   -- {
-  --   "github/copilot.vim",
-  -- },
-  {
-    "NvChad/nvim-colorizer.lua",
-    config = function()
-      require("colorizer").setup({
-        user_default_options = {
-          tailwind = true,
-        },
-      })
-    end,
-  },
-}
+    --   "github/copilot.vim",
+    -- },
+    {
+      "NvChad/nvim-colorizer.lua",
+      config = function()
+        require("colorizer").setup({
+          user_default_options = {
+            tailwind = true,
+          },
+        })
+      end,
+    },
+  }
 
-require("lazy").setup({ plugins, { import = "roysupriyo10.lsp" } }, {
-  checker = {
-    enabled = true,
-    notify = false,
-  },
-  change_detection = {
-    notify = false,
-  },
-})
+  require("lazy").setup({ plugins, { import = "roysupriyo10.lsp" } }, {
+    checker = {
+      enabled = true,
+      notify = false,
+    },
+    change_detection = {
+      notify = false,
+    },
+  })

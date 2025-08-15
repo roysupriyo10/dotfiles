@@ -1,0 +1,29 @@
+### Local Variable Overrides (Machine-Specific)
+# Copy this file to 99-local-overrides.conf and customize for your machine
+# Any variable defined here will override all previous variable definitions
+# The actual 99-local-overrides.conf file is gitignored
+
+# Example overrides for a specific machine:
+
+# Different display configuration for desktop
+# set $laptop DP-1
+# set $external DP-2
+# set $laptop_res 2560x1440@144Hz
+# set $laptop_scale 1
+
+# Different applications for work machine
+# set $browser google-chrome
+# set $term wezterm
+# set $filemanager dolphin
+
+# Different paths for a different user
+# set $screenshots ~/Screenshots
+# set $wallpapers ~/Backgrounds
+
+# Machine-specific font preferences
+# set $font_family "Comic Sans MS"
+# set $font_size 12
+
+# Custom color scheme for this machine
+# set $bg_color #000000
+# set $fg_color #00ff00

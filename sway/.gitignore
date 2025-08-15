@@ -1,0 +1,11 @@
+# Local machine-specific configuration
+config.d/01-local-variables.conf
+config.d/local-*.conf
+config.d/variables.d/99-local-overrides.conf
+
+# Backup files
+*.bak
+*.backup
+*~
+*.swp
+*.swo

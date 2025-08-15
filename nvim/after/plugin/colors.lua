@@ -1,7 +1,7 @@
 function ColorSlate(color)
 	-- color = color or "gruvbox"
-	color = color or "catppuccin-mocha"
-	-- color = color or "catppuccin"
+	-- color = color or "catppuccin-mocha"
+	color = color or "catppuccin"
 	-- color = color or "rose-pine"
 
 	vim.cmd.colorscheme(color)
