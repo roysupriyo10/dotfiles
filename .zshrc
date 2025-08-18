@@ -131,6 +131,7 @@ alias please='sudo'
 alias prettier='noglob prettier'
 alias 'private-ip'="ipconfig getifaddr en0"
 alias tm="tmux-manager"
+alias brew="sudo -Hiu homebrew brew"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -168,4 +169,3 @@ eval "$(zoxide init --cmd cd bash)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-alias claude="/Users/rs10figr/.claude/local/claude"
