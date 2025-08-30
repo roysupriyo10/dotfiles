@@ -7,13 +7,13 @@
 export LANG=en_US.UTF-8
 export EDITOR=nvim
 
-# export QHOME="/home/rs10/.local/share/q/l64"
+# export QHOME="$HOME/.local/share/q/l64"
 # case ":$PATH:" in
 #   *":$QHOME:"*) ;;
 #   *) export PATH="$QHOME:$PATH" ;;
 # esac
 
-export SCRIPTS_HOME="/home/rs10/.local/bin"
+export SCRIPTS_HOME="$HOME/.local/bin"
 # export PATH="$SCRIPTS_HOME:$PATH"
 case ":$PATH:" in
   *":$SCRIPTS_HOME:"*) ;;
@@ -21,7 +21,7 @@ case ":$PATH:" in
 esac
 
 # pnpm
-export PNPM_HOME="/home/rs10/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -33,7 +33,7 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
 
 # go path
-export GOPATH="/home/rs10/go"
+export GOPATH="$HOME/go"
 export PATH=$GOPATH/bin:$PATH
 
 alias grep='grep --color=auto'
@@ -41,7 +41,6 @@ alias cat='bat'
 alias ls="lsd -l"
 alias l="lsd -al"
 alias v="nvim"
-alias vim="nvim"
 alias gd="git diff"
 alias gs="git status"
 alias gpl="git pull"
@@ -70,7 +69,7 @@ export GIT_PS1_SHOWCOLORHINTS=1
 export PS1='[\u \[\033[01;34m\]\W\[\033[00m\]]$(__git_ps1 " %s" | sed "s/ =//") $ '
 
 # atac config
-export ATAC_MAIN_DIR=/home/rs10/developer/atac-files
+export ATAC_MAIN_DIR=$HOME/developer/atac-files
 export ATAC_KEY_BINDINGS=$ATAC_MAIN_DIR/vim-bindings.toml
 
 # export PS1='[\u \[\033[01;34m\]\W\[\033[00m\]]$(__git_ps1 " %s") $ '

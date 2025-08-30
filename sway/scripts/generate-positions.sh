@@ -7,7 +7,7 @@
 set -euo pipefail
 
 # Configuration paths
-SWAY_CONFIG_DIR="/home/rs10/dotfiles/sway"
+SWAY_CONFIG_DIR="$HOME/dotfiles/sway"
 VARIABLES_DIR="$SWAY_CONFIG_DIR/config.d/variables.d"
 DISPLAYS_CONF="$VARIABLES_DIR/03-displays.conf"
 OUTPUT_FILE="$VARIABLES_DIR/04-monitor-positions.conf"
