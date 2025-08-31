@@ -25,12 +25,12 @@ local plugins = {
       require("claude-code").setup()
     end
   },
-  {
-    "supermaven-inc/supermaven-nvim",
-    config = function()
-      require("supermaven-nvim").setup({})
-    end,
-  },
+  -- {
+  --   "supermaven-inc/supermaven-nvim",
+  --   config = function()
+  --     require("supermaven-nvim").setup({})
+  --   end,
+  -- },
   {
     "nvim-telescope/telescope.nvim",
     -- tag = '0.1.2',
