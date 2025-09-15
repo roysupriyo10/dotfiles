@@ -75,98 +75,205 @@ return {
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
 
+    		lspconfig["buf_ls"].setup({
+			on_attach = on_attach,
+			capabilities = capabilities,
+			filetypes = {
+				"proto",
+			},
+		})
 
-    lspconfig['clangd'].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
+		lspconfig["clangd"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			filetypes = {
+				"c",
+				"cpp",
+				"objc",
+				"objcpp",
+				"cuda",
+			}, -- exclude "proto"
+		})
 
-    lspconfig['pyright'].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
+		lspconfig["pyright"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
 
-    lspconfig['gopls'].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
+		lspconfig["gopls"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
 
-    lspconfig['html'].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
+		lspconfig["html"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
 
-    lspconfig['rust_analyzer'].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
+		lspconfig["ts_ls"].setup({
+			filetypes = {
+				"typescript",
+				"typescriptreact",
+				"typescript.tsx",
+				"javascript",
+				"javascriptreact",
+				"javascript.tsx",
+			},
+			capabilities = capabilities,
+			on_attach = on_attach,
+			root_dir = lspconfig.util.root_pattern(".git"),
+		})
+		lspconfig["cssls"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			settings = {
+				css = {
+					lint = {
+						unkwownAtRules = "ignore",
+					},
+				},
+			},
+		})
+		lspconfig["jdtls"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
+		lspconfig["tailwindcss"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
+		lspconfig["emmet_language_server"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			filetypes = {
+				"html",
+				"typescriptreact",
+				"javascriptreact",
+				"css",
+				"sass",
+				"scss",
+				"less",
+				"svelte",
+			},
+		})
+		lspconfig["lua_ls"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			settings = {
+				Lua = {
+					diagnostics = {
+						globals = { "vim" },
+					},
+					workspace = {
+						library = {
+							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
+							[vim.fn.stdpath("config") .. "/lua"] = true,
+						},
+					},
+				},
+			},
+		})
+		lspconfig["eslint"].setup({
+			filetypes = {
+				"javascript",
+				"javascriptreact",
+				"typescript",
+				"typescriptreact",
+			},
+			capabilities = capabilities,
+			on_attach = on_attach,
+			settings = {
+				experimental = {
+					unstable_config_lookup_from_file = true,
+				},
+			},
+		})
+		lspconfig["jsonls"].setup({
+			filetypes = {
+				"json",
+				"jsonc",
+			},
+			capabilities = capabilities,
+			on_attach = on_attach,
+			settings = {
+				json = {
+					schemas = {
+						{
+							fileMatch = { "package.json" },
+							url = "https://json.schemastore.org/package.json",
+						},
+						{
+							fileMatch = { "tsconfig*.json" },
+							url = "https://json.schemastore.org/tsconfig.json",
+						},
+						{
+							fileMatch = { ".eslintrc.json", ".eslintrc" },
+							url = "https://json.schemastore.org/eslintrc.json",
+						},
+						{
+							fileMatch = { ".prettierrc", ".prettierrc.json", "prettier.config.json" },
+							url = "https://json.schemastore.org/prettierrc.json",
+						},
+						{
+							fileMatch = {
+								".babelrc",
+								".babelrc.json",
+								"babel.config.json",
+							},
+							url = "https://json.schemastore.org/babelrc.json",
+						},
+						{
+							fileMatch = { "now.json", "vercel.json" },
+							url = "https://json.schemastore.org/now.json",
+						},
+						{
+							fileMatch = {
+								".stylelintrc",
+								".stylelintrc.json",
+								"stylelint.config.json",
+							},
+							url = "http://json.schemastore.org/stylelintrc.json",
+						},
+					},
+				},
+			},
+		})
+		lspconfig["yamlls"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			filetypes = { "yaml", "yaml.ansible" },
+			settings = {
+				yaml = {
+					-- Schemas https://www.schemastore.org
+					schemas = {
+						["http://json.schemastore.org/gitlab-ci.json"] = { ".gitlab-ci.yml" },
+						["https://json.schemastore.org/bamboo-spec.json"] = {
+							"bamboo-specs/*.{yml,yaml}",
+						},
+						["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = {
+							"docker-compose*.{yml,yaml}",
+						},
+						["http://json.schemastore.org/github-workflow.json"] = ".github/workflows/*.{yml,yaml}",
+						["http://json.schemastore.org/github-action.json"] = ".github/action.{yml,yaml}",
+						["http://json.schemastore.org/prettierrc.json"] = ".prettierrc.{yml,yaml}",
+						["http://json.schemastore.org/stylelintrc.json"] = ".stylelintrc.{yml,yaml}",
+						["http://json.schemastore.org/circleciconfig"] = ".circleci/**/*.{yml,yaml}",
+					},
+				},
+			},
+		})
+		lspconfig["bashls"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
+		lspconfig["dockerls"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
+		lspconfig["rust_analyzer"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
 
-    lspconfig['ts_ls'].setup({
-      filetypes = {
-        "typescript",
-        "typescriptreact",
-        "typescript.tsx",
-        "javascript",
-        "javascriptreact",
-        "javascript.tsx",
-      },
-      capabilities = capabilities,
-      on_attach = on_attach,
-      root_dir = lspconfig.util.root_pattern('.git')
-    })
-    lspconfig['cssls'].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = {
-        css = {
-          lint = {
-            unkwownAtRules = "ignore",
-          }
-        }
-      }
-    })
-    lspconfig['jdtls'].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
-    lspconfig['tailwindcss'].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
-    lspconfig['emmet_language_server'].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      filetypes = {
-        "html",
-        "typescriptreact",
-        "javascriptreact",
-        "css",
-        "sass",
-        "scss",
-        "less", 
-        "svelte",
-      },
-    })
-    lspconfig['lua_ls'].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = {
-        Lua = {
-          diagnostics = {
-            globals = { "vim" }
-          },
-          workspace = {
-            library = {
-              [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-              [vim.fn.stdpath("config") .. "/lua"] = true,
-            }
-          }
-        }
-      }
-    })
-    lspconfig['eslint'].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
   end
 }
