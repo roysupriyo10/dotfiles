@@ -91,14 +91,13 @@ source $ZSH/oh-my-zsh.sh
 export LANG=en_US.UTF-8
 export EDITOR=nvim
 
-export SCRIPTS_HOME="/Users/rs10figr/.local/bin"
 export MACPORTS_PATH="/opt/local/bin:/opt/local/sbin"
-
 case ":$PATH:" in
   *":$MACPORTS_PATH:"*) ;;
   *) export PATH="$MACPORTS_PATH:$PATH" ;;
 esac
 
+export SCRIPTS_HOME="/Users/rs10figr/.local/bin"
 case ":$PATH:" in
   *":$SCRIPTS_HOME:"*) ;;
   *) export PATH="$SCRIPTS_HOME:$PATH" ;;
@@ -111,6 +110,12 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+export PLATFORM_TOOLS_HOME="$HOME/.local/share/platform-tools"
+case ":$PATH:" in
+  *":$PLATFORM_TOOLS_HOME:"*) ;;
+  *) export PATH="$PLATFORM_TOOLS_HOME:$PATH" ;;
+esac
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -131,7 +136,7 @@ alias please='sudo'
 alias prettier='noglob prettier'
 alias 'private-ip'="ipconfig getifaddr en0"
 alias tm="tmux-manager"
-alias brew="sudo -Hiu homebrew brew"
+alias brew="sudo -H -u homebrew brew"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -169,3 +174,8 @@ eval "$(zoxide init --cmd cd bash)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# bun completions
+[ -s "/Users/rs10figr/.bun/_bun" ] && source "/Users/rs10figr/.bun/_bun"
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"

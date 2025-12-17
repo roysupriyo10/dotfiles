@@ -8,7 +8,7 @@ window_border_width 1
 # bold_italic_font auto
 # italic_font auto
 
-font_size 22
+font_size 18
 
 cursor_shape block
 shell_integration no-cursor
@@ -30,17 +30,17 @@ macos_option_as_alt both
 
 
 # BEGIN_KITTY_FONTS
-font_family      family="Iosevka Nerd Font Mono"
+font_family      family="JetBrainsMonoNL Nerd Font Mono"
 bold_font        auto
 italic_font      auto
 bold_italic_font auto
 # END_KITTY_FONTS
 
 modify_font cell_width 95%
-modify_font cell_height -2px
-modify_font baseline 2
+modify_font cell_height +2px
+# modify_font baseline 3
 
-adjust_line_height 100%
+adjust_line_height 115%
 
 resize_debounce_time 0.1 0.5
 
