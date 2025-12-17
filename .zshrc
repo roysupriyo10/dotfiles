@@ -10,7 +10,7 @@ fi
 
 
 zstyle ':completion:*' completer _complete _ignored
-zstyle :compinstall filename '/Users/rs10figr/.zshrc'
+zstyle :compinstall filename '$HOME/.zshrc'
 
 autoload -Uz compinit
 compinit
@@ -97,14 +97,14 @@ case ":$PATH:" in
   *) export PATH="$MACPORTS_PATH:$PATH" ;;
 esac
 
-export SCRIPTS_HOME="/Users/rs10figr/.local/bin"
+export SCRIPTS_HOME="$HOME/.local/bin"
 case ":$PATH:" in
   *":$SCRIPTS_HOME:"*) ;;
   *) export PATH="$SCRIPTS_HOME:$PATH" ;;
 esac
 
 # pnpm
-export PNPM_HOME="/Users/rs10figr/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -176,6 +176,6 @@ eval "$(zoxide init --cmd cd bash)"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # bun completions
-[ -s "/Users/rs10figr/.bun/_bun" ] && source "/Users/rs10figr/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
