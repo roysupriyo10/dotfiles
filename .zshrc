@@ -135,8 +135,7 @@ alias gplo="git pull origin"
 alias please='sudo'
 alias prettier='noglob prettier'
 alias 'private-ip'="ipconfig getifaddr en0"
-alias tm="tmux-manager"
-alias brew="sudo -H -u homebrew brew"
+alias brew="sudo -Hu homebrew brew"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
