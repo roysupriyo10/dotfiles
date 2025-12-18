@@ -63,7 +63,7 @@ automatically-unhide-macos-hidden-apps = true
   alt-l = 'focus right'
 
   # app shortcuts
-  cmd-enter = ['exec-and-forget open -n /System/Volumes/Data/Applications/Ghostty.app']
+  cmd-enter = ['exec-and-forget kitty']
 
   # move windows within workspaces
   cmd-shift-h = 'move left'
