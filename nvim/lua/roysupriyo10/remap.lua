@@ -50,10 +50,20 @@ vim.keymap.set({ "n", "v", "s" }, "<leader>am", ":Augment chat <CR>")
 vim.keymap.set({ "n", "v", "s" }, "<leader>ac", ":Augment chat-new <CR>")
 -- we can get the full path of the open buffer using vim.fn.expand('%:p') , copy this to the system clipboard when we use the <leader>fp keyma
 vim.keymap.set({
-  "n",
+  "n", "v",
 }, "<leader>fp", function()
   local path = vim.fn.expand("%:p")
   vim.fn.setreg("+", path)
+end)
+
+vim.keymap.set({ "v" }, "<leader>fl", function()
+  local start_line = vim.fn.line("v")
+  local end_line = vim.fn.line(".")
+  if start_line > end_line then
+    start_line, end_line = end_line, start_line
+  end
+  local result = string.format("L%d-%d", start_line, end_line)
+  vim.fn.setreg("+", result)
 end)
 
 
