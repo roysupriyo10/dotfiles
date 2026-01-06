@@ -10,5 +10,6 @@ macos-window-shadow = true
 
 shell-integration = none
 
-font-family = "ZedMono NFM"
+font-family = "Iosevka Nerd Font"
 font-size = 23
+keybind = shift+enter=text:\n
