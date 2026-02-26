@@ -91,6 +91,12 @@ source $ZSH/oh-my-zsh.sh
 export LANG=en_US.UTF-8
 export EDITOR=nvim
 
+export CURSOR_PATH="/Applications/Cursor.app/Contents/Resources/app/bin"
+case ":$PATH:" in
+  *":$CURSOR_PATH:"*) ;;
+  *) export PATH="$CURSOR_PATH:$PATH" ;;
+esac
+
 export MACPORTS_PATH="/opt/local/bin:/opt/local/sbin"
 case ":$PATH:" in
   *":$MACPORTS_PATH:"*) ;;
@@ -122,13 +128,14 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
 # User configuration
 
+alias ghostscript="/opt/homebrew/bin/gs"
+alias gs="git status"
 alias grep='grep --color=auto'
 alias cat='bat'
 alias ls="lsd -l"
 alias l="lsd -al"
 alias v="nvim"
 alias gc="git commit -am"
-alias gs="git status"
 alias gpl="git pull"
 alias gfo="git fetch origin"
 alias gplo="git pull origin"
@@ -179,7 +186,16 @@ fi
 
 eval "$(fnm env --use-on-cd --shell zsh)"
 
+source "$HOME/.claude-code-token.zsh"
+
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+
+# opencode
+export PATH=/Users/rs10figr/.opencode/bin:$PATH
+
+# Added by Antigravity
+export PATH="/Users/rs10figr/.antigravity/antigravity/bin:$PATH"
+export DISABLE_AUTOUPDATER=1
