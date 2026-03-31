@@ -2,3 +2,4 @@
 	path = nvim
 	url = git@github.com:roysupriyo10/nvim
 	ignore = all
+  branch = master
