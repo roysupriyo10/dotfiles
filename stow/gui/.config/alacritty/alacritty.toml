@@ -1,0 +1,11 @@
+[window]
+opacity = 0.65
+option_as_alt = "Both"
+decorations = "None"
+
+[colors.primary]
+background = "#000000"
+
+[font]
+normal = { family = "Iosevka Nerd Font", style = "Light" }
+size = 23.5

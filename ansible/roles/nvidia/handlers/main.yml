@@ -1,0 +1,6 @@
+---
+- name: rebuild initramfs
+  command: mkinitcpio -P
+
+- name: reload udev
+  command: udevadm control --reload-rules

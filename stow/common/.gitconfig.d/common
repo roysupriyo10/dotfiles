@@ -1,0 +1,23 @@
+[user]
+    name = Supriyo Roy
+    email = roysupriyo10@gmail.com
+
+[core]
+    editor = nvim
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = true
+
+[push]
+    autoSetupRemote = true
+
+[alias]
+    co = checkout
+    br = branch
+    ci = commit
+    st = status
+    fo = fetch origin
+    lg = log --oneline --graph --decorate

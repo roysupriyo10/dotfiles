@@ -1,0 +1,16 @@
+---
+- name: Install terminal emulators (Arch)
+  pacman:
+    name:
+      - kitty
+      - alacritty
+    state: present
+  when: ansible_os_family == "Archlinux"
+
+- name: Install terminal emulators (macOS)
+  homebrew_cask:
+    name:
+      - kitty
+      - alacritty
+    state: present
+  when: ansible_os_family == "Darwin"

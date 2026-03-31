@@ -1,0 +1,17 @@
+# NVIDIA RTD3 power management udev rules
+# Enables runtime PM so the dGPU can enter D3 (0W) when idle
+
+# VGA controller (0x030000) — how dGPU appears when driving a display
+# 3D controller (0x030200) — how dGPU appears in Optimus/PRIME mode
+
+# Cold boot — set runtime PM when device first appears in PCI bus
+ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="auto"
+ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="auto"
+
+# Driver bind — set runtime PM when nvidia driver attaches
+ACTION=="bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="auto"
+ACTION=="bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="auto"
+
+# Driver unbind — force GPU on while driver is detaching (prevents blank screen)
+ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="on"
+ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="on"

@@ -1,0 +1,22 @@
+### Local Variables Configuration (Machine-Specific Overrides)
+# This is an example file. Copy it to 01-local-variables.conf and customize for your machine.
+# Any variable defined here will override the default from 00-variables.conf
+# The actual 01-local-variables.conf file is gitignored to keep your personal settings private.
+
+# Example: Override display names for a different machine
+# set $laptop eDP-2
+# set $external DP-1
+
+# Example: Override wallpaper paths for this specific machine
+# set $wallpapers ~/Pictures/MyWallpapers
+
+# Example: Use different default applications
+# set $term kitty
+# set $browser chromium
+# set $filemanager thunar
+
+# Example: Different color scheme for this machine
+# set $bg_color #1a1b26
+# set $fg_color #c0caf5
+# set $focused_bg #7aa2f7
+# set $focused_fg #1a1b26

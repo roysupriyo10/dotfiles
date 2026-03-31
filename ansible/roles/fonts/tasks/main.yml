@@ -1,0 +1,16 @@
+---
+- name: Install font packages (Arch)
+  pacman:
+    name:
+      - ttf-iosevkaterm-nerd
+      - noto-fonts-emoji
+      - noto-fonts-cjk
+    state: present
+  when: ansible_os_family == "Archlinux"
+
+- name: Install font packages (macOS)
+  homebrew_cask:
+    name:
+      - font-iosevka-term-nerd-font
+    state: present
+  when: ansible_os_family == "Darwin"

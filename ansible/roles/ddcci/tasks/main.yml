@@ -1,0 +1,29 @@
+---
+- name: Install ddcci-driver-linux-dkms (AUR)
+  command: yay -S --noconfirm ddcci-driver-linux-dkms
+  args:
+    creates: /usr/lib/modules/{{ ansible_kernel }}/updates/dkms/ddcci.ko*
+  become: false
+
+- name: Install ddcutil
+  pacman:
+    name: ddcutil
+    state: present
+
+- name: Deploy ddcci NVIDIA workaround udev rule
+  copy:
+    src: ddcci-nvidia.rules
+    dest: /etc/udev/rules.d/81-ddcci.rules
+    owner: root
+    group: root
+    mode: "0644"
+  notify: reload udev
+  when: nvidia | default(false)
+
+- name: Ensure ddcci module loads at boot
+  copy:
+    content: "ddcci\n"
+    dest: /etc/modules-load.d/ddcci.conf
+    owner: root
+    group: root
+    mode: "0644"

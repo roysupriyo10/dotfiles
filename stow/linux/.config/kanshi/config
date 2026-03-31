@@ -1,0 +1,26 @@
+# kanshi — dynamic output configuration
+#
+# Profiles are matched automatically based on connected monitors.
+# Monitors identified by "Make Model Serial" (persistent across ports).
+#
+# To find identifiers: swaymsg -t get_outputs | jq '.[] | {name, make, model, serial}'
+# Docs: man kanshi(5)
+
+profile laptop_only {
+    output "Samsung Display Corp. 0x4171 Unknown" enable mode 2880x1800@90Hz scale 1.8 position 0,0
+}
+
+profile docked_left {
+    output "LG Electronics LG ULTRAGEAR 408BOFT0A907" mode 1920x1080@100Hz position 0,0 scale 1
+    output "Samsung Display Corp. 0x4171 Unknown" mode 2880x1800@90Hz position 1920,0 scale 1.8
+}
+
+profile docked_right {
+    output "Samsung Display Corp. 0x4171 Unknown" mode 2880x1800@90Hz position 0,0 scale 1.8
+    output "LG Electronics LG ULTRAGEAR 408BOFT0A907" mode 1920x1080@100Hz position 1600,0 scale 1
+}
+
+profile external_only {
+    output "Samsung Display Corp. 0x4171 Unknown" disable
+    output "LG Electronics LG ULTRAGEAR 408BOFT0A907" mode 1920x1080@100Hz position 0,0 scale 1
+}

@@ -1,1 +1,0 @@
-yay -S lndir --noconfirm

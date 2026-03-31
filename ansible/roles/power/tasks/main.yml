@@ -1,0 +1,62 @@
+---
+- name: Install TLP
+  pacman:
+    name: tlp
+    state: present
+  when: ansible_os_family == "Archlinux"
+
+- name: Deploy TLP custom configuration
+  copy:
+    src: 01-custom.conf
+    dest: /etc/tlp.d/01-custom.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Disable power-profiles-daemon (conflicts with TLP)
+  systemd:
+    name: power-profiles-daemon
+    enabled: false
+    state: stopped
+  ignore_errors: true
+
+- name: Enable and start TLP service
+  systemd:
+    name: tlp
+    enabled: true
+    state: started
+
+# Suspend-then-hibernate: sleeps in RAM, then hibernates after 1 hour
+# Prevents battery drain when laptop sits in a backpack
+- name: Create systemd sleep config directory
+  file:
+    path: /etc/systemd/sleep.conf.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Deploy suspend-then-hibernate config
+  copy:
+    src: sleep.conf
+    dest: /etc/systemd/sleep.conf.d/10-sleep.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+# Lid close: suspend-then-hibernate on battery, regular suspend on AC
+- name: Create systemd logind config directory
+  file:
+    path: /etc/systemd/logind.conf.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Deploy lid close behavior config
+  copy:
+    src: logind-lid.conf
+    dest: /etc/systemd/logind.conf.d/10-lid.conf
+    owner: root
+    group: root
+    mode: "0644"

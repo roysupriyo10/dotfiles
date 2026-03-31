@@ -1,0 +1,40 @@
+---
+# Base services — always enabled on Linux
+- name: Enable and start NetworkManager
+  systemd:
+    name: NetworkManager
+    enabled: true
+    state: started
+  when: ansible_os_family == "Archlinux"
+
+- name: Enable and start sshd
+  systemd:
+    name: sshd
+    enabled: true
+    state: started
+  when: ansible_os_family == "Archlinux"
+
+# Conditional services — gated by host_vars flags
+- name: Enable and start bluetooth
+  systemd:
+    name: bluetooth
+    enabled: true
+    state: started
+  when:
+    - ansible_os_family == "Archlinux"
+    - bluetooth | default(false)
+  ignore_errors: true
+
+- name: Enable and start Docker
+  systemd:
+    name: docker
+    enabled: true
+    state: started
+  when: ansible_os_family == "Archlinux"
+
+- name: Add user to docker group
+  user:
+    name: "{{ ansible_env.USER }}"
+    groups: docker
+    append: true
+  when: ansible_os_family == "Archlinux"

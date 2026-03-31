@@ -1,0 +1,14 @@
+all:
+  children:
+    linux:
+      hosts:
+        septimus:
+          ansible_host: localhost
+        statice:
+          ansible_host: localhost
+    macos:
+      hosts:
+        thalia:
+          ansible_host: localhost
+        minerva:
+          ansible_host: localhost

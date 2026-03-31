@@ -1,0 +1,30 @@
+---
+- name: Install development packages (Arch)
+  pacman:
+    name:
+      - go
+      - python
+      - python-pip
+      - rustup
+      - docker
+      - docker-compose
+    state: present
+  when: ansible_os_family == "Archlinux"
+
+- name: Install fnm — Fast Node Manager (Arch, AUR)
+  command: yay -S --noconfirm fnm
+  args:
+    creates: /usr/bin/fnm
+  become: false
+  when: ansible_os_family == "Archlinux"
+
+- name: Install development packages (macOS)
+  homebrew:
+    name:
+      - go
+      - python
+      - rustup
+      - docker
+      - fnm
+    state: present
+  when: ansible_os_family == "Darwin"

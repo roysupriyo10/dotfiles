@@ -1,0 +1,28 @@
+---
+- name: Install audio packages (Arch)
+  pacman:
+    name:
+      - pipewire
+      - pipewire-pulse
+      - pipewire-alsa
+      - wireplumber
+    state: present
+  when: ansible_os_family == "Archlinux"
+
+- name: Enable pipewire-pulse user service
+  become: false
+  systemd:
+    name: pipewire-pulse
+    enabled: true
+    state: started
+    scope: user
+  when: ansible_os_family == "Archlinux"
+
+- name: Enable wireplumber user service
+  become: false
+  systemd:
+    name: wireplumber
+    enabled: true
+    state: started
+    scope: user
+  when: ansible_os_family == "Archlinux"

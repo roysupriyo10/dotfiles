@@ -1,0 +1,24 @@
+### Local Variable Overrides (Machine-Specific)
+# Copy this file to 99-local-overrides.conf and customize for your machine
+# Any variable defined here will override all previous variable definitions
+# The actual 99-local-overrides.conf file is gitignored
+#
+# Monitor profiles are managed by kanshi (~/.config/kanshi/config),
+# not by sway variables.
+
+# Example overrides:
+
+# Different terminal or browser
+# set $term alacritty
+# set $browser google-chrome
+
+# Different wallpaper
+# set $wallpaper my-custom-wallpaper.png
+
+# Different paths
+# set $screenshots ~/Screenshots
+# set $wallpapers ~/Backgrounds
+
+# Custom color scheme
+# set $bg_color #000000
+# set $fg_color #00ff00

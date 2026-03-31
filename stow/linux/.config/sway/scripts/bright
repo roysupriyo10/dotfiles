@@ -1,0 +1,91 @@
+#!/bin/bash
+# Focus-aware brightness control using brightnessctl + ddcci kernel module
+#
+# Detects which sway output has focus and adjusts the correct backlight device.
+# Works with any number of monitors — no hardcoded names.
+#
+# Dependencies: brightnessctl, swaymsg, jq, ddcci-driver-linux (kernel module)
+# Usage: bright up|down [step]
+
+set -euo pipefail
+
+action="${1:?Usage: bright up|down [step]}"
+step="${2:-5}"
+
+# Get focused sway output name (e.g., eDP-1, HDMI-A-1, DP-3)
+focused=$(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
+
+find_backlight_device() {
+    local output="$1"
+
+    if [[ "$output" == eDP-* ]]; then
+        # Laptop display — find the native backlight (not ddcci)
+        for dev in /sys/class/backlight/*; do
+            [[ -d "$dev" ]] || continue
+            local devname
+            devname=$(basename "$dev")
+            if [[ "$devname" != ddcci* ]]; then
+                echo "$devname"
+                return
+            fi
+        done
+    else
+        # External monitor — map sway output to ddcci device via DRM connector
+        #
+        # Strategy: sway output names correspond to DRM connectors.
+        # Each DRM connector has an I2C bus. ddcci backlight devices are
+        # registered on I2C buses. We match through the bus number.
+        #
+        # /sys/class/drm/card*-<connector>/i2c-*/name → contains the bus
+        # /sys/class/backlight/ddcci*/device → symlink containing the bus
+
+        # Find the I2C bus for this DRM connector
+        local connector_i2c=""
+        for drm in /sys/class/drm/card*-"${output}"/i2c-*; do
+            [[ -d "$drm" ]] || continue
+            connector_i2c=$(basename "$drm")
+            break
+        done
+
+        if [[ -n "$connector_i2c" ]]; then
+            # Find the ddcci device on this I2C bus
+            for dev in /sys/class/backlight/ddcci*; do
+                [[ -d "$dev" ]] || continue
+                local dev_path
+                dev_path=$(readlink -f "$dev/device" 2>/dev/null)
+                if [[ "$dev_path" == *"$connector_i2c"* ]]; then
+                    echo "$(basename "$dev")"
+                    return
+                fi
+            done
+        fi
+
+        # Fallback: if DRM matching fails, try matching by enumeration order
+        # (works when there's only one external monitor)
+        for dev in /sys/class/backlight/ddcci*; do
+            [[ -d "$dev" ]] || continue
+            echo "$(basename "$dev")"
+            return
+        done
+    fi
+
+    # Last resort: first available backlight device
+    for dev in /sys/class/backlight/*; do
+        [[ -d "$dev" ]] || continue
+        echo "$(basename "$dev")"
+        return
+    done
+}
+
+device=$(find_backlight_device "$focused")
+
+if [[ -z "$device" ]]; then
+    echo "No backlight device found for output '$focused'" >&2
+    exit 1
+fi
+
+case "$action" in
+    up)   brightnessctl -d "$device" set "+${step}%" -q ;;
+    down) brightnessctl -d "$device" set "${step}%-" -q ;;
+    *)    echo "Usage: bright up|down [step]" >&2; exit 1 ;;
+esac

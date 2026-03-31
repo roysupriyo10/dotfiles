@@ -1,0 +1,66 @@
+---
+- name: Install NVIDIA packages
+  pacman:
+    name:
+      - nvidia-open
+      - nvidia-utils
+      - nvidia-settings
+      - nvidia-prime
+      - libva-nvidia-driver
+    state: present
+
+- name: Deploy NVIDIA power management modprobe config
+  copy:
+    src: nvidia-power.conf
+    dest: /etc/modprobe.d/nvidia.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: rebuild initramfs
+
+- name: Deploy NVIDIA power management udev rules
+  copy:
+    src: nvidia-pm.rules
+    dest: /etc/udev/rules.d/80-nvidia-pm.rules
+    owner: root
+    group: root
+    mode: "0644"
+  notify: reload udev
+
+- name: Add NVIDIA modules to mkinitcpio for early KMS
+  lineinfile:
+    path: /etc/mkinitcpio.conf
+    regexp: '^MODULES=\(.*\)'
+    line: 'MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)'
+  notify: rebuild initramfs
+
+- name: Create pacman hooks directory
+  file:
+    path: /etc/pacman.d/hooks
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Deploy pacman hook for NVIDIA initramfs rebuild
+  copy:
+    src: nvidia-initramfs.hook
+    dest: /etc/pacman.d/hooks/nvidia.hook
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Enable nvidia-suspend service
+  systemd:
+    name: nvidia-suspend
+    enabled: true
+
+- name: Enable nvidia-resume service
+  systemd:
+    name: nvidia-resume
+    enabled: true
+
+- name: Enable nvidia-hibernate service
+  systemd:
+    name: nvidia-hibernate
+    enabled: true

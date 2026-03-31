@@ -1,0 +1,6 @@
+[include]
+    path = ~/.gitconfig.d/common
+
+; Work identity — only effective if ~/.gitconfig.d/work exists (deployed by stow work)
+[includeIf "gitdir:~/developer/work/"]
+    path = ~/.gitconfig.d/work

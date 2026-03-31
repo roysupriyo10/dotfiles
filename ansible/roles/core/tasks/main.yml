@@ -1,0 +1,27 @@
+---
+- name: Install core packages (Arch)
+  pacman:
+    name:
+      - base-devel
+      - git
+      - stow
+      - ansible
+      - curl
+      - wget
+      - unzip
+      - openssh
+      - gnupg
+      - pass
+    state: present
+  when: ansible_os_family == "Archlinux"
+
+- name: Install core packages (macOS)
+  homebrew:
+    name:
+      - git
+      - stow
+      - ansible
+      - gnupg
+      - pass
+    state: present
+  when: ansible_os_family == "Darwin"

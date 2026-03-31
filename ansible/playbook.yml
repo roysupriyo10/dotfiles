@@ -1,0 +1,28 @@
+---
+# Each role is independently taggable for incremental runs:
+#   ansible-playbook playbook.yml --tags gui
+#   ansible-playbook playbook.yml --tags "nvidia,ddcci"
+#
+# Machine-specific gating uses `when:` conditions from host_vars.
+# Running without --tags executes everything (gated by host_vars).
+
+- name: Configure machine
+  hosts: all
+  roles:
+    # Base — runs on every machine
+    - { role: core,     tags: [core] }
+    - { role: shell,    tags: [shell] }
+    - { role: editor,   tags: [editor] }
+    - { role: dev,      tags: [dev] }
+    - { role: fonts,    tags: [fonts] }
+    - { role: services, tags: [services] }
+
+    # GUI — only on machines with gui: true
+    - { role: gui,      tags: [gui],      when: gui | default(false) }
+    - { role: terminal, tags: [terminal], when: gui | default(false) }
+    - { role: audio,    tags: [audio],    when: gui | default(false) }
+
+    # Hardware-specific — gated by individual flags
+    - { role: nvidia,   tags: [nvidia],   when: nvidia | default(false) }
+    - { role: ddcci,    tags: [ddcci],    when: ddcci | default(false) }
+    - { role: power,    tags: [power],    when: laptop | default(false) }

@@ -1,0 +1,16 @@
+---
+- name: Install editor and multiplexer packages (Arch)
+  pacman:
+    name:
+      - neovim
+      - tmux
+    state: present
+  when: ansible_os_family == "Archlinux"
+
+- name: Install editor and multiplexer packages (macOS)
+  homebrew:
+    name:
+      - neovim
+      - tmux
+    state: present
+  when: ansible_os_family == "Darwin"

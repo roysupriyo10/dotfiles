@@ -1,0 +1,30 @@
+---
+- name: Install shell packages (Arch)
+  pacman:
+    name:
+      - zsh
+      - bash-completion
+      - fzf
+      - zoxide
+      - bat
+      - lsd
+      - ripgrep
+      - fd
+      - jq
+      - fastfetch
+    state: present
+  when: ansible_os_family == "Archlinux"
+
+- name: Install shell packages (macOS)
+  homebrew:
+    name:
+      - fzf
+      - zoxide
+      - bat
+      - lsd
+      - ripgrep
+      - fd
+      - jq
+      - fastfetch
+    state: present
+  when: ansible_os_family == "Darwin"

@@ -1,0 +1,5 @@
+gui: true
+nvidia: false
+laptop: false
+ddcci: false
+bluetooth: true

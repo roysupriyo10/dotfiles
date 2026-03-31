@@ -1,0 +1,32 @@
+### Sway Window Manager Configuration
+# Modular configuration using include files
+#
+# This is the main configuration file that loads all modules.
+# Individual configurations are stored in config.d/ directory.
+#
+# To customize this configuration:
+# 1. Edit variables in config.d/variables.d/ files
+# 2. Or create local overrides in config.d/variables.d/99-local-overrides.conf
+# 3. Modify specific behavior in the relevant config.d/*.conf files
+#
+# Read `man 5 sway` for complete reference.
+
+# Load all configuration modules in order
+include $HOME/.config/sway/config.d/*.conf
+
+# Include system-wide configurations (if any)
+include /etc/sway/config.d/*
+
+# Note: The numbered prefix on config files controls loading order:
+# 00-variables.conf - Variables (loads variables.d/*.conf)
+# 10-output.conf - Display/monitor settings
+# 20-input.conf - Keyboard, mouse, touchpad settings
+# 30-appearance.conf - Window appearance, borders, gaps
+# 40-keybindings.conf - Core keyboard shortcuts
+# 45-applications.conf - Application launchers and webapp windows
+# 50-gestures.conf - Touchpad gestures
+# 60-workspaces.conf - Workspace configuration
+# 70-windows.conf - Window rules and behavior
+# 80-modes.conf - Special input modes (resize, system, etc.)
+# 90-bar.conf - Status bar configuration
+# 99-autostart.conf - Startup applications and services

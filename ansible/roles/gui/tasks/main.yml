@@ -1,0 +1,48 @@
+---
+# Sway + Wayland GUI stack (Arch only — macOS uses aerospace via stow)
+- name: Install Sway and GUI packages
+  pacman:
+    name:
+      - sway
+      - swaylock
+      - swayidle
+      - mako
+      - grim
+      - slurp
+      - wl-clipboard
+      - brightnessctl
+      - kanshi
+      - nwg-displays
+      - playerctl
+      - imv
+      - wofi
+    state: present
+  when: ansible_os_family == "Archlinux"
+
+- name: Install polkit
+  pacman:
+    name: polkit
+    state: present
+  when: ansible_os_family == "Archlinux"
+
+- name: Install XDG desktop portals
+  pacman:
+    name:
+      - xdg-desktop-portal
+      - xdg-desktop-portal-wlr
+    state: present
+  when: ansible_os_family == "Archlinux"
+
+- name: Enable and start seatd service
+  systemd:
+    name: seatd
+    enabled: true
+    state: started
+  when: ansible_os_family == "Archlinux"
+
+- name: Add user to seat group
+  user:
+    name: "{{ ansible_env.USER }}"
+    groups: seat
+    append: true
+  when: ansible_os_family == "Archlinux"
