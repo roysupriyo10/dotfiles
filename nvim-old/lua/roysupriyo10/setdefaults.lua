@@ -48,6 +48,15 @@ create_autocmd("BufWritePost", {
 	end,
 })
 
+create_augroup("clangformat", { clear = true })
+create_autocmd("BufWritePre", {
+	pattern = { "*.c", "*.h", "*.cpp", "*.hpp", "*.cc", "*.cxx" },
+	group = "clangformat",
+	callback = function()
+		vim.lsp.buf.format()
+	end,
+})
+
 create_augroup("pyformat", { clear = true })
 create_autocmd("BufWritePost", {
 	pattern = { "*.py" },

@@ -199,3 +199,6 @@ export PATH=/Users/rs10figr/.opencode/bin:$PATH
 # Added by Antigravity
 export PATH="/Users/rs10figr/.antigravity/antigravity/bin:$PATH"
 export DISABLE_AUTOUPDATER=1
+
+# opencode
+export PATH=/Users/rs10/.opencode/bin:$PATH

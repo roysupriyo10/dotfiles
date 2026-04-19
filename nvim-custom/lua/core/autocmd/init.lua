@@ -1,0 +1,5 @@
+require("core.autocmd.format")
+require("core.autocmd.env_helper")
+require("core.autocmd.restore_cursor")
+require("core.autocmd.yank")
+require("core.autocmd.treesitter")
