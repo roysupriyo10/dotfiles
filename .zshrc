@@ -154,6 +154,7 @@ if [[ "$CLAUDECODE" != "1" ]]; then
     eval "$(zoxide init --cmd cd zsh)"
 fi
 
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -202,3 +203,5 @@ export DISABLE_AUTOUPDATER=1
 
 # opencode
 export PATH=/Users/rs10/.opencode/bin:$PATH
+export NODE_EXTRA_CA_CERTS="$(mkcert -CAROOT)/rootCA.pem"
+export AWS_PROFILE=supriyo_admin
