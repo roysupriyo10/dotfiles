@@ -1,0 +1,4 @@
+[submodule "nvim"]
+	path = nvim
+	url = github.com:roysupriyo10/nvim
+  ignore = all
