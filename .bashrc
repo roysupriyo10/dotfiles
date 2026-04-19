@@ -93,3 +93,5 @@ export __GLX_VENDOR_LIBRARY_NAME=nvidia
 
 fastfetch
 
+eval "$(fnm env --use-on-cd --shell bash)"
+

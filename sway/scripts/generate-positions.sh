@@ -201,8 +201,8 @@ calculate_positions() {
             local cell_height="${row_heights[y]}"
             
             local pos_x pos_y
-            pos_x=$((col_offsets[x] + (cell_width - eff_width) / 2))
-            pos_y=$((row_offsets[y] + (cell_height - eff_height) / 2))
+            pos_x=$((col_offsets[x]))
+            pos_y=$((row_offsets[y] + (cell_height - eff_height)))
             
             echo "set \$${monitor}_pos ${pos_x},${pos_y}" >> "$output_vars"
             debug "Position for $monitor: ${pos_x},${pos_y} (centered in ${cell_width}x${cell_height} cell)"
