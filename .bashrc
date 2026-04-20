@@ -95,3 +95,4 @@ fastfetch
 
 eval "$(fnm env --use-on-cd --shell bash)"
 
+export DISABLE_AUTOUPDATER="1"
