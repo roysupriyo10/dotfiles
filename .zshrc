@@ -13,7 +13,7 @@ zstyle ':completion:*' completer _complete _ignored
 zstyle :compinstall filename '$HOME/.zshrc'
 
 autoload -Uz compinit
-compinit
+compinit -u
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/dotfiles/.oh-my-zsh"
 export HOSTNAME="$(hostname)"
@@ -187,7 +187,7 @@ fi
 
 eval "$(fnm env --use-on-cd --shell zsh)"
 
-source "$HOME/.claude-code-token.zsh"
+# source "$HOME/.claude-code-token.zsh"
 
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
@@ -199,7 +199,6 @@ export PATH=/Users/rs10figr/.opencode/bin:$PATH
 
 # Added by Antigravity
 export PATH="/Users/rs10figr/.antigravity/antigravity/bin:$PATH"
-export DISABLE_AUTOUPDATER=1
 
 # opencode
 export PATH=/Users/rs10/.opencode/bin:$PATH
