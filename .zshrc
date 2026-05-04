@@ -8,6 +8,12 @@ fi
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
+
+zstyle ':completion:*' completer _complete _ignored
+zstyle :compinstall filename '$HOME/.zshrc'
+
+autoload -Uz compinit
+compinit -u
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 export DOTFILES="$HOME/dotfiles"
@@ -126,45 +132,20 @@ case ":$PATH:" in
   *) export PATH="$SCRIPTS_HOME:$PATH" ;;
 esac
 
-# pnpm
-export PNPM_HOME="$HOME/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-export GOPATH="$HOME/go"
-case ":$PATH:" in
-  *":$GOPATH:"*) ;;
-  *) export PATH="$GOPATH:$PATH" ;;
-esac
-
-export BUN_INSTALL="$HOME/.bun"
-case ":$PATH:" in
-  *":$BUN_INSTALL:"*) ;;
-  *) export PATH="$BUN_INSTALL:$PATH" ;;
-esac
-
-alias grep='grep --color=auto'
-alias cat='bat'
-alias ls="lsd -l"
-alias l="lsd -al"
-alias v="nvim"
-alias gd="git diff"
-alias gs="git status"
-alias gpl="git pull"
-alias gp="git push"
-alias g="git"
-alias ga="git add"
-alias gc="git commit -am"
-alias tm="tmux-manager"
-
-eval "$(zoxide init --cmd cd zsh)"
+# source "$HOME/.claude-code-token.zsh"
 
 # bun completions
 [ -s "/home/rs10/.bun/_bun" ] && source "/home/rs10/.bun/_bun"
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+
+# opencode
+export PATH=/Users/rs10figr/.opencode/bin:$PATH
+
+# Added by Antigravity
+export PATH="/Users/rs10figr/.antigravity/antigravity/bin:$PATH"
+
+# opencode
+export PATH=/Users/rs10/.opencode/bin:$PATH
+export NODE_EXTRA_CA_CERTS="$(mkcert -CAROOT)/rootCA.pem"
+export AWS_PROFILE=supriyo_admin

@@ -58,16 +58,35 @@ alias 'cover-letter'='cat ~/misc/cover-letter.pdf | wl-copy'
 alias mongodb-comp="mongodb-compass --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --ignore-additional-command-line-flags"
 
 
-source /usr/share/git/git-prompt.sh
-source /usr/share/fzf/completion.bash
-source /usr/share/fzf/key-bindings.bash
-source /usr/share/git/completion/git-completion.bash
+if [ -f "/System/Volumes/Data/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" ]; then
+  source /System/Volumes/Data/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash
+fi
+if [ -f "$HOME/dotfiles/git-prompt.sh" ]; then
+  source "$HOME/dotfiles/git-prompt.sh"
+fi
+if [ -f "/opt/homebrew/Cellar/fzf/0.71.0/shell/completion.bash" ]; then
+  source /opt/homebrew/Cellar/fzf/0.71.0/shell/completion.bash
+fi
+if [ -f "/opt/homebrew/Cellar/fzf/0.71.0/shell/key-bindings.bash" ]; then
+  source /opt/homebrew/Cellar/fzf/0.71.0/shell/key-bindings.bash
+fi
+
+if [ -f "/usr/share/fzf/completion.bash" ]; then
+  source /usr/share/fzf/completion.bash
+fi
+if [ -f "/usr/share/fzf/key-bindings.bash" ]; then
+  source /usr/share/fzf/key-bindings.bash
+fi
+if [ -f "/usr/share/git/completion/git-completion.bash" ]; then
+  source /usr/share/git/completion/git-completion.bash
+fi
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
-export GIT_PS1_SHOWUPSTREAM="auto"
+export GIT_PS1_SHOWUPSTREAM="auto verbose"
 export GIT_PS1_SHOWCOLORHINTS=1
-export PS1='[\u \[\033[01;34m\]\W\[\033[00m\]]$(__git_ps1 " %s" | sed "s/ =//") $ '
+
+export PS1='[\u \[\033[01;34m\]\W\[\033[00m\]]$(__git_ps1 " %s") $ '
 
 # atac config
 export ATAC_MAIN_DIR=$HOME/developer/atac-files
