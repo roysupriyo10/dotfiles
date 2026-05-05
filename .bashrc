@@ -3,68 +3,74 @@
 export LANG=en_US.UTF-8
 export EDITOR=nvim
 
-export SCRIPTS_HOME="/Users/rs10figr/.local/bin"
-export MACPORTS_PATH="/opt/local/bin:/opt/local/sbin"
-
-case ":$PATH:" in
-  *":$MACPORTS_PATH:"*) ;;
-  *) export PATH="$MACPORTS_PATH:$PATH" ;;
-esac
-
+# personal scripts
+export SCRIPTS_HOME="$HOME/.local/bin"
 case ":$PATH:" in
   *":$SCRIPTS_HOME:"*) ;;
   *) export PATH="$SCRIPTS_HOME:$PATH" ;;
 esac
+# stpircs lanosrep
 
 # pnpm
-export PNPM_HOME="/Users/rs10figr/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-# pnpm end
+# mpnp
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
-export PATH=$BUN_INSTALL/bin:$PATH
+case ":$PATH:" in
+  *":$BUN_INSTALL:"*) ;;
+  *) export PATH="$BUN_INSTALL:$PATH" ;;
+esac
+[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
+# nub
 
-# go path
-export GOPATH="/Users/rs10figr/go"
-export PATH=$GOPATH/bin:$PATH
+# go
+export GOPATH="$HOME/go"
+case ":$PATH:" in
+  *":$GOPATH:"*) ;;
+  *) export PATH="$GOPATH:$PATH" ;;
+esac
+# og
+
 PROMPT_COMMAND='history -a'
 
+# aliases
 alias grep='grep --color=auto'
 alias cat='bat'
-alias normal-ls="ls"
-alias ls="lsd -l"
-alias l="lsd -al"
+alias ls='lsd'
 alias v="nvim"
-alias default-vim="/usr/bin/vim"
-alias vim="nvim"
 alias gd="git diff"
 alias gs="git status"
-alias gpl="git pull"
-alias gp="git push"
 alias g="git"
 alias ga="git add"
-alias gc="git commit -am"
 alias gfo="git fetch origin"
-alias gplo="git pull origin"
-alias please='sudo'
 
+
+# macos defaults
 if [ -f "/System/Volumes/Data/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" ]; then
   source /System/Volumes/Data/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash
 fi
 if [ -f "$HOME/dotfiles/git-prompt.sh" ]; then
   source "$HOME/dotfiles/git-prompt.sh"
 fi
-if [ -f "/opt/homebrew/Cellar/fzf/0.71.0/shell/completion.bash" ]; then
-  source /opt/homebrew/Cellar/fzf/0.71.0/shell/completion.bash
+
+if command -v /opt/homebrew/bin/brew >/dev/null 2>&1; then
+  HOMEBREW_DIR=/opt/homebrew # hardcoded to prevent sudo slowdown , since our brew user is system wide user accessed using sudo -H
 fi
-if [ -f "/opt/homebrew/Cellar/fzf/0.71.0/shell/key-bindings.bash" ]; then
-  source /opt/homebrew/Cellar/fzf/0.71.0/shell/key-bindings.bash
+if [ -d "$HOMEBREW_DIR" ]; then
+  if [ -f "$HOMEBREW_DIR/opt/fzf/shell/completion.bash" ]; then
+    source "$HOMEBREW_DIR/opt/fzf/shell/completion.bash"
+  fi
+  if [ -f "$HOMEBREW_DIR/opt/fzf/shell/key-bindings.bash" ]; then
+    source "$HOMEBREW_DIR/opt/fzf/shell/key-bindings.bash"
+  fi
 fi
 
+# arch based completions
 if [ -f "/usr/share/fzf/completion.bash" ]; then
   source /usr/share/fzf/completion.bash
 fi
@@ -82,9 +88,12 @@ export GIT_PS1_SHOWCOLORHINTS=1
 
 export PS1='[\u \[\033[01;34m\]\W\[\033[00m\]]$(__git_ps1 " %s") $ '
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export AWS_PROFILE=supriyo_admin
+
+if [[ "$CLAUDECODE" != "1" ]]; then
+    eval "$(zoxide init --cmd cd bash)"
+fi
+
+eval "$(fnm env --use-on-cd --shell bash)"
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
-eval "$(zoxide init --cmd cd bash)"
