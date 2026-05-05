@@ -87,7 +87,7 @@ fi
 
 source "$HOME/dotfiles/gitstatus/gitstatus.prompt.sh"
 
-PS1='[\u \[\033[01;34m\]\W\[\033[00m\]]${GITSTATUS_PROMPT:+ ${GITSTATUS_PROMPT}} $ '
+PS1='\[\e[1m\][\u \[\e[34m\]\W\[\e[39m\]]${GITSTATUS_PROMPT:+ ${GITSTATUS_PROMPT}}\[\e[1m\] $ \[\e[0m\]'
 
 export AWS_PROFILE=supriyo_admin
 

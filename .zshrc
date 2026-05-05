@@ -1,4 +1,5 @@
 [[ $- != *i* ]] && return
+
 # options
 setopt SHARE_HISTORY
 setopt EXTENDED_HISTORY
@@ -9,8 +10,13 @@ HISTFILE="$HOME/.zsh_history"
 HISTSIZE=50000
 SAVEHIST=50000
 # snoitpo
+
+# exports
 export LANG=en_US.UTF-8
 export EDITOR=nvim
+export AWS_PROFILE=supriyo_admin
+# stropxe
+
 # personal scripts
 export SCRIPTS_HOME="$HOME/.local/bin"
 case ":$PATH:" in
@@ -19,6 +25,7 @@ case ":$PATH:" in
 esac
 
 # stpircs lanosrep
+
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
@@ -26,6 +33,14 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # mpnp
+
+# completion — must run before any plugin that calls `compdef` (bun, fzf, etc.)
+# any `fpath+=(...)` additions for new tools go ABOVE this block
+autoload -Uz compinit && compinit -u
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+# noitelpmoc
+
 # bun
 export BUN_INSTALL="$HOME/.bun"
 case ":$PATH:" in
@@ -34,6 +49,7 @@ case ":$PATH:" in
 esac
 [ -s "$BUN_INSTALL/_bun_zsh" ] && source "$BUN_INSTALL/_bun_zsh"
 # nub
+
 # go
 export GOPATH="$HOME/go"
 case ":$PATH:" in
@@ -41,6 +57,7 @@ case ":$PATH:" in
   *) export PATH="$GOPATH:$PATH" ;;
 esac
 # og
+
 # aliases
 alias grep='grep --color=auto'
 alias cat='bat'
@@ -51,40 +68,32 @@ alias gs="git status"
 alias g="git"
 alias ga="git add"
 alias gfo="git fetch origin"
-# emacs keybinds + edit-command-line on C-x C-e
+# sesaila
+
+# emacs keybinds
 bindkey -e
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^X^E' edit-command-line
-# completion
-autoload -Uz compinit && compinit
-zstyle ':completion:*' menu select
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-# brew
-if command -v /opt/homebrew/bin/brew >/dev/null 2>&1; then
-  HOMEBREW_DIR=/opt/homebrew
-fi
-if [ -d "$HOMEBREW_DIR" ]; then
-  # fzf — zsh has its own integration
-  source <(fzf --zsh)
-  # syntax highlighting + autosuggestions (load syntax-highlighting LAST)
-  [ -f "$HOMEBREW_DIR/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && \
-    source "$HOMEBREW_DIR/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-  [ -f "$HOMEBREW_DIR/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] && \
-    source "$HOMEBREW_DIR/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-fi
+# sdnibyek scame
 
-# git prompt — gitstatus (romkatv) for speed, vendored as a submodule under
-# dotfiles/gitstatus.
-# source "$HOME/dotfiles/gitstatus/gitstatus.plugin.zsh"
+source <(fzf --zsh)
+source "$HOME/dotfiles/zsh-autosuggestions/zsh-autosuggestions.zsh"
+source "$HOME/dotfiles/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+ZSH_HIGHLIGHT_STYLES[path]=none
+ZSH_HIGHLIGHT_STYLES[path_prefix]=none
+
 source "$HOME/dotfiles/gitstatus/gitstatus.prompt.zsh"
 
 setopt PROMPT_SUBST
-PROMPT='[%n %F{blue}%1~%f]${GITSTATUS_PROMPT:+ ${GITSTATUS_PROMPT}} $ '
+PROMPT='%B[%n %F{blue}%1~%f]${GITSTATUS_PROMPT:+ ${GITSTATUS_PROMPT}} $ %b'
 
-export AWS_PROFILE=supriyo_admin
+# claude code workarounds
 if [[ "$CLAUDECODE" != "1" ]]; then
-    eval "$(zoxide init --cmd cd zsh)"
+  eval "$(zoxide init --cmd cd zsh)"
 fi
+# sdnuorakrow edoc edualc
+
 eval "$(fnm env --use-on-cd --shell zsh)"
 eval "$(/opt/homebrew/bin/brew shellenv)"
