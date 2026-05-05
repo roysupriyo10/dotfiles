@@ -76,23 +76,21 @@ zle -N edit-command-line
 bindkey '^X^E' edit-command-line
 # sdnibyek scame
 
-source <(fzf --zsh)
+# prompt enhancements
 source "$HOME/dotfiles/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "$HOME/dotfiles/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[path_prefix]=none
-
 source "$HOME/dotfiles/gitstatus/gitstatus.prompt.zsh"
-
 setopt PROMPT_SUBST
 PROMPT='%B[%n %F{blue}%1~%f]${GITSTATUS_PROMPT:+ ${GITSTATUS_PROMPT}} $ %b'
+# stnemecnahne tpmorp
 
-# claude code workarounds
+# shell bootstrapping
+source <(fzf --zsh)
 if [[ "$CLAUDECODE" != "1" ]]; then
   eval "$(zoxide init --cmd cd zsh)"
 fi
-# sdnuorakrow edoc edualc
-
 eval "$(fnm env --use-on-cd --shell zsh)"
 eval "$(/opt/homebrew/bin/brew shellenv)"
+# gnippartstoob llehs
