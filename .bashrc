@@ -1,5 +1,13 @@
 [[ $- != *i* ]] && return
 
+# options
+shopt -s cmdhist
+
+shopt -s lithist
+
+HISTTIMEFORMAT="%F %T "
+# snoitpo
+
 export LANG=en_US.UTF-8
 export EDITOR=nvim
 
@@ -25,7 +33,7 @@ case ":$PATH:" in
   *":$BUN_INSTALL:"*) ;;
   *) export PATH="$BUN_INSTALL:$PATH" ;;
 esac
-[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
+[ -s "$BUN_INSTALL/_bun_bash" ] && source "$BUN_INSTALL/_bun_bash"
 # nub
 
 # go
@@ -54,10 +62,6 @@ alias gfo="git fetch origin"
 if [ -f "/System/Volumes/Data/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" ]; then
   source /System/Volumes/Data/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash
 fi
-if [ -f "$HOME/dotfiles/git-prompt.sh" ]; then
-  source "$HOME/dotfiles/git-prompt.sh"
-fi
-
 if command -v /opt/homebrew/bin/brew >/dev/null 2>&1; then
   HOMEBREW_DIR=/opt/homebrew # hardcoded to prevent sudo slowdown , since our brew user is system wide user accessed using sudo -H
 fi
@@ -81,12 +85,9 @@ if [ -f "/usr/share/git/completion/git-completion.bash" ]; then
   source /usr/share/git/completion/git-completion.bash
 fi
 
-export GIT_PS1_SHOWDIRTYSTATE=1
-export GIT_PS1_SHOWUNTRACKEDFILES=1
-export GIT_PS1_SHOWUPSTREAM="auto verbose"
-export GIT_PS1_SHOWCOLORHINTS=1
+source "$HOME/dotfiles/gitstatus/gitstatus.prompt.sh"
 
-export PS1='[\u \[\033[01;34m\]\W\[\033[00m\]]$(__git_ps1 " %s") $ '
+PS1='[\u \[\033[01;34m\]\W\[\033[00m\]]${GITSTATUS_PROMPT:+ ${GITSTATUS_PROMPT}} $ '
 
 export AWS_PROFILE=supriyo_admin
 

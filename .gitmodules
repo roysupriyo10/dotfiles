@@ -2,3 +2,7 @@
 	path = nvim
 	url = github.com:roysupriyo10/nvim
   ignore = all
+[submodule "gitstatus"]
+	path = gitstatus
+	url = https://github.com/romkatv/gitstatus.git
+  ignore = all
