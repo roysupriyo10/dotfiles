@@ -7,18 +7,13 @@
 export LANG=en_US.UTF-8
 export EDITOR=nvim
 
-# export QHOME="$HOME/.local/share/q/l64"
-# case ":$PATH:" in
-#   *":$QHOME:"*) ;;
-#   *) export PATH="$QHOME:$PATH" ;;
-# esac
-
+# personal scripts
 export SCRIPTS_HOME="$HOME/.local/bin"
-# export PATH="$SCRIPTS_HOME:$PATH"
 case ":$PATH:" in
   *":$SCRIPTS_HOME:"*) ;;
   *) export PATH="$SCRIPTS_HOME:$PATH" ;;
 esac
+# stpircs lanosrep
 
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
@@ -26,51 +21,60 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-# pnpm end
+# mpnp
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
-export PATH=$BUN_INSTALL/bin:$PATH
+case ":$PATH:" in
+  *":$BUN_INSTALL:"*) ;;
+  *) export PATH="$BUN_INSTALL:$PATH" ;;
+esac
+[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
+# nub
 
-# go path
+# go
 export GOPATH="$HOME/go"
-export PATH=$GOPATH/bin:$PATH
+case ":$PATH:" in
+  *":$GOPATH:"*) ;;
+  *) export PATH="$GOPATH:$PATH" ;;
+esac
+# og
 
+PROMPT_COMMAND='history -a'
+
+# aliases
 alias grep='grep --color=auto'
 alias cat='bat'
-alias ls="lsd -l"
-alias l="lsd -al"
+alias ls='lsd'
 alias v="nvim"
 alias gd="git diff"
 alias gs="git status"
-alias gfo="git fo"
-alias gpl="git pull"
-alias gp="git push"
 alias g="git"
 alias ga="git add"
-alias gc="git commit -am"
-alias blesh="source ~/.local/share/blesh/ble.sh"
-alias bitch='sudo $(history -p !!)'
-alias please='sudo'
-alias 'cover-letter'='cat ~/misc/cover-letter.pdf | wl-copy'
-
-# electron extra flags
-alias mongodb-comp="mongodb-compass --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --ignore-additional-command-line-flags"
+alias gfo="git fetch origin"
 
 
+# macos defaults
 if [ -f "/System/Volumes/Data/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" ]; then
   source /System/Volumes/Data/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash
 fi
 if [ -f "$HOME/dotfiles/git-prompt.sh" ]; then
   source "$HOME/dotfiles/git-prompt.sh"
 fi
-if [ -f "/opt/homebrew/Cellar/fzf/0.71.0/shell/completion.bash" ]; then
-  source /opt/homebrew/Cellar/fzf/0.71.0/shell/completion.bash
+
+if command -v /opt/homebrew/bin/brew >/dev/null 2>&1; then
+  HOMEBREW_DIR=/opt/homebrew # hardcoded to prevent sudo slowdown , since our brew user is system wide user accessed using sudo -H
 fi
-if [ -f "/opt/homebrew/Cellar/fzf/0.71.0/shell/key-bindings.bash" ]; then
-  source /opt/homebrew/Cellar/fzf/0.71.0/shell/key-bindings.bash
+if [ -d "$HOMEBREW_DIR" ]; then
+  if [ -f "$HOMEBREW_DIR/opt/fzf/shell/completion.bash" ]; then
+    source "$HOMEBREW_DIR/opt/fzf/shell/completion.bash"
+  fi
+  if [ -f "$HOMEBREW_DIR/opt/fzf/shell/key-bindings.bash" ]; then
+    source "$HOMEBREW_DIR/opt/fzf/shell/key-bindings.bash"
+  fi
 fi
 
+# arch based completions
 if [ -f "/usr/share/fzf/completion.bash" ]; then
   source /usr/share/fzf/completion.bash
 fi
@@ -88,30 +92,12 @@ export GIT_PS1_SHOWCOLORHINTS=1
 
 export PS1='[\u \[\033[01;34m\]\W\[\033[00m\]]$(__git_ps1 " %s") $ '
 
-# atac config
-export ATAC_MAIN_DIR=$HOME/developer/atac-files
-export ATAC_KEY_BINDINGS=$ATAC_MAIN_DIR/vim-bindings.toml
+export AWS_PROFILE=supriyo_admin
 
-# export PS1='[\u \[\033[01;34m\]\W\[\033[00m\]]$(__git_ps1 " %s") $ '
-
-eval "$(zoxide init --cmd cd bash)"
-#
-# bind 'set show-all-if-ambiguous on'
-# bind 'TAB:menu-complete'
-
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-
-# nvidia specific environment variables
-export NVD_BACKEND=direct
-export LIBVA_DRIVER_NAME=nvidia
-export __GLX_VENDOR_LIBRARY_NAME=nvidia
-
-fastfetch
+if [[ "$CLAUDECODE" != "1" ]]; then
+    eval "$(zoxide init --cmd cd bash)"
+fi
 
 eval "$(fnm env --use-on-cd --shell bash)"
 
-export DISABLE_AUTOUPDATER="1"
+eval "$(/opt/homebrew/bin/brew shellenv)"
