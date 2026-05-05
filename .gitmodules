@@ -6,3 +6,11 @@
 	path = gitstatus
 	url = https://github.com/romkatv/gitstatus.git
   ignore = all
+[submodule "zsh-autosuggestions"]
+	path = zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions.git
+  ignore = all
+[submodule "zsh-syntax-highlighting"]
+	path = zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+  ignore = all
