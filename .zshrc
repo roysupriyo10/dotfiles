@@ -93,5 +93,7 @@ if [[ "$CLAUDECODE" != "1" ]]; then
   eval "$(zoxide init --cmd cd zsh)"
 fi
 eval "$(fnm env --use-on-cd --shell zsh)"
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if command -v /opt/homebrew/bin/brew &> /dev/null; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 # gnippartstoob llehs
