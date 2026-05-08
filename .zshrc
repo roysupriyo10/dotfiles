@@ -15,6 +15,7 @@ SAVEHIST=50000
 export LANG=en_US.UTF-8
 export EDITOR=nvim
 export AWS_PROFILE=supriyo_admin
+export CLAUDE_CODE_NO_FLICKER=1
 # stropxe
 
 # personal scripts
