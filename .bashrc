@@ -72,6 +72,7 @@ if [ -d "$HOMEBREW_DIR" ]; then
   if [ -f "$HOMEBREW_DIR/opt/fzf/shell/key-bindings.bash" ]; then
     source "$HOMEBREW_DIR/opt/fzf/shell/key-bindings.bash"
   fi
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 # arch based completions
@@ -97,4 +98,3 @@ fi
 
 eval "$(fnm env --use-on-cd --shell bash)"
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
