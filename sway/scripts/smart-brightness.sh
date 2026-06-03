@@ -12,18 +12,18 @@ CACHE_DIR="/tmp/smart-brightness-cache"
 CACHE_VALIDITY=5  # Cache valid for 5 seconds
 BUS_CACHE_VALIDITY=300  # Bus cache valid for 5 minutes
 
-# Create lock to prevent concurrent executions
+# Create lock to prevent concurrent executions.
+# Non-blocking: if a change is already in progress we drop this event rather
+# than queue behind it. Queueing would let held/repeated keypresses pile up and
+# keep changing brightness after release, which feels laggy. Dropping events
+# keeps adjustments realtime - the next keypress only applies once the current
+# change finishes, naturally tracking how fast the hardware can keep up.
 acquire_lock() {
-    local count=0
-    while [ $count -lt 20 ]; do  # Try for 2 seconds (20 * 0.1s)
-        if mkdir "$LOCK_FILE" 2>/dev/null; then
-            trap 'rm -rf "$LOCK_FILE"' EXIT
-            return 0
-        fi
-        sleep 0.1
-        count=$((count + 1))
-    done
-    echo "Another brightness change in progress, skipping"
+    if mkdir "$LOCK_FILE" 2>/dev/null; then
+        trap 'rm -rf "$LOCK_FILE"' EXIT
+        return 0
+    fi
+    log "Another brightness change in progress, ignoring event"
     exit 0
 }
 
