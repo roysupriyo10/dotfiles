@@ -8,6 +8,11 @@ mic_muted=$(pamixer --source 59 --get-mute)
 
 volume_percentage=$(pamixer --get-volume)
 
+# Active output (sink) and input (source) device names
+# Strip the long built-in "Raptor Lake-P/U/H cAVS " prefix, then truncate to 7 chars
+sink_name=$(wpctl inspect @DEFAULT_AUDIO_SINK@ 2>/dev/null | sed -n 's/.*node.description = "\(.*\)"/\1/p' | sed 's/Raptor Lake-P\/U\/H cAVS //' | cut -c1-7 | sed 's/[[:space:]]*$//')
+source_name=$(wpctl inspect @DEFAULT_AUDIO_SOURCE@ 2>/dev/null | sed -n 's/.*node.description = "\(.*\)"/\1/p' | sed 's/Raptor Lake-P\/U\/H cAVS //' | cut -c1-7 | sed 's/[[:space:]]*$//')
+
 battery_percentage=$(cat /sys/class/power_supply/BAT1/capacity)%
 
 [[ $battery_status = "Charging" ]] && battery_percentage="${battery_percentage}+"
@@ -51,9 +56,9 @@ if [ -n "$external_brightness" ]; then
 else
     light_display="Light: ${laptop_percentage}% ${custom_space} |"
 fi
-mic_display="${custom_space} Mic: ${mic_muted_display} ${custom_space} |"
+mic_display="${custom_space} Mic: ${source_name} (${mic_muted_display}) ${custom_space} |"
 network_display="${custom_space} Network: ${connected_network} ${custom_space} |"
-out_display="${custom_space} Out: ${volume_muted_display} ${custom_space} |"
+out_display="${custom_space} Out: ${sink_name} (${volume_muted_display}) ${custom_space} |"
 volume_display="${custom_space} Vol: ${volume_percentage}% ${custom_space} |"
 temperature_display="${custom_space} Temp: ${temp} ${custom_space} |"
 ram_display="${custom_space} RAM: ${MemPercentage}% ${custom_space} |"
