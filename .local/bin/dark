@@ -1,0 +1,8 @@
+#!/bin/sh
+# Switch GTK / desktop apps to dark mode.
+# GTK4 / libadwaita follow color-scheme; GTK3 follows gtk-theme.
+# These dotfiles are also stowed on macOS — gsettings is Linux-only, so no-op elsewhere.
+[ "$(uname)" = "Linux" ] || exit 0
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+echo "dark mode on"

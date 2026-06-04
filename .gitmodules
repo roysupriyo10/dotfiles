@@ -14,3 +14,7 @@
 	path = zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
   ignore = all
+[submodule "tmux-manager"]
+	path = tmux-manager
+	url = https://github.com/roysupriyo10/tmux-manager
+	ignore = all

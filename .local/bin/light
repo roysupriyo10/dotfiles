@@ -1,0 +1,7 @@
+#!/bin/sh
+# Switch GTK / desktop apps to light mode.
+# These dotfiles are also stowed on macOS — gsettings is Linux-only, so no-op elsewhere.
+[ "$(uname)" = "Linux" ] || exit 0
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
+gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita'
+echo "light mode on"

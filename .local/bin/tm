@@ -1,0 +1,3 @@
+#!/bin/bash
+
+node "$HOME/dotfiles/tmux-manager/dist/index.js" "$@"
