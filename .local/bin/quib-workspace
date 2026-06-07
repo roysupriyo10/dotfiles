@@ -1,9 +1,0 @@
-#!/bin/bash
-
-tmux new-session -ds "quib" -c "/home/roysupriyo10/developer/typescript/quib"
-
-for ((j=1; j<=2; j++)); do
-  tmux new-window -dt "quib" -c "/home/roysupriyo10/developer/typescript/quib"
-done
-
-tmux a
