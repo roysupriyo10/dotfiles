@@ -93,7 +93,7 @@ source <(fzf --zsh)
 if [[ "$CLAUDECODE" != "1" ]]; then
   eval "$(zoxide init --cmd cd zsh)"
 fi
-eval "$(fnm env --use-on-cd --shell zsh)"
+eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
 if command -v /opt/homebrew/bin/brew &> /dev/null; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
