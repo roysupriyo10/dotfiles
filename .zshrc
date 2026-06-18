@@ -86,6 +86,12 @@ ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 source "$HOME/dotfiles/gitstatus/gitstatus.prompt.zsh"
 setopt PROMPT_SUBST
 PROMPT='%B[%n %F{blue}%1~%f]${GITSTATUS_PROMPT:+ ${GITSTATUS_PROMPT}} $ %b'
+# remote (SSH) indicator — full user@host on the right side, shown only when on a remote machine
+if [[ -n "$SSH_CONNECTION" || -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
+  RPROMPT='%F{yellow}%n@%m%f'
+else
+  RPROMPT=''
+fi
 # stnemecnahne tpmorp
 
 # shell bootstrapping
