@@ -69,6 +69,7 @@ alias gs="git status"
 alias g="git"
 alias ga="git add"
 alias gfo="git fetch origin"
+alias ssh="kitten ssh"
 # sesaila
 
 # emacs keybinds
