@@ -19,10 +19,10 @@ export CLAUDE_CODE_NO_FLICKER=1
 # stropxe
 
 # personal scripts
-export SCRIPTS_HOME="$HOME/.local/bin"
+export LOCAL_HOME="$HOME/.local"
 case ":$PATH:" in
-  *":$SCRIPTS_HOME:"*) ;;
-  *) export PATH="$SCRIPTS_HOME:$PATH" ;;
+  *":$LOCAL_HOME/bin:"*) ;;
+  *) export PATH="$LOCAL_HOME/bin:$PATH" ;;
 esac
 
 # stpircs lanosrep
@@ -30,8 +30,8 @@ esac
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # mpnp
 
@@ -45,8 +45,8 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 # bun
 export BUN_INSTALL="$HOME/.bun"
 case ":$PATH:" in
-  *":$BUN_INSTALL:"*) ;;
-  *) export PATH="$BUN_INSTALL:$PATH" ;;
+  *":$BUN_INSTALL/bin:"*) ;;
+  *) export PATH="$BUN_INSTALL/bin:$PATH" ;;
 esac
 [ -s "$BUN_INSTALL/_bun_zsh" ] && source "$BUN_INSTALL/_bun_zsh"
 # nub
@@ -87,13 +87,11 @@ ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 source "$HOME/dotfiles/gitstatus/gitstatus.prompt.zsh"
 setopt PROMPT_SUBST
 PROMPT='%B[%n %F{blue}%1~%f]${GITSTATUS_PROMPT:+ ${GITSTATUS_PROMPT}} $ %b'
-# remote (SSH) indicator — full user@host on the right side, shown only when on a remote machine
 if [[ -n "$SSH_CONNECTION" || -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
   RPROMPT='%F{yellow}%n@%m%f'
 else
   RPROMPT=''
 fi
-# stnemecnahne tpmorp
 
 # shell bootstrapping
 source <(fzf --zsh)

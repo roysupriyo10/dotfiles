@@ -1,0 +1,13 @@
+[Unit]
+Description=Adjust Sway outputs when the laptop lid opens or closes
+PartOf=sway-session.target
+After=sway-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.config/sway/scripts/handle-lid.sh
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=sway-session.target
