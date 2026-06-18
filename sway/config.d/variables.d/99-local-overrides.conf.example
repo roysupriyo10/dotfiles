@@ -5,11 +5,10 @@
 
 # Example overrides for a specific machine:
 
-# Different display configuration for desktop
-# set $laptop DP-1
-# set $external DP-2
-# set $laptop_res 2560x1440@144Hz
-# set $laptop_scale 1
+# Different display configuration for this machine
+# (resolution/refresh are auto-selected; you only set order + scales)
+# set $monitor_order "DP-1 DP-2"
+# set $monitor_scales "DP-1=1 DP-2=1"
 
 # Different applications for work machine
 # set $browser google-chrome

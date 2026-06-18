@@ -1,15 +1,14 @@
-#!/bin/bash
-
-# Sway Configuration Reload Script
-# Ensures monitor positions are generated before reloading configuration
+#!/usr/bin/env bash
+#
+# Reload the Sway configuration and re-apply monitor layout.
+# Bound to Super+Shift+C.
 
 set -euo pipefail
 
-SCRIPT_DIR="$(dirname "$0")"
-GENERATE_SCRIPT="$SCRIPT_DIR/generate-positions.sh"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Generate monitor positions first
-"$GENERATE_SCRIPT"
+# Reload static config (backgrounds, keybindings, ...).
+swaymsg reload >/dev/null
 
-# Then reload Sway configuration
-swaymsg reload
+# Re-select best modes and re-apply the left/right layout.
+"$SCRIPT_DIR/apply-monitors.sh"
