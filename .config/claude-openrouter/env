@@ -1,0 +1,9 @@
+# Non-secret Claude Code + OpenRouter settings.
+# API key is loaded from pass (see PASS_SECRET_PATH below).
+# Model is required at launch: claude-openrouter --model <id> [-- <claude-args>...]
+
+ANTHROPIC_BASE_URL="https://openrouter.ai/api"
+PASS_SECRET_PATH="access_tokens/openrouter/local/secret"
+
+# Optional: pin a specific claude binary instead of auto-detecting latest.
+# CLAUDE_BIN="$HOME/.local/share/claude/versions/2.1.181"

@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat >&2 <<'EOF'
+Usage: claude-openrouter --model <openrouter-model-id> [-- <claude-args>...]
+
+  --model   Required OpenRouter model ID (e.g. anthropic/claude-opus-4)
+  --        Everything after this is passed to the Claude Code CLI
+EOF
+}
+
+dotfiles_config="${DOTFILES_DIR:+$DOTFILES_DIR/.config/claude-openrouter/env}"
+xdg_config="${XDG_CONFIG_HOME:-$HOME/.config}/claude-openrouter/env"
+fallback_config="$HOME/dotfiles/.config/claude-openrouter/env"
+
+for config in "$dotfiles_config" "$xdg_config" "$fallback_config"; do
+  if [[ -n "$config" && -f "$config" ]]; then
+    # shellcheck source=/dev/null
+    source "$config"
+    break
+  fi
+done
+
+: "${ANTHROPIC_BASE_URL:=https://openrouter.ai/api}"
+: "${PASS_SECRET_PATH:=access_tokens/openrouter/local/secret}"
+
+model=""
+claude_args=()
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --model)
+      if [[ $# -lt 2 || -z "${2:-}" ]]; then
+        echo "claude-openrouter: --model requires a value." >&2
+        usage
+        exit 1
+      fi
+      model="$2"
+      shift 2
+      ;;
+    --)
+      shift
+      claude_args=("$@")
+      break
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "claude-openrouter: unknown argument: $1" >&2
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+if [[ -z "$model" ]]; then
+  echo "claude-openrouter: --model is required." >&2
+  usage
+  exit 1
+fi
+
+resolve_claude_bin() {
+  if [[ -n "${CLAUDE_BIN:-}" && -x "$CLAUDE_BIN" ]]; then
+    printf '%s\n' "$CLAUDE_BIN"
+    return 0
+  fi
+
+  local versions_dir="$HOME/.local/share/claude/versions"
+  if [[ -d "$versions_dir" ]]; then
+    local latest
+    latest="$(ls -t "$versions_dir" 2>/dev/null | head -1 || true)"
+    if [[ -n "$latest" && -x "$versions_dir/$latest" ]]; then
+      printf '%s\n' "$versions_dir/$latest"
+      return 0
+    fi
+  fi
+
+  return 1
+}
+
+if ! claude_bin="$(resolve_claude_bin)"; then
+  echo "claude-openrouter: could not find Claude Code binary." >&2
+  echo "Set CLAUDE_BIN in your config or install Claude Code." >&2
+  exit 1
+fi
+
+if ! command -v pass >/dev/null 2>&1; then
+  echo "claude-openrouter: pass is not installed." >&2
+  exit 1
+fi
+
+export GPG_TTY="${GPG_TTY:-$(tty 2>/dev/null || true)}"
+
+echo "Unlocking OpenRouter API key from pass (${PASS_SECRET_PATH})..." >&2
+if ! openrouter_api_key="$(pass show "$PASS_SECRET_PATH")"; then
+  echo "claude-openrouter: failed to read pass entry: ${PASS_SECRET_PATH}" >&2
+  exit 1
+fi
+
+export ANTHROPIC_BASE_URL
+export ANTHROPIC_AUTH_TOKEN="$openrouter_api_key"
+export ANTHROPIC_API_KEY=""
+export ANTHROPIC_DEFAULT_OPUS_MODEL="$model"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="$model"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="$model"
+export CLAUDE_CODE_SUBAGENT_MODEL="$model"
+
+exec "$claude_bin" "${claude_args[@]}"
