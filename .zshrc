@@ -80,7 +80,7 @@ alias ga="git add"
 alias gfo="git fetch origin"
 alias ssh="kitten ssh"
 if [[ "$(uname)" == Darwin ]]; then
-  alias tsc="tsgo"
+  brew() { sudo -Hu homebrew command brew "$@"; }
 fi
 # sesaila
 
