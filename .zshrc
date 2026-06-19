@@ -19,15 +19,33 @@ export CLAUDE_CODE_NO_FLICKER=1
 # stropxe
 
 # personal scripts
-export LOCAL_HOME="$HOME/.local"
+export SCRIPTS_HOME="$HOME/.local/bin"
 case ":$PATH:" in
-  *":$LOCAL_HOME/bin:"*) ;;
-  *) export PATH="$LOCAL_HOME/bin:$PATH" ;;
+  *":$SCRIPTS_HOME:"*) ;;
+  *) export PATH="$SCRIPTS_HOME:$PATH" ;;
 esac
 # stpircs lanosrep
 
-# completion — must run before any plugin that calls `compdef` (bun, fzf, etc.)
-# any `fpath+=(...)` additions for new tools go ABOVE this block
+# pnpm
+export PNPM_HOME="$HOME/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# mpnp
+
+# path/tool bootstrap — before compinit on macOS
+if [[ "$(uname)" == Darwin ]]; then
+  if command -v /opt/homebrew/bin/brew &>/dev/null; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  fi
+  if command -v fnm &>/dev/null; then
+    eval "$(fnm env --use-on-cd --shell zsh --version-file-strategy=recursive)"
+  fi
+fi
+# potssap toorhs elbats
+
+# completion — first init for plugins that call `compdef` (bun, etc.)
 autoload -Uz compinit && compinit -u
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
@@ -45,18 +63,10 @@ esac
 # go
 export GOPATH="$HOME/go"
 case ":$PATH:" in
-  *":$GOPATH:"*) ;;
-  *) export PATH="$GOPATH:$PATH" ;;
+  *":$GOPATH/bin:"*) ;;
+  *) export PATH="$GOPATH/bin:$PATH" ;;
 esac
 # og
-
-# pnpm
-export PNPM_HOME="/home/rs10/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME/bin:"*) ;;
-  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
-esac
-# mpnp
 
 # aliases
 alias grep='grep --color=auto'
@@ -69,6 +79,9 @@ alias g="git"
 alias ga="git add"
 alias gfo="git fetch origin"
 alias ssh="kitten ssh"
+if [[ "$(uname)" == Darwin ]]; then
+  alias tsc="tsgo"
+fi
 # sesaila
 
 # emacs keybinds
@@ -97,11 +110,25 @@ source <(fzf --zsh)
 if [[ "$CLAUDECODE" != "1" ]]; then
   eval "$(zoxide init --cmd cd zsh)"
 fi
-if command -v fnm &>/dev/null; then
+
+if [[ "$(uname)" == Linux ]] && command -v fnm &>/dev/null; then
   path=(${path:#*fnm_multishells*})
   eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
 fi
-if command -v /opt/homebrew/bin/brew &> /dev/null; then
+
+if [[ "$(uname)" == Darwin ]]; then
+  case ":$PATH:" in
+    *":$HOME/.opencode/bin:"*) ;;
+    *) export PATH="$HOME/.opencode/bin:$PATH" ;;
+  esac
+fi
+
+if [[ "$(uname)" == Linux ]] && command -v /opt/homebrew/bin/brew &>/dev/null; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 # gnippartstoob llehs
+
+# re-init completion after ZLE plugins (fzf, autosuggestions, etc.)
+autoload -Uz compinit && compinit -u
+bindkey '^I' expand-or-complete
+# noitelpmoc lanif
