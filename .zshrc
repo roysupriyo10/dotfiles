@@ -24,16 +24,7 @@ case ":$PATH:" in
   *":$LOCAL_HOME/bin:"*) ;;
   *) export PATH="$LOCAL_HOME/bin:$PATH" ;;
 esac
-
 # stpircs lanosrep
-
-# pnpm
-export PNPM_HOME="$HOME/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME/bin:"*) ;;
-  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
-esac
-# mpnp
 
 # completion — must run before any plugin that calls `compdef` (bun, fzf, etc.)
 # any `fpath+=(...)` additions for new tools go ABOVE this block
@@ -58,6 +49,14 @@ case ":$PATH:" in
   *) export PATH="$GOPATH:$PATH" ;;
 esac
 # og
+
+# pnpm
+export PNPM_HOME="/home/rs10/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# mpnp
 
 # aliases
 alias grep='grep --color=auto'
@@ -98,7 +97,10 @@ source <(fzf --zsh)
 if [[ "$CLAUDECODE" != "1" ]]; then
   eval "$(zoxide init --cmd cd zsh)"
 fi
-eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
+if command -v fnm &>/dev/null; then
+  path=(${path:#*fnm_multishells*})
+  eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
+fi
 if command -v /opt/homebrew/bin/brew &> /dev/null; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi

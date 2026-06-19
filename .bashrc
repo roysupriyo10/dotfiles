@@ -96,5 +96,8 @@ if [[ "$CLAUDECODE" != "1" ]]; then
     eval "$(zoxide init --cmd cd bash)"
 fi
 
-eval "$(fnm env --use-on-cd --shell bash)"
+if command -v fnm &>/dev/null; then
+  PATH="$(printf '%s\n' "${PATH//:/$'\n'}" | grep -v 'fnm_multishells' | paste -sd: -)"
+  eval "$(fnm env --use-on-cd --shell bash)"
+fi
 
