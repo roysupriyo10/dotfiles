@@ -1,0 +1,28 @@
+# Symlinks: LINK <repo-path> <dest-path>
+# Mirrors:  MIRROR <repo-dir> <dest-dir>
+# Hooks:    HOOK <name>
+# Prefix LINUX or DARWIN for platform-only entries.
+# Dest paths: always ${HOME}/... (never ~)
+
+LINK .zshrc ${HOME}/.zshrc
+LINK .bashrc ${HOME}/.bashrc
+
+MIRROR kitty ${HOME}/.config/kitty
+MIRROR lsd ${HOME}/.config/lsd
+MIRROR tmux ${HOME}/.config/tmux
+MIRROR nvim ${HOME}/.config/nvim
+MIRROR .local/bin ${HOME}/.local/bin
+
+LINUX LINK .zprofile ${HOME}/.zprofile
+LINUX MIRROR sway ${HOME}/.config/sway
+LINUX MIRROR mako ${HOME}/.config/mako
+LINUX MIRROR fontconfig ${HOME}/.config/fontconfig
+LINUX MIRROR environment.d ${HOME}/.config/environment.d
+LINUX MIRROR wireplumber ${HOME}/.config/wireplumber
+LINUX MIRROR foot ${HOME}/.config/foot
+LINUX MIRROR imv ${HOME}/.config/imv
+LINUX MIRROR systemd/user ${HOME}/.config/systemd/user
+
+DARWIN MIRROR aerospace ${HOME}/.config/aerospace
+
+HOOK cursor

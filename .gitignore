@@ -1,3 +1,7 @@
 .claude
 
+# accidental unexpanded ~ paths from broken install runs
+/**/~
+/~
+
 sway/config.d/variables.d/04-monitor-positions.conf
