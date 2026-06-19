@@ -263,6 +263,7 @@ case "$OS" in
   Darwin)
     ensure_mirror "$DOTFILES/aerospace" "$HOME/.config/aerospace"
     ensure_dev_toolchain
+    ensure_tmux_manager
     ;;
 esac
 
