@@ -8,13 +8,15 @@ setopt HIST_IGNORE_DUPS
 setopt HIST_REDUCE_BLANKS
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=50000
-SAVEHIST=50000
+SAVEHIST=50000 # snoitpo
+ulimit -n 65536
 # snoitpo
 
 # exports
 export LANG=en_US.UTF-8
 export EDITOR=nvim
 export AWS_PROFILE=supriyo_admin
+export CLAUDE_CODE_NO_FLICKER=1
 # stropxe
 
 # personal scripts
@@ -28,13 +30,17 @@ esac
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # mpnp
 
-# completion — must run before any plugin that calls `compdef` (bun, fzf, etc.)
-# any `fpath+=(...)` additions for new tools go ABOVE this block
+# path/tool bootstrap — before compinit so fpath and PATH are settled
+eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(fnm env --use-on-cd --shell zsh --version-file-strategy=recursive)"
+# potssap toorhs elbats
+
+# completion — first init for plugins that call `compdef` (bun, etc.)
 autoload -Uz compinit && compinit -u
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
@@ -67,14 +73,9 @@ alias gs="git status"
 alias g="git"
 alias ga="git add"
 alias gfo="git fetch origin"
+alias ssh="kitten ssh"
+alias tsc="tsgo"
 # sesaila
-
-# emacs keybinds
-bindkey -e
-autoload -Uz edit-command-line
-zle -N edit-command-line
-bindkey '^X^E' edit-command-line
-# sdnibyek scame
 
 # prompt enhancements
 source "$HOME/dotfiles/zsh-autosuggestions/zsh-autosuggestions.zsh"
@@ -86,11 +87,24 @@ setopt PROMPT_SUBST
 PROMPT='%B[%n %F{blue}%1~%f]${GITSTATUS_PROMPT:+ ${GITSTATUS_PROMPT}} $ %b'
 # stnemecnahne tpmorp
 
-# shell bootstrapping
-source <(fzf --zsh)
+# shell bootstrapping — key bindings only (^R history, ^T files); skip Tab/fuzzy completion
+source <(fzf --zsh | sed '/### completion/,$d')
 if [[ "$CLAUDECODE" != "1" ]]; then
   eval "$(zoxide init --cmd cd zsh)"
 fi
-eval "$(fnm env --use-on-cd --shell zsh)"
-eval "$(/opt/homebrew/bin/brew shellenv)"
 # gnippartstoob llehs
+
+# emacs keybinds
+bindkey -e
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^X^E' edit-command-line
+# sdnibyek scame
+
+# opencode
+export PATH=/Users/rs10figr/.opencode/bin:$PATH
+
+# re-init completion after ZLE plugins (fzf, autosuggestions, etc.)
+autoload -Uz compinit && compinit -u
+bindkey '^I' expand-or-complete
+# noitelpmoc lanif
