@@ -27,6 +27,18 @@ case ":$PATH:" in
 esac
 # mpnp
 
+# rust (rustup)
+if [ -f "${HOME}/.cargo/env" ]; then
+  # shellcheck disable=SC1090
+  . "${HOME}/.cargo/env"
+fi
+# tsur
+
+# tm completions (dynamic — subcommands + config names)
+if command -v tm >/dev/null 2>&1; then
+  source <(COMPLETE=bash tm 2>/dev/null)
+fi
+
 # bun
 export BUN_INSTALL="$HOME/.bun"
 case ":$PATH:" in

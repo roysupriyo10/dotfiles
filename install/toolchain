@@ -1,6 +1,6 @@
 # Toolchain manifest — order matters. Comment out (#) to skip.
 #
-# CUSTOM <name>  — fnm, pnpm, tmux-manager (lib/tools/custom.sh)
+# CUSTOM <name>  — fnm, pnpm, rustup, tmux-manager (lib/tools/custom.sh)
 # PKG <pkg> <cmd> [brew-pkg]
 #   pkg      — yay/pacman package (Linux)
 #   cmd      — binary to check on PATH
@@ -13,4 +13,5 @@ PKG fd fd
 PKG neovim nvim
 PKG jq jq
 PKG go go
+CUSTOM rustup
 CUSTOM tmux-manager

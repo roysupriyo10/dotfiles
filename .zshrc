@@ -34,7 +34,12 @@ case ":$PATH:" in
 esac
 # mpnp
 
+# rust (rustup)
+[ -f "${HOME}/.cargo/env" ] && . "${HOME}/.cargo/env"
+# tsur
+
 # path/tool bootstrap — before compinit on macOS
+fpath=("${HOME}/.local/share/zsh/site-functions" $fpath)
 if [[ "$(uname)" == Darwin ]]; then
   if command -v /opt/homebrew/bin/brew &>/dev/null; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -131,4 +136,9 @@ fi
 # re-init completion after ZLE plugins (fzf, autosuggestions, etc.)
 autoload -Uz compinit && compinit -u
 bindkey '^I' expand-or-complete
+
+# tm completions (dynamic — subcommands + config names)
+if command -v tm >/dev/null 2>&1; then
+  source <(COMPLETE=zsh tm 2>/dev/null)
+fi
 # noitelpmoc lanif

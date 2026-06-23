@@ -1,4 +1,7 @@
-# CUSTOM toolchain handlers: fnm (+ node), pnpm, tmux-manager.
+# CUSTOM toolchain handlers: fnm (+ node), pnpm, rustup, tmux-manager.
+
+RUSTUP_HOME="${RUSTUP_HOME:-$HOME/.rustup}"
+CARGO_HOME="${CARGO_HOME:-$HOME/.cargo}"
 
 fnm_env() {
   if [ "$OS" = Darwin ] && [ -d /opt/homebrew/bin ]; then
@@ -86,43 +89,109 @@ custom_pnpm() {
   curl -fsSL https://get.pnpm.io/install.sh | env PNPM_HOME="$PNPM_HOME" sh -
 }
 
+rustup_env() {
+  if [ -f "$CARGO_HOME/env" ]; then
+    # shellcheck disable=SC1090
+    . "$CARGO_HOME/env"
+  fi
+}
+
+have_rustup() {
+  command -v rustup >/dev/null 2>&1 || [ -x "$CARGO_HOME/bin/rustup" ]
+}
+
+custom_rustup() {
+  if ! have_rustup; then
+    if ! command -v curl >/dev/null 2>&1; then
+      log "curl required to install rustup" >&2
+      return 1
+    fi
+    log "installing rustup..."
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- \
+      -y \
+      --default-toolchain stable \
+      --profile minimal
+  fi
+
+  rustup_env
+
+  if ! command -v cargo >/dev/null 2>&1; then
+    log "cargo not available after rustup install" >&2
+    return 1
+  fi
+
+  rustup default stable >/dev/null 2>&1 || rustup toolchain install stable --profile minimal
+}
+
+install_tm_completions() {
+  tm_bin="${HOME}/.local/bin/tm"
+
+  if [ ! -x "$tm_bin" ]; then
+    return 0
+  fi
+
+  # remove stale static completions (replaced by dynamic COMPLETE=* sourcing in shell rc)
+  rm -f "${HOME}/.local/share/zsh/site-functions/_tm"
+  rm -f "${HOME}/.local/share/bash-completion/completions/tm"
+
+  fish_dir="${HOME}/.config/fish/completions"
+  mkdir -p "$fish_dir"
+  printf 'COMPLETE=fish %s | source\n' "$tm_bin" >"$fish_dir/tm.fish"
+}
+
 custom_tmux_manager() {
   dir="$DOTFILES/tmux-manager"
-  out="$dir/dist/index.js"
+  out="$dir/target/release/tm"
+  install_dst="${HOME}/.local/bin/tm"
 
   if [ ! -d "$dir" ]; then
     return 0
   fi
 
-  fnm_env
-  export PNPM_HOME
-  PATH="$PNPM_HOME/bin:$PATH"
-  export PATH
+  rustup_env
 
-  if ! command -v npm >/dev/null 2>&1; then
-    log "npm not found — skipping tmux-manager build" >&2
-    return 0
+  if ! command -v cargo >/dev/null 2>&1; then
+    log "cargo not found — run install with rustup in toolchain first" >&2
+    return 1
   fi
 
-  if [ -f "$out" ] && [ -d "$dir/node_modules" ]; then
-    if ! find "$dir/src" "$dir/package.json" "$dir/tsconfig.json" \
-        -type f -newer "$out" -print -quit 2>/dev/null | grep -q .; then
+  if [ -x "$out" ]; then
+    if ! find "$dir/src" "$dir/Cargo.toml" -type f -newer "$out" \
+        -print -quit 2>/dev/null | grep -q .; then
+      install_tm_completions
       return 0
     fi
   fi
 
-  log "building tmux-manager..."
+  log "building tm (tmux-manager)..."
   (
     cd "$dir"
-    npm install --prefer-offline --no-audit --no-fund --silent
-    npm run build --silent
+    cargo build --release --quiet
   )
+
+  mkdir -p "$(dirname "$install_dst")"
+  rm -f "$install_dst"
+  install -m755 "$out" "$install_dst"
+  install_tm_completions
+}
+
+migrate_tmux_manager_config() {
+  tm_bin="${HOME}/.local/bin/tm"
+
+  if [ ! -x "$tm_bin" ]; then
+    log "tm not found at $tm_bin — build first (install/run.sh)" >&2
+    return 1
+  fi
+
+  log "migrating tmux-manager config..."
+  "$tm_bin" migrate
 }
 
 run_custom_tool() {
   case "$1" in
     fnm) custom_fnm ;;
     pnpm) custom_pnpm ;;
+    rustup) custom_rustup ;;
     tmux-manager) custom_tmux_manager ;;
     *)
       log "unknown custom tool: $1" >&2
