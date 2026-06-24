@@ -2,6 +2,7 @@
 # Dotfiles bootstrap orchestrator.
 #
 # Phases:
+#   0. git pull origin master --rebase --recurse-submodules=yes
 #   1. submodules (init missing only; never reset deviated checkouts)
 #   2. lndir
 #   3. toolchain (fnm/node, pnpm, rustup, PKG tools, tm)
@@ -29,6 +30,8 @@ MIGRATE_TM=0
 . "$INSTALL_DIR/lib/pkg.sh"
 # shellcheck source=lib/submodules.sh
 . "$INSTALL_DIR/lib/submodules.sh"
+# shellcheck source=lib/sync.sh
+. "$INSTALL_DIR/lib/sync.sh"
 # shellcheck source=lib/deps.sh
 . "$INSTALL_DIR/lib/deps.sh"
 # shellcheck source=lib/lndir.sh
@@ -52,6 +55,7 @@ done
 
 cd "$DOTFILES"
 
+sync_dotfiles
 ensure_submodules
 ensure_lndir
 
