@@ -1,4 +1,5 @@
 # Generic package install: yay (Linux) / homebrew (macOS).
+# Requires brew.sh to be sourced first.
 
 pkg_yay() {
   pkg="$1"
@@ -21,11 +22,11 @@ pkg_yay() {
 
 pkg_brew() {
   pkg="$1"
-  if sudo -Hu homebrew brew list "$pkg" >/dev/null 2>&1; then
+  if brew_run list "$pkg" >/dev/null 2>&1; then
     return 0
   fi
   log "installing $pkg (homebrew)..."
-  sudo -Hu homebrew brew install "$pkg"
+  brew_run install "$pkg"
 }
 
 # pkg_install <linux-pkg> [brew-pkg]

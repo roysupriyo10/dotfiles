@@ -11,28 +11,15 @@ HISTTIMEFORMAT="%F %T "
 export LANG=en_US.UTF-8
 export EDITOR=nvim
 
-# personal scripts
-export SCRIPTS_HOME="$HOME/.local/bin"
-case ":$PATH:" in
-  *":$SCRIPTS_HOME:"*) ;;
-  *) export PATH="$SCRIPTS_HOME:$PATH" ;;
-esac
-# stpircs lanosrep
+DOTFILES="${DOTFILES:-$HOME/dotfiles}"
 
-# pnpm
-export PNPM_HOME="$HOME/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# mpnp
+# shared libs — brew before env
+. "$DOTFILES/install/lib/brew.sh"
+. "$DOTFILES/install/lib/env.sh"
+install_env
 
-# rust (rustup)
-if [ -f "${HOME}/.cargo/env" ]; then
-  # shellcheck disable=SC1090
-  . "${HOME}/.cargo/env"
-fi
-# tsur
+# pnpm/rust/scripts/gopath — install_env
+# mpnp / tsur / stpircs lanosrep
 
 # tm completions (dynamic — subcommands + config names)
 if command -v tm >/dev/null 2>&1; then
@@ -48,12 +35,7 @@ esac
 [ -s "$BUN_INSTALL/_bun_bash" ] && source "$BUN_INSTALL/_bun_bash"
 # nub
 
-# go
-export GOPATH="$HOME/go"
-case ":$PATH:" in
-  *":$GOPATH:"*) ;;
-  *) export PATH="$GOPATH:$PATH" ;;
-esac
+# go — GOPATH/bin handled by install_env
 # og
 
 PROMPT_COMMAND='history -a'
@@ -98,7 +80,8 @@ if [ -f "/usr/share/git/completion/git-completion.bash" ]; then
   source /usr/share/git/completion/git-completion.bash
 fi
 
-source "$HOME/dotfiles/gitstatus/gitstatus.prompt.sh"
+[ -f "$DOTFILES/gitstatus/gitstatus.prompt.sh" ] \
+  && source "$DOTFILES/gitstatus/gitstatus.prompt.sh"
 
 PS1='\[\e[1m\][\u \[\e[34m\]\W\[\e[39m\]]${GITSTATUS_PROMPT:+ ${GITSTATUS_PROMPT}}\[\e[1m\] $ \[\e[0m\]'
 

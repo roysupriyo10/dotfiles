@@ -20,15 +20,18 @@ apply_manifest_kind() {
     shift
     [ "$kind" = "$want_kind" ] || continue
 
+    repo_path=$1
+    manifest_repo_path_ready "$repo_path" || continue
+
     case "$kind" in
       LINK)
-        ensure_symlink "$DOTFILES/$1" "$2"
+        ensure_symlink "$DOTFILES/$repo_path" "$2"
         ;;
       MIRROR)
-        ensure_mirror "$DOTFILES/$1" "$2"
+        ensure_mirror "$DOTFILES/$repo_path" "$2"
         ;;
       HOOK)
-        run_hook "$1"
+        run_hook "$repo_path"
         ;;
     esac
   done < "$manifest"

@@ -1,0 +1,7 @@
+# Submodule requirements for manifest repo paths (one rule per line).
+# Format: <repo-path> <submodule> [<submodule> ...]
+# Install skips the manifest entry when any listed submodule is not ready.
+
+.zshrc gitstatus zsh-autosuggestions zsh-syntax-highlighting
+.bashrc gitstatus
+nvim nvim

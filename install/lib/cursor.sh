@@ -17,8 +17,8 @@ run_hook_cursor() {
   fi
 
   if ! command -v jq >/dev/null 2>&1; then
-    log "jq required for cursor hook — install TOOL jq" >&2
-    return 1
+    log "warning: jq required for cursor hook — skipping" >&2
+    return 0
   fi
 
   if [ -f "$LIVE" ]; then

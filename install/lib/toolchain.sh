@@ -10,10 +10,16 @@ pkg_tool() {
   if command -v "$cmd" >/dev/null 2>&1; then
     return 0
   fi
-  pkg_install "$linux_pkg" "$brew_pkg"
+  if ! pkg_install "$linux_pkg" "$brew_pkg"; then
+    log "warning: failed to install $linux_pkg — skipping" >&2
+    return 0
+  fi
+  install_env
 }
 
 apply_toolchain() {
+  install_env
+
   toolchain="$INSTALL_DIR/toolchain"
   [ -f "$toolchain" ] || return 0
 
@@ -27,15 +33,11 @@ apply_toolchain() {
     shift
 
     case "$kind" in
-      CUSTOM)
-        run_custom_tool "$1"
-        ;;
-      PKG)
-        pkg_tool "$1" "$2" "${3:-}"
-        ;;
-      *)
-        log "unknown toolchain entry: $line" >&2
-        ;;
+      CUSTOM) run_custom_tool "$1" ;;
+      PKG) pkg_tool "$1" "$2" "${3:-}" ;;
+      *) log "warning: unknown toolchain entry: $line — skipping" >&2 ;;
     esac
   done < "$toolchain"
+
+  install_env
 }

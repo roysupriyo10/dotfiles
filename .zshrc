@@ -18,37 +18,22 @@ export AWS_PROFILE=supriyo_admin
 export CLAUDE_CODE_NO_FLICKER=1
 # stropxe
 
-# personal scripts
-export SCRIPTS_HOME="$HOME/.local/bin"
-case ":$PATH:" in
-  *":$SCRIPTS_HOME:"*) ;;
-  *) export PATH="$SCRIPTS_HOME:$PATH" ;;
-esac
-# stpircs lanosrep
+DOTFILES="${DOTFILES:-$HOME/dotfiles}"
 
-# pnpm
-export PNPM_HOME="$HOME/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME/bin:"*) ;;
-  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
-esac
-# mpnp
-
-# rust (rustup)
-[ -f "${HOME}/.cargo/env" ] && . "${HOME}/.cargo/env"
-# tsur
+# shared libs — brew before env (env calls brew_shellenv)
+. "$DOTFILES/install/lib/brew.sh"
+. "$DOTFILES/install/lib/env.sh"
+install_env
+# potssap toorhs elbats
 
 # path/tool bootstrap — before compinit on macOS
 fpath=("${HOME}/.local/share/zsh/site-functions" $fpath)
 if [[ "$(uname)" == Darwin ]]; then
-  if command -v /opt/homebrew/bin/brew &>/dev/null; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-  fi
+  brew() { brew_run "$@"; }
   if command -v fnm &>/dev/null; then
     eval "$(fnm env --use-on-cd --shell zsh --version-file-strategy=recursive)"
   fi
 fi
-# potssap toorhs elbats
 
 # completion — first init for plugins that call `compdef` (bun, etc.)
 autoload -Uz compinit && compinit -u
@@ -65,12 +50,7 @@ esac
 [ -s "$BUN_INSTALL/_bun_zsh" ] && source "$BUN_INSTALL/_bun_zsh"
 # nub
 
-# go
-export GOPATH="$HOME/go"
-case ":$PATH:" in
-  *":$GOPATH/bin:"*) ;;
-  *) export PATH="$GOPATH/bin:$PATH" ;;
-esac
+# go — GOPATH/bin handled by install_env
 # og
 
 # aliases
@@ -84,9 +64,6 @@ alias g="git"
 alias ga="git add"
 alias gfo="git fetch origin"
 alias ssh="kitten ssh"
-if [[ "$(uname)" == Darwin ]]; then
-  brew() { sudo -Hu homebrew command brew "$@"; }
-fi
 # sesaila
 
 # emacs keybinds
@@ -97,11 +74,14 @@ bindkey '^X^E' edit-command-line
 # sdnibyek scame
 
 # prompt enhancements
-source "$HOME/dotfiles/zsh-autosuggestions/zsh-autosuggestions.zsh"
-source "$HOME/dotfiles/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+[[ -f "$DOTFILES/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] \
+  && source "$DOTFILES/zsh-autosuggestions/zsh-autosuggestions.zsh"
+[[ -f "$DOTFILES/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] \
+  && source "$DOTFILES/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[path_prefix]=none
-source "$HOME/dotfiles/gitstatus/gitstatus.prompt.zsh"
+[[ -f "$DOTFILES/gitstatus/gitstatus.prompt.zsh" ]] \
+  && source "$DOTFILES/gitstatus/gitstatus.prompt.zsh"
 setopt PROMPT_SUBST
 PROMPT='%B[%n %F{blue}%1~%f]${GITSTATUS_PROMPT:+ ${GITSTATUS_PROMPT}} $ %b'
 if [[ -n "$SSH_CONNECTION" || -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
