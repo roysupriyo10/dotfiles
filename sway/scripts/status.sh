@@ -3,6 +3,10 @@
 
 set -uo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=ddcutil-lib.sh
+source "$SCRIPT_DIR/ddcutil-lib.sh"
+
 segment() {
   printf '%s: %s' "$1" "$2"
 }
@@ -77,24 +81,13 @@ internal_output_name() {
 }
 
 external_brightness_text() {
-  local output bus brightness parts=''
+  local output brightness parts=''
 
   while IFS= read -r output; do
     [[ -z "$output" ]] && continue
-    bus=$(ddcutil detect --enable-capabilities-cache 2>/dev/null \
-      | grep -B 2 "DRM_connector.*${output}" \
-      | grep 'I2C bus:' \
-      | head -1 \
-      | sed 's/.*\/dev\/i2c-\([0-9]*\).*/\1/')
-    [[ -z "$bus" ]] && continue
-
-    brightness=$(ddcutil --bus "$bus" --enable-capabilities-cache getvcp 10 2>/dev/null \
-      | grep -o 'current value = *[0-9]*' \
-      | grep -o '[0-9]*' \
-      | head -1)
-    [[ -n "$brightness" ]] && parts+="${output}: ${brightness}% "
-  done < <(swaymsg -t get_outputs 2>/dev/null \
-    | jq -r '.[] | select(.name | test("^eDP") | not) | .name')
+    brightness=$(ddc_get_brightness "$output" "$DDC_STATUS_BRIGHTNESS_AGE" 2>/dev/null) || continue
+    parts+="${output}: ${brightness}% "
+  done < <(ddc_external_outputs)
 
   printf '%s' "$parts"
 }
