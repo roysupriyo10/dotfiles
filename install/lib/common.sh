@@ -94,7 +94,7 @@ verify_kitty_ssh_conf() {
     ensure_symlink "$src" "$dst" 2>/dev/null || true
   fi
 
-  if [ -f "$dst" ] && grep -qE '^[[:space:]]*copy_kitten\b' "$dst" 2>/dev/null; then
+  if [ -f "$dst" ] && grep -qE '^[[:space:]]*copy_kitten([[:space:]]|$)' "$dst" 2>/dev/null; then
     log "warning: $dst still has obsolete copy_kitten — git pull dotfiles and re-run install.sh" >&2
   fi
 }
