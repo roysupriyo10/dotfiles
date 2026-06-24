@@ -20,6 +20,9 @@ export CLAUDE_CODE_NO_FLICKER=1
 
 DOTFILES="${DOTFILES:-$HOME/dotfiles}"
 
+# fnm must use zsh output — bash env defines `alias cd=__fnmcd` which breaks tab completion
+INSTALL_FNM_SHELL=zsh
+
 # shared libs — brew before env (env calls brew_shellenv)
 . "$DOTFILES/install/lib/brew.sh"
 . "$DOTFILES/install/lib/env.sh"
@@ -30,12 +33,10 @@ install_env
 fpath=("${HOME}/.local/share/zsh/site-functions" $fpath)
 if [[ "$(uname)" == Darwin ]]; then
   brew() { brew_run "$@"; }
-  if command -v fnm &>/dev/null; then
-    eval "$(fnm env --use-on-cd --shell zsh --version-file-strategy=recursive)"
-  fi
 fi
 
 # completion — first init for plugins that call `compdef` (bun, etc.)
+setopt complete_aliases
 autoload -Uz compinit && compinit -u
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
@@ -88,9 +89,6 @@ fi
 
 # shell bootstrapping
 source <(fzf --zsh)
-if [[ "$CLAUDECODE" != "1" ]]; then
-  eval "$(zoxide init --cmd cd zsh)"
-fi
 
 if [[ "$(uname)" == Linux ]] && command -v fnm &>/dev/null; then
   path=(${path:#*fnm_multishells*})
@@ -113,9 +111,15 @@ fi
 autoload -Uz compinit && compinit -u
 bindkey '^I' expand-or-complete
 
+# zoxide after compinit — fnm uses chpwd hook (no cd alias); re-register compdef after compinit
+if [[ "$CLAUDECODE" != "1" ]]; then
+  eval "$(zoxide init --cmd cd zsh)"
+  compdef __zoxide_z_complete cd
+fi
+
 # tm completions (dynamic — subcommands + config names)
 if command -v tm >/dev/null 2>&1; then
-  source <(COMPLETE=zsh tm 2>/dev/null)
+  source <(COMPLETE=zsh tm)
 fi
 # noitelpmoc lanif
 
