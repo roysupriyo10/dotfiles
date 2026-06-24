@@ -123,6 +123,37 @@ custom_rustup() {
   rustup default stable >/dev/null 2>&1 || rustup toolchain install stable --profile minimal
 }
 
+install_tm_schema() {
+  schema_src="$DOTFILES/tmux-manager/schemas/config.schema.json"
+  taplo_src="$DOTFILES/tmux-manager/schemas/taplo.toml"
+  config_dir="${HOME}/.config/tmux-manager"
+  config="${config_dir}/config.toml"
+  schema_link="${config_dir}/config.schema.json"
+  taplo_link="${config_dir}/taplo.toml"
+
+  if [ ! -f "$schema_src" ]; then
+    return 0
+  fi
+
+  mkdir -p "$config_dir"
+  ln -sf "$schema_src" "$schema_link"
+  if [ -f "$taplo_src" ]; then
+    ln -sf "$taplo_src" "$taplo_link"
+  fi
+
+  # schema is generated from Rust types — refresh when sources change
+  if command -v cargo >/dev/null 2>&1 && [ -d "$DOTFILES/tmux-manager" ]; then
+    (
+      cd "$DOTFILES/tmux-manager"
+      cargo run --quiet --bin gen-schema 2>/dev/null || true
+    )
+  fi
+
+  if [ ! -f "$config" ]; then
+    return 0
+  fi
+}
+
 install_tm_completions() {
   tm_bin="${HOME}/.local/bin/tm"
 
@@ -159,6 +190,7 @@ custom_tmux_manager() {
     if ! find "$dir/src" "$dir/Cargo.toml" -type f -newer "$out" \
         -print -quit 2>/dev/null | grep -q .; then
       install_tm_completions
+      install_tm_schema
       return 0
     fi
   fi
@@ -166,6 +198,7 @@ custom_tmux_manager() {
   log "building tm (tmux-manager)..."
   (
     cd "$dir"
+    cargo run --quiet --bin gen-schema
     cargo build --release --quiet
   )
 
@@ -173,6 +206,7 @@ custom_tmux_manager() {
   rm -f "$install_dst"
   install -m755 "$out" "$install_dst"
   install_tm_completions
+  install_tm_schema
 }
 
 migrate_tmux_manager_config() {
