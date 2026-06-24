@@ -73,6 +73,23 @@ ensure_mirror() {
       _ensure_symlink_abs "$mirror_src/$rel" "$mirror_dst/$rel"
     done
   )
+
+  # Prune dangling symlinks left behind when a repo file is deleted.
+  # Only remove broken links that point back into THIS mirror source, so
+  # user-created files, real dirs, and unrelated symlinks are never touched.
+  (
+    cd "$mirror_dst" 2>/dev/null || exit 0
+    find . -type l ! -path './.git/*' -print | while IFS= read -r rel; do
+      rel="${rel#./}"
+      [ -n "$rel" ] || continue
+      link="$mirror_dst/$rel"
+      [ -e "$link" ] && continue
+      tgt=$(readlink "$link") || continue
+      case "$tgt" in
+        "$mirror_src"/*) rm -f "$link" ;;
+      esac
+    done
+  )
 }
 
 platform_matches() {
@@ -82,6 +99,23 @@ platform_matches() {
     DARWIN) [ "$OS" = Darwin ] ;;
     *) return 1 ;;
   esac
+}
+
+# kitty.conf does `include os.conf`; link it to the right platform file.
+# Relative target so it resolves inside ~/.config/kitty (where macos.conf /
+# linux.conf are themselves lndir symlinks back to the repo).
+link_kitty_os_conf() {
+  conf_dir="$HOME/.config/kitty"
+  [ -d "$conf_dir" ] || return 0
+
+  case "$OS" in
+    Darwin) target="macos.conf" ;;
+    Linux) target="linux.conf" ;;
+    *) return 0 ;;
+  esac
+
+  [ -f "$conf_dir/$target" ] || return 0
+  ln -sf "$target" "$conf_dir/os.conf"
 }
 
 # kitty/ssh.conf must live under ~/.config/kitty/ — not ~/.ssh/.
