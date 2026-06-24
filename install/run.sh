@@ -72,6 +72,7 @@ fi
 
 apply_toolchain
 apply_manifest_sync
+verify_kitty_ssh_conf
 
 if [ "$MIGRATE_TM" = 1 ]; then
   migrate_tmux_manager_config

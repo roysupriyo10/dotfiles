@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Paste image into Cursor agent CLI / Claude Code in kitty.
-# With a staged file: @attach (works over kitten ssh). Without: Ctrl+V (local clipboard).
+# With a staged file: @attach. Without: Ctrl+V (local clipboard — local sessions only).
 set -euo pipefail
 
 . "$(dirname "$0")/clip-common.sh"
@@ -11,14 +11,17 @@ paste_staged_file() {
     printf 'agent-chat-paste: not a file: %s\n' "$img" >&2
     return 1
   }
-  command -v kitten >/dev/null 2>&1 || return 1
   ref=$(clip_attach_ref "$img")
-  printf '%s' "$ref" | kitten @ send-text --stdin
+  clip_inject_text "$ref"
 }
 
 paste_clipboard_via_kitty() {
   command -v kitten >/dev/null 2>&1 || return 1
-  kitten @ send-key ctrl+v
+  if [ -n "${KITTY_WINDOW_ID:-}" ]; then
+    kitten @ send-key --match self ctrl+v
+  else
+    kitten @ send-key --match active-window ctrl+v
+  fi
 }
 
 paste_clipboard_linux() {

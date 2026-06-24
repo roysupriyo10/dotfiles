@@ -1,15 +1,40 @@
 #!/usr/bin/env bash
-# Kitty hotkey: stage local clipboard → file, @attach into agent (local or kitten ssh).
+# Kitty hotkey (runs on LOCAL machine): local clipboard → file → @attach in active tab.
+# Works with cursor agent over kitten ssh — no shell command injection into the agent TUI.
 set -euo pipefail
 
-run_in_active_window() {
-  command -v kitten >/dev/null 2>&1 || return 1
-  kitten @ send-text --match active-window $'p=$(clip-stage) && agent-chat-paste "$p"\n' 2>/dev/null
+. "$(dirname "$0")/clip-common.sh"
+
+main() {
+  local local_out remote_root remote_out ref info is_ssh
+
+  local_out=$(clip_stage_local) || {
+    printf 'cursor-clip-paste: no image on clipboard (or permission denied)\n' >&2
+    exit 1
+  }
+  clip_debug "staged local: $local_out"
+
+  info=$(clip_active_window_info || true)
+  is_ssh=$(printf '%s\n' "$info" | sed -n 's/^ssh=//p')
+
+  if [ "$is_ssh" = 1 ]; then
+    remote_root=$(clip_remote_repo_root)
+    remote_out="$remote_root/.cursor/clip/clip.png"
+    clip_push_to_ssh_target "$local_out" "$remote_out" || {
+      printf 'cursor-clip-paste: failed to copy image to remote (%s)\n' "$remote_out" >&2
+      exit 1
+    }
+    ref=$(clip_attach_ref "$remote_out")
+    clip_debug "remote attach: $ref"
+  else
+    ref=$(clip_attach_ref "$local_out")
+    clip_debug "local attach: $ref"
+  fi
+
+  clip_inject_text "$ref" || {
+    printf 'cursor-clip-paste: kitten @ send-text failed (allow_remote_control?)\n' >&2
+    exit 1
+  }
 }
 
-if run_in_active_window; then
-  exit 0
-fi
-
-p=$(clip-stage)
-agent-chat-paste "$p"
+main

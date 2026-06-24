@@ -83,3 +83,18 @@ platform_matches() {
     *) return 1 ;;
   esac
 }
+
+# kitty/ssh.conf must live under ~/.config/kitty/ — not ~/.ssh/.
+verify_kitty_ssh_conf() {
+  src="$DOTFILES/kitty/ssh.conf"
+  dst="$HOME/.config/kitty/ssh.conf"
+  [ -f "$src" ] || return 0
+
+  if [ ! -L "$dst" ] || [ "$(readlink "$dst")" != "$src" ]; then
+    ensure_symlink "$src" "$dst" 2>/dev/null || true
+  fi
+
+  if [ -f "$dst" ] && grep -q 'copy_kitten' "$dst" 2>/dev/null; then
+    log "warning: $dst still has obsolete copy_kitten — git pull dotfiles and re-run install.sh" >&2
+  fi
+}
