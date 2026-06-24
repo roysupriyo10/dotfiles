@@ -1,33 +1,50 @@
 #!/usr/bin/env bash
-# Paste clipboard image into the active kitty terminal (Cursor agent CLI, Claude Code).
-# GUI apps (Cursor desktop, etc.) — use VNC and paste there directly.
-# Image paste is always Ctrl+V.
+# Paste image into Cursor agent CLI / Claude Code in kitty.
+# With a staged file: @attach (works over kitten ssh). Without: Ctrl+V (local clipboard).
 set -euo pipefail
 
-paste_via_kitty() {
+. "$(dirname "$0")/clip-common.sh"
+
+paste_staged_file() {
+  local img=$1 ref
+  [ -f "$img" ] || {
+    printf 'agent-chat-paste: not a file: %s\n' "$img" >&2
+    return 1
+  }
   command -v kitten >/dev/null 2>&1 || return 1
-  kitten @ send-key ctrl+v 2>/dev/null
+  ref=$(clip_attach_ref "$img")
+  printf '%s' "$ref" | kitten @ send-text --stdin
 }
 
-paste_ctrl_v_linux() {
+paste_clipboard_via_kitty() {
+  command -v kitten >/dev/null 2>&1 || return 1
+  kitten @ send-key ctrl+v
+}
+
+paste_clipboard_linux() {
   command -v ydotool >/dev/null 2>&1 || {
     printf 'agent-chat-paste: ydotool required on Linux (see install/toolchain)\n' >&2
-    exit 1
+    return 1
   }
   ydotool key 29:1 47:1 47:0 29:0
 }
 
-paste_ctrl_v_macos() {
+paste_clipboard_macos() {
   osascript -e 'tell application "System Events" to keystroke "v" using control down'
 }
 
-if paste_via_kitty; then
+if [ -n "${1:-}" ]; then
+  paste_staged_file "$1" && exit 0
+  exit 1
+fi
+
+if paste_clipboard_via_kitty; then
   exit 0
 fi
 
 case "$(uname)" in
-  Linux) paste_ctrl_v_linux ;;
-  Darwin) paste_ctrl_v_macos ;;
+  Linux) paste_clipboard_linux ;;
+  Darwin) paste_clipboard_macos ;;
   *)
     printf 'agent-chat-paste: unsupported OS: %s\n' "$(uname)" >&2
     exit 1

@@ -2,38 +2,14 @@
 # Stage clipboard image under git-root/.cursor/clip/ (works local or over kitten ssh).
 set -euo pipefail
 
-git_root() {
-  local root
-  if root=$(git rev-parse --show-toplevel 2>/dev/null); then
-    (cd "$root" && pwd)
-    return 0
-  fi
-  root="${DOTFILES:-$HOME/dotfiles}"
-  (cd "$root" && pwd)
-}
-
-clip_path_under_root() {
-  local root=$1 name=${2:-clip.png}
-  local out_dir="$root/.cursor/clip" out="$out_dir/$name"
-  mkdir -p "$out_dir"
-  local abs_root abs_out
-  abs_root=$(cd "$root" && pwd)
-  abs_out=$(cd "$(dirname "$out")" && pwd)/$(basename "$out")
-  case "$abs_out" in
-    "$abs_root"/*) printf '%s' "$abs_out" ;;
-    *)
-      printf 'clip-stage: refused path outside repo: %s\n' "$abs_out" >&2
-      exit 1
-      ;;
-  esac
-}
+. "$(dirname "$0")/clip-common.sh"
 
 if ! command -v kitten >/dev/null 2>&1; then
   printf 'clip-stage: kitten not found (use kitty / kitten ssh)\n' >&2
   exit 1
 fi
 
-root=$(git_root)
+root=$(clip_git_root)
 out=$(clip_path_under_root "$root" "${1:-clip.png}")
 kitten clipboard -g "$out"
 printf '%s\n' "$out"
