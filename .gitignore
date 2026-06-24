@@ -1,4 +1,5 @@
 .claude
+.cursor/clip/
 
 # accidental unexpanded ~ paths from broken install runs
 /**/~

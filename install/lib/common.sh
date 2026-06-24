@@ -58,6 +58,7 @@ ensure_mirror() {
   mirror_dst=$(resolve_dest "$2") || return 1
 
   if [ ! -d "$mirror_src" ]; then
+    log "warning: mirror source missing, skipping: $mirror_src" >&2
     return 0
   fi
 

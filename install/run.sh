@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # Dotfiles bootstrap orchestrator.
 #
 # Phases:
@@ -11,17 +11,22 @@
 #
 # Flags:
 #   --migrate-tm   run `tm migrate` after building tm
-set -e
+set -euo pipefail
 
 INSTALL_DIR="$(CDPATH= cd -- "$(dirname "$0")" && pwd)"
 DOTFILES="$(CDPATH= cd -- "$INSTALL_DIR/.." && pwd)"
 OS="$(uname)"
 PNPM_HOME="${PNPM_HOME:-$HOME/.local/share/pnpm}"
 FNM_DIR="${FNM_DIR:-$HOME/.local/share/fnm}"
+INSTALL_FNM_SHELL="${INSTALL_FNM_SHELL:-bash}"
 MIGRATE_TM=0
 
 # shellcheck source=lib/common.sh
 . "$INSTALL_DIR/lib/common.sh"
+# shellcheck source=lib/parse.sh
+. "$INSTALL_DIR/lib/parse.sh"
+# shellcheck source=lib/require.sh
+. "$INSTALL_DIR/lib/require.sh"
 # shellcheck source=lib/env.sh
 . "$INSTALL_DIR/lib/env.sh"
 # shellcheck source=lib/brew.sh
@@ -57,6 +62,7 @@ cd "$DOTFILES"
 
 sync_dotfiles
 ensure_submodules
+install_env
 ensure_lndir
 
 if ! have_lndir; then

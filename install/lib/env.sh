@@ -29,7 +29,7 @@ install_env() {
   export GOPATH
   path_prepend "$GOPATH/bin"
 
-  if [ "$(uname)" = Darwin ]; then
+  if [ "$OS" = Darwin ]; then
     brew_shellenv 2>/dev/null || true
   fi
 
@@ -37,6 +37,6 @@ install_env() {
   export FNM_DIR
   path_prepend "$FNM_DIR"
   if command -v fnm >/dev/null 2>&1; then
-    eval "$(fnm env --use-on-cd --shell bash 2>/dev/null)" || true
+    eval "$(fnm env --use-on-cd --shell "${INSTALL_FNM_SHELL:-bash}" 2>/dev/null)" || true
   fi
 }

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Pull local kitty clipboard → repo-scoped file (alias for clip-stage).
+set -euo pipefail
+exec clip-stage "${1:-clip.png}"

@@ -4,10 +4,7 @@ custom_fnm() {
   if ! have_fnm; then
     case "$OS" in
       Linux)
-        if ! command -v curl >/dev/null 2>&1; then
-          log "warning: curl required to install fnm — skipping" >&2
-          return 0
-        fi
+        require_cmd curl "fnm install" || return 0
         log "installing fnm..."
         if ! curl -fsSL https://fnm.vercel.app/install | bash -s -- \
           --install-dir "$FNM_DIR" \
@@ -29,8 +26,6 @@ custom_fnm() {
     esac
   fi
 
-  install_env
-
   if ! command -v fnm >/dev/null 2>&1; then
     log "warning: fnm not available after install — skipping node setup" >&2
     return 0
@@ -50,7 +45,6 @@ custom_fnm() {
       [ -n "$ver" ] && fnm default "$ver"
     }
   fi
-  install_env
 }
 
 have_fnm() {

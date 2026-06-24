@@ -76,10 +76,6 @@ bindkey '^X^E' edit-command-line
 # prompt enhancements
 [[ -f "$DOTFILES/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] \
   && source "$DOTFILES/zsh-autosuggestions/zsh-autosuggestions.zsh"
-[[ -f "$DOTFILES/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] \
-  && source "$DOTFILES/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-ZSH_HIGHLIGHT_STYLES[path]=none
-ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 [[ -f "$DOTFILES/gitstatus/gitstatus.prompt.zsh" ]] \
   && source "$DOTFILES/gitstatus/gitstatus.prompt.zsh"
 setopt PROMPT_SUBST
@@ -122,3 +118,9 @@ if command -v tm >/dev/null 2>&1; then
   source <(COMPLETE=zsh tm 2>/dev/null)
 fi
 # noitelpmoc lanif
+
+# syntax-highlighting must load last (after fzf, compinit, tm, etc.)
+[[ -f "$DOTFILES/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] \
+  && source "$DOTFILES/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+ZSH_HIGHLIGHT_STYLES[path]=none
+ZSH_HIGHLIGHT_STYLES[path_prefix]=none

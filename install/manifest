@@ -3,6 +3,10 @@
 # Hooks:    HOOK <name>
 # Prefix LINUX or DARWIN for platform-only entries.
 # Dest paths: always ${HOME}/... (never ~)
+#
+# Failure policy:
+#   HARD — abort install: unknown CLI flags, missing lndir
+#   SOFT — skip entry: submodule-deps not ready (logged), missing mirror src dir
 
 LINK .zshrc ${HOME}/.zshrc
 LINK .bashrc ${HOME}/.bashrc

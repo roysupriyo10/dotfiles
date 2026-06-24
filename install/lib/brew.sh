@@ -2,7 +2,7 @@
 # Expects OS when deciding sudo -Hu homebrew vs direct brew.
 
 brew_run() {
-  if [ "$(uname)" != Darwin ]; then
+  if [ "${OS:-$(uname)}" != Darwin ]; then
     command brew "$@"
     return $?
   fi

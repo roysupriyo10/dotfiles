@@ -1,40 +1,39 @@
-apply_manifest_kind() {
-  want_kind="$1"
-  manifest="$INSTALL_DIR/manifest"
-  [ -f "$manifest" ] || return 0
+_manifest_dispatch() {
+  line=$1
+  want_kind=$_manifest_want_kind
+  line=$(expand_manifest_line "$line")
 
-  while IFS= read -r line || [ -n "$line" ]; do
-    line="${line%%#*}"
-    line=$(printf '%s' "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-    [ -z "$line" ] && continue
-    line=$(expand_manifest_line "$line")
-
-    set -- $line
-    if [ "$1" = LINUX ] || [ "$1" = DARWIN ]; then
-      prefix="$1"
-      shift
-      platform_matches "$prefix" || continue
-    fi
-
-    kind="$1"
+  set -- $line
+  if [ "$1" = LINUX ] || [ "$1" = DARWIN ]; then
+    prefix=$1
     shift
-    [ "$kind" = "$want_kind" ] || continue
+    platform_matches "$prefix" || return 0
+  fi
 
-    repo_path=$1
-    manifest_repo_path_ready "$repo_path" || continue
+  kind=$1
+  shift
+  [ "$kind" = "$want_kind" ] || return 0
 
-    case "$kind" in
-      LINK)
-        ensure_symlink "$DOTFILES/$repo_path" "$2"
-        ;;
-      MIRROR)
-        ensure_mirror "$DOTFILES/$repo_path" "$2"
-        ;;
-      HOOK)
-        run_hook "$repo_path"
-        ;;
-    esac
-  done < "$manifest"
+  target=$1
+  manifest_repo_path_ready "$target" || return 0
+
+  case "$kind" in
+    LINK)
+      ensure_symlink "$DOTFILES/$target" "$2"
+      ;;
+    MIRROR)
+      ensure_mirror "$DOTFILES/$target" "$2"
+      ;;
+    HOOK)
+      run_hook "$target"
+      ;;
+  esac
+}
+
+apply_manifest_kind() {
+  _manifest_want_kind=$1
+  manifest="$INSTALL_DIR/manifest"
+  each_config_line "$manifest" _manifest_dispatch
 }
 
 apply_manifest_sync() {

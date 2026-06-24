@@ -61,16 +61,11 @@ exec "$(dirname "$0")/pnpm" dlx "$@"'
 }
 
 custom_pnpm() {
-  install_env
-
   if command -v pnpm >/dev/null 2>&1 && [ -x "$PNPM_HOME/bin/pnpm" ]; then
     return 0
   fi
 
-  if ! command -v curl >/dev/null 2>&1; then
-    log "warning: curl required to install pnpm — skipping" >&2
-    return 0
-  fi
+  require_cmd curl "pnpm install" || return 0
 
   platform=$(_pnpm_detect_platform) || {
     log "warning: unsupported platform for pnpm — skipping" >&2
@@ -92,30 +87,20 @@ custom_pnpm() {
     return 0
   fi
 
-  asset="pnpm-${platform}-${arch}${libc_suffix}"
-  url="https://github.com/pnpm/pnpm/releases/download/v${version}/${asset}.tar.gz"
-  tmp_dir=$(mktemp -d) || return 0
-  # shellcheck disable=SC2064
-  trap "rm -rf '$tmp_dir'" EXIT INT TERM HUP
-
   log "installing pnpm ${version}..."
-  if ! curl -fsSL "$url" >"$tmp_dir/pnpm.tar.gz"; then
-    log "warning: failed to download pnpm — skipping" >&2
+  if ! (
+    tmp_dir=$(mktemp -d)
+    trap 'rm -rf "$tmp_dir"' EXIT INT TERM HUP
+    curl -fsSL "$url" >"$tmp_dir/pnpm.tar.gz" \
+      && tar -xzf "$tmp_dir/pnpm.tar.gz" -C "$tmp_dir" \
+      && [ -x "$tmp_dir/pnpm" ] \
+      && mkdir -p "$PNPM_HOME/bin" \
+      && install -m755 "$tmp_dir/pnpm" "$PNPM_HOME/bin/pnpm"
+  ); then
+    log "warning: failed to install pnpm — skipping" >&2
     return 0
   fi
-  if ! tar -xzf "$tmp_dir/pnpm.tar.gz" -C "$tmp_dir"; then
-    log "warning: failed to extract pnpm — skipping" >&2
-    return 0
-  fi
-  if [ ! -x "$tmp_dir/pnpm" ]; then
-    log "warning: pnpm binary missing in archive — skipping" >&2
-    return 0
-  fi
-
-  mkdir -p "$PNPM_HOME/bin"
-  install -m755 "$tmp_dir/pnpm" "$PNPM_HOME/bin/pnpm"
   _pnpm_install_shims "$PNPM_HOME/bin"
-  install_env
 
   if ! command -v pnpm >/dev/null 2>&1; then
     log "warning: pnpm not on PATH after install — skipping" >&2

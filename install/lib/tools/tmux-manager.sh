@@ -61,8 +61,6 @@ custom_tmux_manager() {
     return 0
   fi
 
-  install_env
-
   if ! command -v cargo >/dev/null 2>&1; then
     log "skipping tmux-manager build — cargo not available" >&2
     return 0

@@ -1,6 +1,10 @@
 # Toolchain manifest — order matters. Comment out (#) to skip.
 #
-# CUSTOM <name>  — fnm, pnpm, rustup, tmux-manager (lib/tools/custom.sh)
+# Failure policy:
+#   HARD — abort install: sync_dotfiles, missing lndir, unknown CLI flags
+#   SOFT — warn and continue: CUSTOM tools, PKG installs, cursor hook without jq
+#
+# CUSTOM <name>  — fnm, pnpm, rustup, tmux-manager (lib/tools/*.sh)
 # PKG <pkg> <cmd> [brew-pkg]
 #   pkg      — yay/pacman package (Linux)
 #   cmd      — binary to check on PATH
@@ -15,3 +19,4 @@ PKG jq jq
 PKG go go
 CUSTOM rustup
 CUSTOM tmux-manager
+LINUX PKG ydotool ydotool

@@ -6,20 +6,25 @@ deps_file() {
 
 manifest_submodules_for() {
   repo_path=$1
+  _deps_repo_path=$repo_path
+  _deps_accum=
   file=$(deps_file)
   [ -f "$file" ] || return 0
 
-  while IFS= read -r line || [ -n "$line" ]; do
-    line="${line%%#*}"
-    line=$(printf '%s' "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-    [ -z "$line" ] && continue
-
+  _deps_collect() {
+    line=$1
     set -- $line
-    [ "$1" = "$repo_path" ] || continue
+    [ "$1" = "$_deps_repo_path" ] || return 0
     shift
-    printf '%s\n' "$@"
-    return 0
-  done < "$file"
+    for sub in "$@"; do
+      _deps_accum="$_deps_accum $sub"
+    done
+  }
+
+  each_config_line "$file" _deps_collect
+  # shellcheck disable=SC2086
+  set -- $_deps_accum
+  printf '%s\n' "$@"
 }
 
 manifest_repo_path_ready() {

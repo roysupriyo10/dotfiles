@@ -9,10 +9,7 @@ have_rustup() {
 
 custom_rustup() {
   if ! have_rustup; then
-    if ! command -v curl >/dev/null 2>&1; then
-      log "warning: curl required to install rustup — skipping" >&2
-      return 0
-    fi
+    require_cmd curl "rustup install" || return 0
     log "installing rustup..."
     if ! curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- \
       -y \
@@ -22,8 +19,6 @@ custom_rustup() {
       return 0
     fi
   fi
-
-  install_env
 
   if ! command -v cargo >/dev/null 2>&1; then
     log "warning: cargo not available after rustup — skipping" >&2

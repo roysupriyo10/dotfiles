@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Kitty: stage clip in active tab (local or SSH), paste Ctrl+V into terminal.
+# For Cursor agent CLI / Claude Code in kitty. GUI apps → VNC.
+set -euo pipefail
+
+stage_in_active_window() {
+  command -v kitten >/dev/null 2>&1 || return 1
+  kitten @ send-text --match active-window --literal $'clip-stage\n' 2>/dev/null
+}
+
+if stage_in_active_window; then
+  sleep 0.25
+else
+  clip-stage
+fi
+
+agent-chat-paste
