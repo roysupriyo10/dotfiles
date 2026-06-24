@@ -1,2 +1,2 @@
 #!/bin/sh
-exec "$(CDPATH= cd -- "$(dirname "$0")" && pwd)/install/run.sh" "$@"
+exec "$(CDPATH= cd -- "$(dirname "$0")" && pwd)/bootstrap.sh" "$@"

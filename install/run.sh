@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
-# Dotfiles bootstrap orchestrator.
+# Dotfiles install orchestrator.
+#
+# Normally invoked via bootstrap.sh (which pulls origin/master first, then
+# execs this with --no-sync so the freshly-pulled code runs). Can also be run
+# directly, in which case it pulls itself (subject to one-run self-update lag).
 #
 # Phases:
-#   0. git pull origin master --rebase --recurse-submodules=yes
+#   0. git pull (skipped with --no-sync; bootstrap.sh already pulled)
 #   1. submodules (init missing only; never reset deviated checkouts)
 #   2. lndir
 #   3. toolchain (fnm/node, pnpm, rustup, PKG tools, tm)
@@ -11,6 +15,7 @@
 #
 # Flags:
 #   --migrate-tm   run `tm migrate` after building tm
+#   --no-sync      skip the git pull (used by bootstrap.sh)
 set -euo pipefail
 
 INSTALL_DIR="$(CDPATH= cd -- "$(dirname "$0")" && pwd)"
@@ -20,6 +25,7 @@ PNPM_HOME="${PNPM_HOME:-$HOME/.local/share/pnpm}"
 FNM_DIR="${FNM_DIR:-$HOME/.local/share/fnm}"
 INSTALL_FNM_SHELL="${INSTALL_FNM_SHELL:-bash}"
 MIGRATE_TM=0
+SYNC=1
 
 # shellcheck source=lib/common.sh
 . "$INSTALL_DIR/lib/common.sh"
@@ -51,6 +57,7 @@ MIGRATE_TM=0
 for arg in "$@"; do
   case "$arg" in
     --migrate-tm) MIGRATE_TM=1 ;;
+    --no-sync) SYNC=0 ;;
     *)
       log "unknown flag: $arg" >&2
       exit 1
@@ -60,7 +67,9 @@ done
 
 cd "$DOTFILES"
 
-sync_dotfiles
+if [ "$SYNC" = 1 ]; then
+  sync_dotfiles
+fi
 ensure_submodules
 install_env
 ensure_lndir
