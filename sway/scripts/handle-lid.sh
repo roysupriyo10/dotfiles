@@ -18,21 +18,19 @@ POLL_INTERVAL="${POLL_INTERVAL:-0.5}"
 
 log() { echo "[handle-lid] $*" >&2; }
 
-ensure_sway() {
-    if [[ -z "${SWAYSOCK:-}" ]]; then
-        SWAYSOCK="${XDG_RUNTIME_DIR:-}/sway-ipc.${WAYLAND_DISPLAY:-wayland-1}.sock"
-        export SWAYSOCK
-    fi
+# shellcheck source=sway-ipc.sh
+source "$SCRIPT_DIR/sway-ipc.sh"
 
+wait_for_sway() {
     local i
     for (( i = 1; i <= 60; i++ )); do
-        if [[ -S "$SWAYSOCK" ]] && swaymsg -t get_version >/dev/null 2>&1; then
+        if ensure_sway; then
             return 0
         fi
         sleep 1
     done
 
-    log "Sway IPC not available at $SWAYSOCK"
+    log "Sway IPC not available"
     return 1
 }
 
@@ -76,7 +74,7 @@ apply_lid_state() {
 }
 
 main() {
-    ensure_sway
+    wait_for_sway
 
     local current last=""
     while true; do
