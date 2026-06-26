@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Remap right Control and right Command to right Option (Aerospace alt-* bindings).
+[ "$(uname)" = Darwin ] || exit 0
+
+exec /usr/bin/hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x7000000E4,"HIDKeyboardModifierMappingDst":0x7000000E6},{"HIDKeyboardModifierMappingSrc":0x7000000E7,"HIDKeyboardModifierMappingDst":0x7000000E6}]}'

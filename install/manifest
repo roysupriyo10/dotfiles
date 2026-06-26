@@ -28,5 +28,6 @@ LINUX MIRROR imv ${HOME}/.config/imv
 LINUX MIRROR systemd/user ${HOME}/.config/systemd/user
 
 DARWIN MIRROR aerospace ${HOME}/.config/aerospace
+DARWIN HOOK darwin-keymap
 
 HOOK cursor
