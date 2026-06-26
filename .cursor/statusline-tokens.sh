@@ -2,7 +2,7 @@
 # Cursor CLI status line — session token usage
 set -euo pipefail
 
-payload=$(cat)
+tmp=$(mktemp); timeout 0.2 cat > "$tmp" || true; payload=$(cat "$tmp"); rm -f "$tmp"; if [[ -z "$payload" ]]; then payload="{}"; fi
 
 fmt_num() {
   local n="${1:-}"
@@ -57,7 +57,7 @@ run_after_model() {
   fi
 }
 
-width=$(echo "$payload" | jq -r '.render_width_chars // 80')
+width=$(echo "$payload" | jq -r '.render_width_chars // empty'); if [[ -z "$width" ]]; then width=$(tput cols < /dev/tty 2>/dev/null || echo 200); fi
 model=$(echo "$payload" | jq -r '.model.display_name // "?"')
 in_tok=$(echo "$payload" | jq -r '.context_window.total_input_tokens // 0')
 out_tok=$(echo "$payload" | jq -r '.context_window.total_output_tokens // empty')

@@ -96,3 +96,7 @@ if command -v fnm &>/dev/null; then
   eval "$(fnm env --use-on-cd --shell bash)"
 fi
 
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/rs10/.local/bin:$PATH"

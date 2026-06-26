@@ -16,3 +16,7 @@ if [[ "$USER" == rs10 \
       && command -v sway >/dev/null; then
   exec sway
 fi
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/rs10/.local/bin:$PATH"

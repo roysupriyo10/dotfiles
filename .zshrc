@@ -128,3 +128,7 @@ fi
   && source "$DOTFILES/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[path_prefix]=none
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/rs10/.local/bin:$PATH"
