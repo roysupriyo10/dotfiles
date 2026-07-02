@@ -31,3 +31,4 @@ DARWIN MIRROR aerospace ${HOME}/.config/aerospace
 DARWIN HOOK darwin-keymap
 
 HOOK cursor
+HOOK claude

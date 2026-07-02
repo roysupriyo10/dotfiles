@@ -11,7 +11,7 @@
 #   2. lndir
 #   3. toolchain (fnm/node, pnpm, rustup, PKG tools, tm)
 #   4. manifest: LINK + MIRROR (skipped when submodule-deps not ready)
-#   5. manifest: HOOK (cursor — needs jq; darwin-keymap — LaunchAgent + hidutil)
+#   5. manifest: HOOK (cursor/claude — need jq; darwin-keymap — LaunchAgent + hidutil)
 #
 # Flags:
 #   --migrate-tm   run `tm migrate` after building tm
@@ -51,6 +51,8 @@ SYNC=1
 . "$INSTALL_DIR/lib/darwin.sh"
 # shellcheck source=lib/cursor.sh
 . "$INSTALL_DIR/lib/cursor.sh"
+# shellcheck source=lib/claude.sh
+. "$INSTALL_DIR/lib/claude.sh"
 # shellcheck source=lib/manifest.sh
 . "$INSTALL_DIR/lib/manifest.sh"
 # shellcheck source=lib/toolchain.sh

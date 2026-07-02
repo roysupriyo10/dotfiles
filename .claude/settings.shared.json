@@ -1,0 +1,8 @@
+{
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline-tokens.sh",
+    "padding": 0,
+    "hideVimModeIndicator": true
+  }
+}
