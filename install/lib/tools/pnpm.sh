@@ -61,7 +61,9 @@ exec "$(dirname "$0")/pnpm" dlx "$@"'
 }
 
 custom_pnpm() {
-  if command -v pnpm >/dev/null 2>&1 && [ -x "$PNPM_HOME/bin/pnpm" ]; then
+  # Execute rather than test -x: a stale shim with a dead target is
+  # executable but broken, and must be reinstalled over.
+  if "$PNPM_HOME/bin/pnpm" --version >/dev/null 2>&1; then
     return 0
   fi
 
@@ -86,24 +88,40 @@ custom_pnpm() {
     log "warning: pnpm v11+ has no Intel macOS binary — skipping" >&2
     return 0
   fi
+  if ! [ "$major" -ge 11 ] 2>/dev/null; then
+    log "warning: pnpm before v11 ships bare binaries, not tarballs — skipping" >&2
+    return 0
+  fi
 
+  url="https://github.com/pnpm/pnpm/releases/download/v${version}/pnpm-${platform}-${arch}${libc_suffix}.tar.gz"
+  # The tarball is not a lone binary: `pnpm` is a launcher that loads
+  # ./dist/ next to it, so the whole tree must be kept together.
+  dest="$PNPM_HOME/standalone/v${version}"
   log "installing pnpm ${version}..."
   if ! (
     tmp_dir=$(mktemp -d)
     trap 'rm -rf "$tmp_dir"' EXIT INT TERM HUP
     curl -fsSL "$url" >"$tmp_dir/pnpm.tar.gz" \
-      && tar -xzf "$tmp_dir/pnpm.tar.gz" -C "$tmp_dir" \
-      && [ -x "$tmp_dir/pnpm" ] \
-      && mkdir -p "$PNPM_HOME/bin" \
-      && install -m755 "$tmp_dir/pnpm" "$PNPM_HOME/bin/pnpm"
+      && mkdir -p "$tmp_dir/unpack" \
+      && tar -xzf "$tmp_dir/pnpm.tar.gz" -C "$tmp_dir/unpack" \
+      && chmod +x "$tmp_dir/unpack/pnpm" \
+      && rm -rf "$dest" \
+      && mkdir -p "$PNPM_HOME/standalone" "$PNPM_HOME/bin" \
+      && mv "$tmp_dir/unpack" "$dest"
   ); then
     log "warning: failed to install pnpm — skipping" >&2
     return 0
   fi
+  _pnpm_write_shim "$PNPM_HOME/bin/pnpm" "#!/bin/sh
+exec \"$dest/pnpm\" \"\$@\""
   _pnpm_install_shims "$PNPM_HOME/bin"
 
+  if ! "$PNPM_HOME/bin/pnpm" --version >/dev/null 2>&1; then
+    log "warning: pnpm installed but failed to run" >&2
+    return 0
+  fi
   if ! command -v pnpm >/dev/null 2>&1; then
-    log "warning: pnpm not on PATH after install — skipping" >&2
+    log "warning: pnpm not on PATH after install" >&2
     return 0
   fi
 }
