@@ -11,23 +11,23 @@
 LINK .zshrc ${HOME}/.zshrc
 LINK .bashrc ${HOME}/.bashrc
 
-MIRROR kitty ${HOME}/.config/kitty
-MIRROR lsd ${HOME}/.config/lsd
-MIRROR tmux ${HOME}/.config/tmux
-MIRROR nvim ${HOME}/.config/nvim
+LINK kitty ${HOME}/.config/kitty
+LINK lsd ${HOME}/.config/lsd
+LINK tmux ${HOME}/.config/tmux
+LINK nvim ${HOME}/.config/nvim
 MIRROR .local/bin ${HOME}/.local/bin
 
 LINUX LINK .zprofile ${HOME}/.zprofile
-LINUX MIRROR sway ${HOME}/.config/sway
-LINUX MIRROR mako ${HOME}/.config/mako
-LINUX MIRROR fontconfig ${HOME}/.config/fontconfig
-LINUX MIRROR environment.d ${HOME}/.config/environment.d
-LINUX MIRROR wireplumber ${HOME}/.config/wireplumber
-LINUX MIRROR foot ${HOME}/.config/foot
-LINUX MIRROR imv ${HOME}/.config/imv
-LINUX MIRROR systemd/user ${HOME}/.config/systemd/user
+LINUX LINK sway ${HOME}/.config/sway
+LINUX LINK mako ${HOME}/.config/mako
+LINUX LINK fontconfig ${HOME}/.config/fontconfig
+LINUX LINK environment.d ${HOME}/.config/environment.d
+LINUX LINK wireplumber ${HOME}/.config/wireplumber
+LINUX LINK foot ${HOME}/.config/foot
+LINUX LINK imv ${HOME}/.config/imv
+LINUX LINK systemd/user ${HOME}/.config/systemd/user
 
-DARWIN MIRROR aerospace ${HOME}/.config/aerospace
+DARWIN LINK aerospace ${HOME}/.config/aerospace
 DARWIN HOOK darwin-keymap
 
 HOOK cursor
