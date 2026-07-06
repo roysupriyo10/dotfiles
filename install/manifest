@@ -11,7 +11,7 @@
 LINK .zshrc ${HOME}/.zshrc
 LINK .bashrc ${HOME}/.bashrc
 
-LINK kitty ${HOME}/.config/kitty
+MIRROR kitty ${HOME}/.config/kitty
 LINK lsd ${HOME}/.config/lsd
 LINK tmux ${HOME}/.config/tmux
 LINK nvim ${HOME}/.config/nvim
