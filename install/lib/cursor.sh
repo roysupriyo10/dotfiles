@@ -38,6 +38,7 @@ run_hook() {
   case "$hook" in
     cursor) run_hook_cursor ;;
     claude) run_hook_claude ;;
+    agy) run_hook_agy ;;
     darwin-keymap) run_hook_darwin_keymap ;;
     *)
       log "unknown hook: $hook" >&2

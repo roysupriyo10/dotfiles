@@ -1,0 +1,8 @@
+{
+  "statusLine": {
+    "type": "command",
+    "command": "~/.gemini/antigravity-cli/statusline-tokens.sh",
+    "padding": 0,
+    "hideVimModeIndicator": true
+  }
+}

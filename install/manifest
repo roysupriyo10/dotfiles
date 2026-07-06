@@ -32,3 +32,4 @@ DARWIN HOOK darwin-keymap
 
 HOOK cursor
 HOOK claude
+HOOK agy

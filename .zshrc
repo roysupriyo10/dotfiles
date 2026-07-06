@@ -51,6 +51,14 @@ esac
 [ -s "$BUN_INSTALL/_bun_zsh" ] && source "$BUN_INSTALL/_bun_zsh"
 # nub
 
+# pnpm
+export PNPM_INSTALL="$HOME/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_INSTALL/bin:"*) ;;
+  *) export PATH="$PNPM_INSTALL/bin:$PATH" ;;
+esac
+# mpnp
+
 # go — GOPATH/bin handled by install_env
 # og
 
