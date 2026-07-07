@@ -1,7 +1,6 @@
 # live Claude Code state stays ignored; only the shared statusline files are tracked
 /.claude/*
 !/.claude/settings.shared.json
-!/.claude/statusline-tokens.sh
 !/.claude/install.sh
 .cursor/clip/
 

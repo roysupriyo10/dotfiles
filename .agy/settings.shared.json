@@ -1,8 +1,8 @@
 {
   "statusLine": {
     "type": "command",
-    "command": "~/.gemini/antigravity-cli/statusline-tokens.sh",
+    "command": "~/.local/bin/agent-statusline agy",
     "padding": 0,
-    "hideVimModeIndicator": true
+    "hideVimModeIndicator": false
   }
 }

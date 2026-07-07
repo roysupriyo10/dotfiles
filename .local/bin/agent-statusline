@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+# Shared status line for agent CLIs — session token usage.
+# Usage: agent-statusline <claude|cursor|agy>
+#
+# All three CLIs pipe the same Claude Code statusline JSON contract on stdin
+# (model.display_name, context_window.*). Mode differences:
+#   claude  vim mode shown by the CLI's built-in indicator, never here
+#   cursor  a custom statusline replaces Cursor's whole default row, so this
+#           script must render the vim mode and "Run Everything" badge itself;
+#           width arrives as render_width_chars in the payload
+#   agy     Antigravity CLI; payload is a clone of Claude Code's
+#
+# Kept fast on purpose: a single jq pass, everything else pure bash (no forks),
+# since the script is re-run on every statusline refresh. Must stay bash-3.2
+# compatible (macOS system bash): no namerefs, no readarray, and no empty-array
+# "${arr[@]}" expansion under set -u.
+set -euo pipefail
+
+mode="${1:-claude}"
+
+if [[ "$mode" == "cursor" ]]; then
+  # Cursor's runner is not confirmed to close stdin after writing the payload;
+  # the pre-consolidation script always guarded the read, so keep that here.
+  tmp=$(mktemp); timeout 0.2 cat > "$tmp" || true; payload=$(cat "$tmp"); rm -f "$tmp"
+else
+  payload=$(cat)
+fi
+[[ -z "$payload" ]] && payload='{}'
+
+# Sets $FMT: 12345 -> 12.3k, 1234567 -> 1.23M (rounded, fixed decimals).
+fmt_num() {
+  local n="${1:-}" t
+  if [[ -z "$n" || "$n" == "null" ]]; then
+    FMT="—"
+  elif (( n >= 1000000 )); then
+    t=$(( (n + 5000) / 10000 ))
+    printf -v FMT '%d.%02dM' $(( t / 100 )) $(( t % 100 ))
+  elif (( n >= 1000 )); then
+    t=$(( (n + 50) / 100 ))
+    printf -v FMT '%d.%dk' $(( t / 10 )) $(( t % 10 ))
+  else
+    FMT="$n"
+  fi
+}
+
+# Sets $TRUNC: $1 cut to at most $2 chars, with a trailing … when cut.
+truncate_plain() {
+  local text="$1" max="$2"
+  if (( ${#text} <= max )); then
+    TRUNC="$text"
+  elif (( max <= 1 )); then
+    TRUNC="…"
+  else
+    TRUNC="${text:0:max-1}…"
+  fi
+}
+
+# One jq pass: line 1 is the scalar fields as TSV, remaining lines are
+# current_usage numeric entries as "key<TAB>value". Nulls become the string
+# "null", never an empty column — read collapses consecutive tabs (tab is IFS
+# whitespace), which would shift every following field left.
+model="?" in_tok=0 out_tok="null" size=0 pct=0 rem="null"
+vim_mode="null" autorun=false pay_width="null" effort="default"
+parts=()
+first=1
+while IFS=$'\t' read -r a b c d e f g h i j; do
+  if (( first )); then
+    first=0
+    model="${a:-?}" in_tok="${b:-0}" out_tok="$c" size="${d:-0}" pct="${e:-0}" rem="$f"
+    vim_mode="$g" autorun="$h" pay_width="$i" effort="${j:-default}"
+  elif [[ -n "$b" ]]; then
+    fmt_num "$b"
+    parts+=("${a//_/ }=$FMT")
+  fi
+done < <(jq -r '
+  ([ (.model.display_name // "?"),
+     (.context_window.total_input_tokens // 0),
+     (.context_window.total_output_tokens // "null"),
+     (.context_window.context_window_size // 0),
+     ((.context_window.used_percentage // 0) | floor),
+     ((.context_window.remaining_percentage | if . != null then floor else null end) // "null"),
+     (.vim.mode // "null"),
+     (.autorun // false),
+     (.render_width_chars // "null"),
+     ( ( (.effort // .model.effort // .reasoning_effort)
+         | if type == "object" then .level else . end )
+       // "default" | tostring )
+   ] | @tsv),
+  ((.context_window.current_usage // {}) | to_entries[]
+   | select(.value | type == "number") | [.key, .value] | @tsv)
+' <<< "$payload")
+
+if [[ "$mode" == "cursor" && "$pay_width" != "null" && -n "$pay_width" ]]; then
+  width="$pay_width"
+elif [[ -n "${COLUMNS:-}" ]]; then
+  width="$COLUMNS"
+else
+  width=$(tput cols < /dev/tty 2>/dev/null || echo 200)
+fi
+
+vim_plain="" vim_col="" run_plain="" run_col=""
+if [[ "$mode" == "cursor" ]]; then
+  if [[ "$vim_mode" != "null" && -n "$vim_mode" && "$vim_mode" != "NORMAL" ]]; then
+    vim_plain="-- $vim_mode -- "
+    vim_col=$'\033[90m'"-- $vim_mode --"$'\033[0m '
+  fi
+  if [[ "$autorun" == "true" ]]; then
+    run_plain=" Run Everything"
+    run_col=$'\033[35m'" Run Everything"$'\033[0m'
+  fi
+fi
+
+fmt_num "$in_tok"; in_fmt="$FMT"
+fmt_num "$out_tok"; out_fmt="$FMT"
+fmt_num "$size"; size_fmt="$FMT"
+
+stats="session in $in_fmt · out $out_fmt · ctx ${pct}% of $size_fmt"
+[[ -n "$rem" && "$rem" != "null" ]] && stats+=" (${rem}% left)"
+
+# Reasoning effort lives inside the model tag: [Opus 4.8 · high]. CLIs that
+# don't report it fall back to "default" (jq default above), so the tag shape
+# stays constant across harnesses.
+[[ -z "$effort" || "$effort" == "null" ]] && effort="default"
+model_tag="$model · $effort"
+
+max_stats=$(( width - (${#vim_plain} + 2 + ${#model_tag} + ${#run_plain} + 1) ))
+(( max_stats < 1 )) && max_stats=1
+truncate_plain "$stats" "$max_stats"
+
+printf '%s\033[36m[%s]\033[0m%s %s\n' "$vim_col" "$model_tag" "$run_col" "$TRUNC"
+
+if (( ${#parts[@]} > 0 )); then
+  last="last call: ${parts[0]}"
+  if (( ${#parts[@]} > 1 )); then
+    for p in "${parts[@]:1}"; do last+=" · $p"; done
+  fi
+  truncate_plain "$last" "$width"
+  printf '\033[90m%s\033[0m\n' "$TRUNC"
+fi

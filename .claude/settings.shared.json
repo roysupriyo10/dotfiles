@@ -1,8 +1,8 @@
 {
   "statusLine": {
     "type": "command",
-    "command": "~/.claude/statusline-tokens.sh",
+    "command": "~/.local/bin/agent-statusline claude",
     "padding": 0,
-    "hideVimModeIndicator": true
+    "hideVimModeIndicator": false
   }
 }

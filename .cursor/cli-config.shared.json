@@ -1,7 +1,7 @@
 {
   "statusLine": {
     "type": "command",
-    "command": "~/.cursor/statusline-tokens.sh",
+    "command": "~/.local/bin/agent-statusline cursor",
     "padding": 0,
     "updateIntervalMs": 300,
     "timeoutMs": 2000

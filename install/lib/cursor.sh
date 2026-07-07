@@ -1,20 +1,15 @@
-# Cursor CLI statusline wiring.
+# Cursor CLI statusline wiring. The statusline script itself is
+# .local/bin/agent-statusline, mirrored to ~/.local/bin by the manifest.
 
 run_hook_cursor() {
   CURSOR_HOME="${CURSOR_HOME:-$HOME/.cursor}"
   SHARED="$DOTFILES/.cursor/cli-config.shared.json"
-  SCRIPT="$DOTFILES/.cursor/statusline-tokens.sh"
   LIVE="$CURSOR_HOME/cli-config.json"
 
   mkdir -p "$CURSOR_HOME"
-  chmod +x "$SCRIPT"
 
-  if [ -L "$CURSOR_HOME/statusline-tokens.sh" ] \
-      && [ "$(readlink "$CURSOR_HOME/statusline-tokens.sh")" = "$SCRIPT" ]; then
-    :
-  else
-    ln -sf "$SCRIPT" "$CURSOR_HOME/statusline-tokens.sh"
-  fi
+  # legacy symlink from before the script was shared across CLIs
+  [ -L "$CURSOR_HOME/statusline-tokens.sh" ] && rm -f "$CURSOR_HOME/statusline-tokens.sh"
 
   if ! command -v jq >/dev/null 2>&1; then
     log "warning: jq required for cursor hook — skipping" >&2
