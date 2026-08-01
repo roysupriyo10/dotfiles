@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+# Run a command with the system held awake for its lifetime.
+#
+#   keep-awake claude
+#   keep-awake --label build -- make -j8
+#
+# Backends:
+#   Linux + Sway  — idle-inhibit.sh (per-window inhibit_idle, refcounted)
+#   macOS         — caffeinate -di (idle + display sleep)
+#   elsewhere     — transparent passthrough
+#
+# On Linux the hold is released when the command exits, however it exits. If
+# this wrapper is SIGKILLed and never gets to release, the hold is reaped on
+# the next idle-inhibit.sh run (the status bar drives one every second).
+#
+# Safe to wrap commands unconditionally: missing backends just run the command.
+
+set -uo pipefail
+
+INHIBIT="${IDLE_INHIBIT_SCRIPT:-$HOME/.config/sway/scripts/idle-inhibit.sh}"
+
+usage() {
+    cat <<'EOF'
+Usage: keep-awake [--label <text>] [--] <command> [args...]
+
+Holds the system awake until <command> exits.
+  Linux/Sway: sway idle inhibitor (idle-inhibit.sh)
+  macOS:      caffeinate -di
+Falls back to running <command> unchanged when no backend is available.
+EOF
+}
+
+run_linux() {
+    local label=$1
+    shift
+    local held=0
+
+    if [[ -x "$INHIBIT" ]]; then
+        # Keep acquire diagnostics on stderr; only silence the success line.
+        if "$INHIBIT" acquire --pid $$ --label "$label" >/dev/null; then
+            held=1
+            # Idempotent, so it is fine for this to run more than once.
+            trap 'rc=$?; "$INHIBIT" release --pid $$ >/dev/null 2>&1; exit $rc' EXIT INT TERM HUP
+        else
+            echo "keep-awake: idle inhibit unavailable; running without hold" >&2
+        fi
+    fi
+
+    "$@"
+    local status=$?
+
+    if (( held )); then
+        "$INHIBIT" release --pid $$ >/dev/null 2>&1
+        trap - EXIT INT TERM HUP
+    fi
+
+    return $status
+}
+
+run_darwin() {
+    shift # label unused — caffeinate has no status surface
+    if command -v caffeinate >/dev/null 2>&1; then
+        # -d display sleep, -i idle sleep. Matches Sway inhibit covering both
+        # swayidle's display-off and suspend timeouts.
+        exec caffeinate -di -- "$@"
+    fi
+    echo "keep-awake: caffeinate not found; running without hold" >&2
+    exec "$@"
+}
+
+main() {
+    local label=""
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --label) label=${2:-}; shift 2 ;;
+            --) shift; break ;;
+            -h|--help) usage; return 0 ;;
+            -*) usage >&2; return 1 ;;
+            *) break ;;
+        esac
+    done
+
+    if [[ $# -eq 0 ]]; then
+        usage >&2
+        return 1
+    fi
+
+    [[ -n "$label" ]] || label=$(basename -- "$1")
+
+    case "$(uname -s)" in
+        Darwin) run_darwin "$label" "$@" ;;
+        Linux)  run_linux "$label" "$@" ;;
+        *)      exec "$@" ;;
+    esac
+}
+
+main "$@"

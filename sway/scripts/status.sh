@@ -102,6 +102,13 @@ light_text() {
   fi
 }
 
+# Names whatever is currently holding the system awake, empty when nothing is.
+# This call also drives the reaper for holders that died without releasing,
+# which is why it runs every tick rather than only when the bar is visible.
+awake_text() {
+  "$SCRIPT_DIR/idle-inhibit.sh" status 2>/dev/null || true
+}
+
 ram_pct() {
   local total available
   total=$(awk '/^MemTotal/ {print $2}' /proc/meminfo)
@@ -147,6 +154,7 @@ external_brightness=$(external_brightness_text)
 bat_text=$(battery_text)
 temp_text=$(cpu_temp)
 ram_text=$(ram_pct)
+awake_label=$(awake_text)
 
 mic_label="${source_name} ($(mute_label "$mic_muted_flag"))"
 out_label="${sink_name} ($(mute_label "$volume_muted"))"
@@ -162,6 +170,7 @@ parts+=("$(segment Vol "$vol_label")")
 [[ -n "$temp_text" ]] && parts+=("$(segment Temp "$temp_text")")
 parts+=("$(segment RAM "${ram_text}%")")
 [[ -n "$bat_text" ]] && parts+=("$(segment BAT "$bat_text")")
+[[ -n "$awake_label" ]] && parts+=("$(segment Awake "$awake_label")")
 parts+=(" ${date_formatted}")
 
 join_segments "${parts[@]}"

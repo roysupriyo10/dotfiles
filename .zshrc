@@ -75,6 +75,17 @@ alias gfo="git fetch origin"
 alias ssh="kitten ssh"
 # sesaila
 
+# agent CLIs run unattended for long stretches, so hold the system awake for
+# the length of a session. keep-awake picks a backend per OS (Sway inhibit on
+# Linux, caffeinate on macOS) and is a passthrough when neither is available.
+if command -v keep-awake >/dev/null 2>&1; then
+  # keep-awake is a separate bash process, so `claude` inside it resolves to
+  # the real binary on PATH rather than recursing into this function.
+  claude() { keep-awake --label claude -- claude "$@" }
+  agent()  { keep-awake --label agent  -- agent  "$@" }
+  agy()    { keep-awake --label agy    -- agy    "$@" }
+fi
+
 # emacs keybinds
 bindkey -e
 autoload -Uz edit-command-line
