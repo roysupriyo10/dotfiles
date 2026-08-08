@@ -5,17 +5,18 @@
 
 # --- shared login init (runs on every login path) ---------------------------
 
-# --- graphical autostart (must stay last) -----------------------------------
-# tty2+ and SSH skip this; only local VT1 for rs10 starts Sway.
-if [[ "$USER" == rs10 \
-      && -z "${WAYLAND_DISPLAY:-}" \
-      && -z "${DISPLAY:-}" \
-      && -z "${SSH_CONNECTION:-}" \
-      && -n "${XDG_VTNR:-}" \
-      && "$XDG_VTNR" -eq 1 ]] \
-      && command -v sway >/dev/null; then
-  exec sway
-fi
+# --- graphical autostart (disabled) -----------------------------------------
+# Was: auto-exec Sway on local VT1 for rs10. Disabled to avoid dead sessions
+# after VT switches. Start manually with: sway
+# if [[ "$USER" == rs10 \
+#       && -z "${WAYLAND_DISPLAY:-}" \
+#       && -z "${DISPLAY:-}" \
+#       && -z "${SSH_CONNECTION:-}" \
+#       && -n "${XDG_VTNR:-}" \
+#       && "$XDG_VTNR" -eq 1 ]] \
+#       && command -v sway >/dev/null; then
+#   exec sway
+# fi
 
 
 # Added by Antigravity CLI installer
