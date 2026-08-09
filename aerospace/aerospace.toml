@@ -12,7 +12,9 @@ exec-on-workspace-change = ['/bin/bash', '-c',
 
 # normalizations
 enable-normalization-flatten-containers = true
-enable-normalization-opposite-orientation-for-nested-containers = true
+# disabled so a nested container can keep the orientation we ask for,
+# e.g. h_tiles inside an h_accordion (otherwise it is flipped to v_tiles)
+enable-normalization-opposite-orientation-for-nested-containers = false
 
 # for when accordion mode is enabled
 accordion-padding = 20
@@ -43,7 +45,7 @@ automatically-unhide-macos-hidden-apps = true
   alt-comma = 'layout accordion horizontal vertical'
   alt-shift-space = 'layout floating tiling'
 
-  cmd-alt-h = []
+  # cmd-alt-h (macOS "hide others") is claimed further down by join-with left
   cmd-h = []
   cmd-shift-c = ['reload-config', 'mode main']
 
@@ -61,6 +63,27 @@ automatically-unhide-macos-hidden-apps = true
   alt-j = 'focus down'
   alt-k = 'focus up'
   alt-l = 'focus right'
+
+  # traverse every window in tree order, regardless of nesting depth
+  alt-tab = 'focus --boundaries-action wrap-around-the-workspace dfs-next'
+  alt-shift-tab = 'focus --boundaries-action wrap-around-the-workspace dfs-prev'
+
+  # nested containers: join with the neighbour and set the new container's
+  # layout in one go (alt = move in tree, cmd-alt = restructure tree).
+  # NOTE: cmd-alt and not alt-shift, because tmux owns M-H / M-L
+  cmd-alt-h = ['join-with left',  'layout h_tiles']
+  cmd-alt-l = ['join-with right', 'layout h_tiles']
+  cmd-alt-k = ['join-with up',    'layout v_tiles']
+  cmd-alt-j = ['join-with down',  'layout v_tiles']
+
+  # same, but the nested group is a tab-stack instead of a split
+  cmd-alt-t = ['join-with right', 'layout h_accordion']
+
+  # dissolve: push the window out of its container (flattening removes the leftover)
+  cmd-alt-u = 'move left'
+
+  # nuke all nesting in the workspace
+  cmd-alt-r = 'flatten-workspace-tree'
 
   # app shortcuts
   cmd-enter = ['exec-and-forget kitty']
