@@ -1,0 +1,52 @@
+[window]
+option_as_alt = "Both"
+blur = false
+
+[font]
+size = 22.0
+
+[font.normal]
+family = "IosevkaTerm Nerd Font Mono"
+style = "Regular"
+
+[font.bold]
+family = "IosevkaTerm Nerd Font Mono"
+style = "Bold"
+
+[font.italic]
+family = "IosevkaTerm Nerd Font Mono"
+style = "Italic"
+
+[font.bold_italic]
+family = "IosevkaTerm Nerd Font Mono"
+style = "Bold Italic"
+
+[[keyboard.bindings]]
+key = "T"
+mods = "Command"
+action = "CreateNewTab"
+
+[[keyboard.bindings]]
+key = "N"
+mods = "Command"
+action = "CreateNewWindow"
+
+[[keyboard.bindings]]
+key = "T"
+mods = "Control|Shift"
+action = "CreateNewTab"
+
+[[keyboard.bindings]]
+key = "N"
+mods = "Control|Shift"
+action = "CreateNewWindow"
+
+[[keyboard.bindings]]
+key = "RBracket"
+mods = "Command|Shift"
+action = "SelectNextTab"
+
+[[keyboard.bindings]]
+key = "LBracket"
+mods = "Command|Shift"
+action = "SelectPreviousTab"

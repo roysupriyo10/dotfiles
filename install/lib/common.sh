@@ -118,6 +118,23 @@ link_kitty_os_conf() {
   ln -sf "$target" "$conf_dir/os.conf"
 }
 
+# alacritty.toml imports os.toml; link it to the right platform file.
+# Relative target so it resolves inside ~/.config/alacritty (where macos.toml /
+# linux.toml are themselves lndir symlinks back to the repo).
+link_alacritty_os_toml() {
+  conf_dir="$HOME/.config/alacritty"
+  [ -d "$conf_dir" ] || return 0
+
+  case "$OS" in
+    Darwin) target="macos.toml" ;;
+    Linux) target="linux.toml" ;;
+    *) return 0 ;;
+  esac
+
+  [ -f "$conf_dir/$target" ] || return 0
+  ln -sf "$target" "$conf_dir/os.toml"
+}
+
 # kitty/ssh.conf must live under ~/.config/kitty/ — not ~/.ssh/.
 verify_kitty_ssh_conf() {
   src="$DOTFILES/kitty/ssh.conf"

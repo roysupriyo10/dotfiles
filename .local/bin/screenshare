@@ -1,0 +1,28 @@
+#!/bin/sh
+# Toggle macOS Screen Sharing. Kept off by default; turn on over SSH when needed.
+# enable/disable write the persistent disabled-services db, so off survives reboot.
+[ "$(uname)" = Darwin ] || exit 0
+
+case "$1" in
+  on)
+    sudo launchctl enable system/com.apple.screensharing
+    sudo launchctl kickstart -k system/com.apple.screensharing
+    echo "screen sharing on"
+    ;;
+  off)
+    sudo launchctl bootout system/com.apple.screensharing 2>/dev/null
+    sudo launchctl disable system/com.apple.screensharing
+    echo "screen sharing off"
+    ;;
+  status)
+    if sudo launchctl print-disabled system | grep -q '"com.apple.screensharing" => disabled'; then
+      echo "screen sharing off"
+    else
+      echo "screen sharing on"
+    fi
+    ;;
+  *)
+    echo "usage: screenshare on|off|status" >&2
+    exit 1
+    ;;
+esac

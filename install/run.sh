@@ -89,6 +89,7 @@ apply_toolchain
 apply_manifest_sync
 verify_kitty_ssh_conf
 link_kitty_os_conf
+link_alacritty_os_toml
 
 if [ "$MIGRATE_TM" = 1 ]; then
   migrate_tmux_manager_config
