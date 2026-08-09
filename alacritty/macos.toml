@@ -3,7 +3,7 @@ option_as_alt = "Both"
 blur = false
 
 [font]
-size = 22.0
+size = 21.5
 
 [font.normal]
 family = "IosevkaTerm Nerd Font Mono"
