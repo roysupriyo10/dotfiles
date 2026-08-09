@@ -24,7 +24,7 @@ style = "Bold Italic"
 [[keyboard.bindings]]
 key = "T"
 mods = "Command"
-action = "CreateNewTab"
+action = "CreateNewWindow"
 
 [[keyboard.bindings]]
 key = "N"
@@ -34,7 +34,7 @@ action = "CreateNewWindow"
 [[keyboard.bindings]]
 key = "T"
 mods = "Control|Shift"
-action = "CreateNewTab"
+action = "CreateNewWindow"
 
 [[keyboard.bindings]]
 key = "N"

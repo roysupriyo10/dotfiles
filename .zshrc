@@ -72,7 +72,6 @@ alias gs="git status"
 alias g="git"
 alias ga="git add"
 alias gfo="git fetch origin"
-alias ssh="kitten ssh"
 # sesaila
 
 # agent CLIs run unattended for long stretches, so hold the system awake for
