@@ -82,6 +82,21 @@ alias ga="git add"
 alias gfo="git fetch origin"
 # sesaila
 
+# push local $TERM (+ foot-direct) terminfo, then ssh (foot / any non-kitten term)
+assh() {
+  {
+    infocmp -x "$TERM" 2>/dev/null
+    [[ "$TERM" != foot-direct ]] && infocmp -x foot-direct 2>/dev/null
+  } | ssh "$@" "mkdir -p ~/.terminfo && tic -x -o ~/.terminfo /dev/stdin" 2>/dev/null
+  ssh "$@"
+}
+alias fssh=assh
+
+# kitty: kitten ssh (handles terminfo + remote kitten)
+kssh() {
+  kitty +kitten ssh "$@"
+}
+
 if command -v keep-awake >/dev/null 2>&1; then
   claude() { keep-awake --label claude -- claude "$@" }
   agent()  { keep-awake --label agent  -- agent  "$@" }
