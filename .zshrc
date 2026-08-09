@@ -51,8 +51,16 @@ esac
 [ -s "$BUN_INSTALL/_bun_zsh" ] && source "$BUN_INSTALL/_bun_zsh"
 # nub
 
+# local/bin
+export LOCAL_HOME="$HOME/.local"
+case ":$PATH:" in
+  *":$LOCAL_HOME/bin:"*) ;;
+  *) export PATH="$LOCAL_HOME/bin:$PATH" ;;
+esac
+# nib/lacol
+
 # pnpm
-export PNPM_INSTALL="$HOME/.local/share/pnpm"
+export PNPM_INSTALL="$LOCAL_HOME/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_INSTALL/bin:"*) ;;
   *) export PATH="$PNPM_INSTALL/bin:$PATH" ;;
@@ -74,12 +82,7 @@ alias ga="git add"
 alias gfo="git fetch origin"
 # sesaila
 
-# agent CLIs run unattended for long stretches, so hold the system awake for
-# the length of a session. keep-awake picks a backend per OS (Sway inhibit on
-# Linux, caffeinate on macOS) and is a passthrough when neither is available.
 if command -v keep-awake >/dev/null 2>&1; then
-  # keep-awake is a separate bash process, so `claude` inside it resolves to
-  # the real binary on PATH rather than recursing into this function.
   claude() { keep-awake --label claude -- claude "$@" }
   agent()  { keep-awake --label agent  -- agent  "$@" }
   agy()    { keep-awake --label agy    -- agy    "$@" }
@@ -146,7 +149,3 @@ fi
   && source "$DOTFILES/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[path_prefix]=none
-
-
-# Added by Antigravity CLI installer
-export PATH="/home/rs10/.local/bin:$PATH"
