@@ -37,6 +37,6 @@ install_env() {
   export FNM_DIR
   path_prepend "$FNM_DIR"
   if command -v fnm >/dev/null 2>&1; then
-    eval "$(fnm env --use-on-cd --shell "${INSTALL_FNM_SHELL:-bash}" 2>/dev/null)" || true
+    eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell "${INSTALL_FNM_SHELL:-bash}" 2>/dev/null)" || true
   fi
 }

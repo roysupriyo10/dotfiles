@@ -111,7 +111,7 @@ fi
 # shell bootstrapping
 source <(fzf --zsh)
 
-if [[ "$(uname)" == Linux ]] && command -v fnm &>/dev/null; then
+if command -v fnm &>/dev/null; then
   path=(${path:#*fnm_multishells*})
   eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
 fi
