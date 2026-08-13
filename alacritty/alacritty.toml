@@ -5,6 +5,12 @@ import = ["~/.config/alacritty/os.toml"]
 opacity = 0.85
 decorations = "none"
 
+# OSC 52 clipboard over SSH. Alacritty defaults to "OnlyCopy" (writes allowed,
+# reads blocked); kitty (clipboard_control) and foot ([security] osc52) both allow
+# reads, so this keeps nvim's OSC 52 paste working identically across all three.
+[terminal]
+osc52 = "CopyPaste"
+
 [scrolling]
 history = 100000
 
