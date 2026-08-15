@@ -1,0 +1,99 @@
+icons_format = "{icon}"
+
+[theme]
+theme = "plain"
+[theme.overrides]
+idle_bg = "#00000000"
+idle_fg = "#cccccc"
+info_bg = "#00000000"
+info_fg = "#cccccc"
+good_bg = "#00000000"
+good_fg = "#cccccc"
+warning_bg = "#00000000"
+warning_fg = "#cccccc"
+critical_bg = "#00000000"
+critical_fg = "#cccccc"
+alternating_tint_bg = "#00000000"
+alternating_tint_fg = "#00000000"
+separator_bg = "#00000000"
+separator_fg = "#cccccc"
+separator = "|"
+start_separator = ""
+end_separator = ""
+
+[icons]
+icons = "none"
+[icons.overrides]
+volume = ["Unmuted", "Unmuted", "Unmuted"]
+volume_muted = "Muted"
+microphone = ["Unmuted", "Unmuted", "Unmuted"]
+microphone_muted = "Muted"
+
+[[block]]
+block = "net"
+format = " Network: $ssid "
+inactive_format = " Network: "
+missing_format = " Network: "
+interval = 10
+
+[[block]]
+block = "custom"
+command = "~/.config/sway/scripts/status-light.sh"
+shell = "bash"
+interval = 15
+format = " Light: $text "
+
+[[block]]
+block = "sound"
+driver = "pipewire"
+device_kind = "source"
+format = " Mic: $output_name.str(max_w:12) ($icon) "
+[block.mappings]
+"^rnnoise_source$" = "NoiseCancel"
+".*HiFi__Mic.*" = "Laptop"
+"^bluez_input.*" = "Bluetooth"
+
+[[block]]
+block = "sound"
+driver = "pipewire"
+device_kind = "sink"
+format = " Out: $output_name.str(max_w:12) ($icon) "
+[block.mappings]
+".*HiFi__Speaker__sink" = "Laptop"
+".*[Hh]eadphone.*" = "Headphones"
+".*hdmi.*" = "HDMI"
+"^bluez_output.*" = "Bluetooth"
+
+[[block]]
+block = "sound"
+driver = "pipewire"
+device_kind = "sink"
+show_volume_when_muted = true
+format = " Vol: $volume.eng(w:1) "
+
+[[block]]
+block = "memory"
+format = " RAM: $mem_used_percents.eng(w:1) "
+interval = 10
+
+[[block]]
+block = "battery"
+driver = "upower"
+format = " BAT: $percentage.eng(w:1) "
+charging_format = " BAT: $percentage.eng(w:1)+ "
+full_format = " BAT: $percentage.eng(w:1) "
+empty_format = " BAT: $percentage.eng(w:1) "
+not_charging_format = " BAT: $percentage.eng(w:1) "
+
+[[block]]
+block = "custom"
+command = "~/.config/sway/scripts/idle-inhibit.sh status"
+shell = "bash"
+interval = 1
+hide_when_empty = true
+format = " Awake: $text "
+
+[[block]]
+block = "time"
+interval = 1
+format = "  $timestamp.datetime(f:'%Y-%m-%d %A %I:%M:%S %p')"

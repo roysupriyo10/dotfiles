@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+# Launch Claude Code against Xiaomi MiMo. Vars apply only to this process.
+set -euo pipefail
+
+envfile="${0:A:h}/mimo-claude.env"
+[[ -r $envfile ]] || {
+  print -u2 "mimo-claude: missing $envfile"
+  exit 1
+}
+source $envfile
+
+[[ -n ${BASE_URL:-} && -n ${MIMO_API_KEY:-} ]] || {
+  print -u2 "mimo-claude: set BASE_URL and MIMO_API_KEY in $envfile"
+  exit 1
+}
+
+exec env \
+  ANTHROPIC_BASE_URL="$BASE_URL" \
+  ANTHROPIC_AUTH_TOKEN="$MIMO_API_KEY" \
+  ANTHROPIC_DEFAULT_SONNET_MODEL=mimo-v2.5-pro \
+  ANTHROPIC_DEFAULT_OPUS_MODEL=mimo-v2.5-pro \
+  ANTHROPIC_DEFAULT_HAIKU_MODEL=mimo-v2.5-pro \
+  claude "$@"

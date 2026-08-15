@@ -8,6 +8,8 @@
 /**/~
 /~
 
+.local/bin/mimo-claude.env
+
 sway/config.d/variables.d/04-monitor-positions.conf
 
 .DS_Store

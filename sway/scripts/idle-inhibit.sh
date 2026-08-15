@@ -16,7 +16,8 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR=${BASH_SOURCE[0]%/*}
+[[ "$SCRIPT_DIR" == "${BASH_SOURCE[0]}" ]] && SCRIPT_DIR=.
 # shellcheck source=sway-ipc.sh
 source "$SCRIPT_DIR/sway-ipc.sh"
 
@@ -57,10 +58,15 @@ lock() {
 # token 20 of what remains.
 proc_starttime() {
     local pid=$1 rest
+    local -a fields
     [[ -r "/proc/$pid/stat" ]] || return 1
     rest=$(</proc/"$pid"/stat)
     rest=${rest#*') '}
-    awk '{print $20}' <<<"$rest"
+    # Word-split in the shell rather than forking awk: this runs for every
+    # holder on every status call, which the bar makes once a second.
+    # shellcheck disable=SC2206
+    fields=($rest)
+    printf '%s' "${fields[19]}"
 }
 
 proc_comm() {
@@ -93,14 +99,16 @@ holder_live() {
     [[ "$pid" == "manual" ]] && return 0
     [[ -d "/proc/$pid" ]] || return 1
 
-    recorded=$(cut -d' ' -f1 < "$file" 2>/dev/null) || return 1
+    read -r recorded _ < "$file" 2>/dev/null || true
     [[ -n "$recorded" ]] || return 1
     now=$(proc_starttime "$pid") || return 1
     [[ "$recorded" == "$now" ]]
 }
 
 holder_label() {
-    cut -d' ' -f2- < "$1" 2>/dev/null
+    local _starttime label=''
+    read -r _starttime label < "$1" 2>/dev/null || true
+    printf '%s' "$label"
 }
 
 has_manual_holder() {
@@ -385,7 +393,19 @@ cmd_status() {
 
     (( ${#labels[@]} )) || return 0
 
-    printf '%s' "$(printf '%s\n' "${labels[@]}" | sort -u | paste -sd, -)"
+    # Dedupe in the shell instead of piping through sort/paste. Holder files are
+    # globbed in name order, so repeated labels are already adjacent-ish and the
+    # output stays stable between calls.
+    local -A seen=()
+    local out='' item
+    for item in "${labels[@]}"; do
+        [[ -n "${seen[$item]:-}" ]] && continue
+        seen[$item]=1
+        [[ -n "$out" ]] && out+=','
+        out+="$item"
+    done
+
+    printf '%s' "$out"
 }
 
 cmd_list() {
