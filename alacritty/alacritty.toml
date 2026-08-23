@@ -1,8 +1,12 @@
+# os.toml    per-platform symlink (-> macos.toml / linux.toml), created by install.
+# theme.toml per-appearance symlink (-> themes/dark.toml / themes/light.toml),
+#            seeded by install and repointed live by appearance-sync.
+# Alacritty watches imports, so repointing either symlink applies instantly.
 [general]
-import = ["~/.config/alacritty/os.toml"]
+import = ["~/.config/alacritty/os.toml", "~/.config/alacritty/theme.toml"]
 
+# opacity is per-theme (themes/*.toml).
 [window]
-opacity = 0.85
 decorations = "none"
 
 # OSC 52 clipboard over SSH. Alacritty defaults to "OnlyCopy" (writes allowed,
@@ -20,7 +24,3 @@ unfocused_hollow = true
 [cursor.style]
 shape = "Block"
 blinking = "Never"
-
-[colors.primary]
-background = "#000000"
-foreground = "#dddddd"

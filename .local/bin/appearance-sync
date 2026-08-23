@@ -1,0 +1,122 @@
+#!/bin/sh
+# Propagate the system appearance to apps that cannot follow it natively.
+#
+#   appearance-sync          sync once (safe to run any time; idempotent)
+#   appearance-sync dark     sync to an explicit mode instead of querying
+#
+# Source of truth is `appearance`. Each follower below is a small function
+# that makes one app match a mode; add a function + a line in sync_all to
+# teach a new app. Followers must be idempotent and must not fail the run
+# for apps that aren't installed.
+#
+# Triggered by: the com.local.appearance-sync LaunchAgent (macOS, on every
+# appearance change via appearance-watch), `dark` / `light` (Linux), and
+# install.sh.
+set -u
+
+mode=${1:-$(appearance)}
+case "$mode" in
+  dark|light) ;;
+  *) echo "appearance-sync: unknown mode '$mode' (dark|light)" >&2; exit 2 ;;
+esac
+
+# Point $2 at $1 (relative). Returns 0 if the link was (re)pointed, 1 if it
+# already matched — so callers can skip reload work when nothing changed.
+relink() {
+  target=$1 link=$2
+  [ "$(readlink "$link" 2>/dev/null)" = "$target" ] && return 1
+  ln -sf "$target" "$link"
+}
+
+# Alacritty: alacritty.toml imports theme.toml. Alacritty watches the
+# *canonical* paths of its config files, so repointing the symlink alone is
+# invisible to it; touching the root config fires the watcher, and the reload
+# re-resolves the whole import chain.
+follow_alacritty() {
+  dir="$HOME/.config/alacritty"
+  [ -f "$dir/themes/$mode.toml" ] || return 0
+  relink "themes/$mode.toml" "$dir/theme.toml" || return 0
+  touch "$dir/alacritty.toml"
+}
+
+# kitty: kitty.conf includes theme.conf; running instances reload on SIGUSR1.
+follow_kitty() {
+  dir="$HOME/.config/kitty"
+  [ -f "$dir/themes/$mode.conf" ] || return 0
+  relink "themes/$mode.conf" "$dir/theme.conf" || return 0
+  pkill -USR1 -x kitty 2>/dev/null || true
+}
+
+# tmux: tmux.conf sources theme.conf (rose-pine variant). Re-source so the
+# plugin re-applies; only if a server is running.
+follow_tmux() {
+  dir="$HOME/.config/tmux"
+  [ -f "$dir/themes/$mode.conf" ] || return 0
+  relink "themes/$mode.conf" "$dir/theme.conf" || return 0
+  tmux source-file "$dir/tmux.conf" >/dev/null 2>&1 || true
+}
+
+# Neovim: re-queries the terminal background on SIGUSR1 (core.autocmd.
+# background_sync), so 'background'-driven schemes follow. Must run after the
+# terminal followers so the terminal already answers with the new colour.
+follow_nvim() {
+  pkill -USR1 -x nvim 2>/dev/null || true
+}
+
+# Desktop wallpaper (macOS), opt-in per account: points to
+# ~/.config/appearance/wallpaper-<mode> (a symlink to, or file containing, an
+# image path). Nothing in the repo creates these, so accounts that don't want
+# their wallpaper managed (e.g. work) simply never set them up:
+#   mkdir -p ~/.config/appearance
+#   ln -s ~/dotfiles/Wallpapers/appearance-dark.png  ~/.config/appearance/wallpaper-dark
+#   ln -s ~/dotfiles/Wallpapers/appearance-light.png ~/.config/appearance/wallpaper-light
+follow_wallpaper() {
+  [ "$(uname)" = Darwin ] || return 0
+  ref="${XDG_CONFIG_HOME:-$HOME/.config}/appearance/wallpaper-$mode"
+  [ -e "$ref" ] || return 0
+  if [ -L "$ref" ]; then
+    img=$(readlink "$ref")
+    case "$img" in /*) ;; *) img="$(dirname "$ref")/$img" ;; esac
+  else
+    img=$(head -n1 "$ref")
+  fi
+  [ -f "$img" ] || return 0
+  current=$(osascript -e 'tell application "System Events" to get picture of first desktop' 2>/dev/null)
+  [ "$current" = "$img" ] && return 0
+  osascript -e "tell application \"System Events\" to set picture of every desktop to POSIX file \"$img\"" >/dev/null 2>&1 || true
+}
+
+# Claude Code: `theme` in settings.json. Prefers the dotfiles custom theme
+# for the mode (custom:<family>-<mode>, installed to ~/.claude/themes by the
+# claude install hook); otherwise swaps only the dark/light base of the current
+# value, preserving any -daltonized/-ansi suffix.
+follow_claude() {
+  settings="$HOME/.claude/settings.json"
+  [ -f "$settings" ] || return 0
+  command -v jq >/dev/null 2>&1 || return 0
+  current=$(jq -r '.theme // "dark"' "$settings")
+  if [ -f "$HOME/.claude/themes/gruvbox-$mode.json" ]; then
+    want="custom:gruvbox-$mode"
+  else
+    suffix=${current#dark}; suffix=${suffix#light}
+    want="$mode$suffix"
+  fi
+  [ "$current" = "$want" ] && return 0
+  tmp=$(mktemp) || return 0
+  if jq --arg t "$want" '.theme = $t' "$settings" > "$tmp"; then
+    mv "$tmp" "$settings"
+  else
+    rm -f "$tmp"
+  fi
+}
+
+sync_all() {
+  follow_alacritty
+  follow_kitty
+  follow_tmux
+  follow_nvim
+  follow_claude
+  follow_wallpaper
+}
+
+sync_all

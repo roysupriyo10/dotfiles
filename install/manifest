@@ -30,6 +30,7 @@ LINUX LINK systemd/user ${HOME}/.config/systemd/user
 
 DARWIN LINK aerospace ${HOME}/.config/aerospace
 DARWIN HOOK darwin-keymap
+DARWIN HOOK darwin-appearance
 
 HOOK cursor
 HOOK claude

@@ -2,6 +2,7 @@
 /.claude/*
 !/.claude/settings.shared.json
 !/.claude/install.sh
+!/.claude/themes/
 .cursor/clip/
 
 # accidental unexpanded ~ paths from broken install runs
@@ -13,3 +14,6 @@
 sway/config.d/variables.d/04-monitor-positions.conf
 
 .DS_Store
+
+# per-appearance symlink managed by appearance-sync (tmux dir is LINKed, not mirrored)
+/tmux/theme.conf

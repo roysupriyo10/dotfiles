@@ -35,6 +35,7 @@ run_hook() {
     claude) run_hook_claude ;;
     agy) run_hook_agy ;;
     darwin-keymap) run_hook_darwin_keymap ;;
+    darwin-appearance) run_hook_darwin_appearance ;;
     *)
       log "unknown hook: $hook" >&2
       return 1

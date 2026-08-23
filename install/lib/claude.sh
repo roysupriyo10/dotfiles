@@ -1,5 +1,8 @@
-# Claude Code statusline wiring. The statusline script itself is
+# Claude Code statusline + theme wiring. The statusline script itself is
 # .local/bin/agent-statusline, mirrored to ~/.local/bin by the manifest.
+# Custom themes (.claude/themes/*.json) are copied (not linked — Claude Code
+# rejects symlinked theme files) into ~/.claude/themes and selected per system
+# appearance by appearance-sync (custom:<slug>).
 
 run_hook_claude() {
   CLAUDE_HOME="${CLAUDE_HOME:-$HOME/.claude}"
@@ -7,6 +10,14 @@ run_hook_claude() {
   LIVE="$CLAUDE_HOME/settings.json"
 
   mkdir -p "$CLAUDE_HOME"
+
+  mkdir -p "$CLAUDE_HOME/themes"
+  for theme in "$DOTFILES"/.claude/themes/*.json; do
+    [ -f "$theme" ] || continue
+    dst="$CLAUDE_HOME/themes/$(basename "$theme")"
+    [ -L "$dst" ] && rm -f "$dst"
+    cmp -s "$theme" "$dst" 2>/dev/null || cp "$theme" "$dst"
+  done
 
   # legacy symlink from before the script was shared across CLIs
   [ -L "$CLAUDE_HOME/statusline-tokens.sh" ] && rm -f "$CLAUDE_HOME/statusline-tokens.sh"

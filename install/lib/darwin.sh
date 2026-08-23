@@ -53,3 +53,38 @@ run_hook_darwin_keymap() {
     log "warning: hidutil-keymap failed — grant Input Monitoring to hidutil in System Settings if keys do not remap at login" >&2
   fi
 }
+
+# Follow system appearance: compile darwin/src/appearance-watch.swift into
+# ~/.local/bin and run it as a LaunchAgent that invokes appearance-sync on
+# every Dark/Light change. Needs swiftc (Xcode Command Line Tools).
+run_hook_darwin_appearance() {
+  [ "$OS" = Darwin ] || return 0
+
+  src="$DOTFILES/darwin/src/appearance-watch.swift"
+  bin="$HOME/.local/bin/appearance-watch"
+  sync_live="$HOME/.local/bin/appearance-sync"
+  plist_src="$DOTFILES/darwin/launchagents/com.local.appearance-sync.plist"
+
+  [ -f "$src" ] && [ -f "$plist_src" ] || {
+    log "warning: appearance-watch source or LaunchAgent missing, skipping" >&2
+    return 0
+  }
+  [ -x "$sync_live" ] || {
+    log "warning: $sync_live not present — run install manifest sync first" >&2
+    return 0
+  }
+  command -v swiftc >/dev/null 2>&1 || {
+    log "warning: swiftc not found (xcode-select --install) — appearance-watch not built" >&2
+    return 0
+  }
+
+  # Rebuild only when the source is newer than the binary.
+  if [ ! -x "$bin" ] || [ "$src" -nt "$bin" ]; then
+    if ! swiftc -O -o "$bin" "$src" 2>/dev/null; then
+      log "warning: failed to compile appearance-watch" >&2
+      return 0
+    fi
+  fi
+
+  _darwin_install_launchagent com.local.appearance-sync "$plist_src"
+}

@@ -135,6 +135,24 @@ link_alacritty_os_toml() {
   ln -sf "$target" "$conf_dir/os.toml"
 }
 
+# alacritty.toml / kitty.conf / tmux.conf also import theme.{toml,conf}; appearance-sync
+# owns those symlinks at runtime, but seed them here so a fresh install never
+# has a dangling import (and Linux hosts without a watcher still get the right
+# palette at install time).
+seed_appearance_themes() {
+  sync="$HOME/.local/bin/appearance-sync"
+  if [ -x "$sync" ]; then
+    PATH="$HOME/.local/bin:$PATH" "$sync" || true
+    return 0
+  fi
+  for pair in "alacritty:toml" "kitty:conf" "tmux:conf"; do
+    app=${pair%%:*} ext=${pair##*:}
+    conf_dir="$HOME/.config/$app"
+    [ -d "$conf_dir/themes" ] || continue
+    [ -e "$conf_dir/theme.$ext" ] || ln -sf "themes/dark.$ext" "$conf_dir/theme.$ext"
+  done
+}
+
 # kitty/ssh.conf must live under ~/.config/kitty/ — not ~/.ssh/.
 verify_kitty_ssh_conf() {
   src="$DOTFILES/kitty/ssh.conf"

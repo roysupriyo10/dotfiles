@@ -1,0 +1,27 @@
+#!/bin/sh
+# Query the system appearance. Prints "dark" or "light".
+#
+# This is the single source of truth for "is the desktop dark?" — followers
+# (appearance-sync) and anything else that wants to adapt should call this
+# rather than re-deriving it. Setters are `dark` / `light` (Linux) or System
+# Settings (macOS).
+case "$(uname)" in
+  Darwin)
+    # macOS stores AppleInterfaceStyle only while Dark is on; the key being
+    # absent *is* the Light signal, so a failed read is a valid answer.
+    if [ "$(defaults read -g AppleInterfaceStyle 2>/dev/null)" = Dark ]; then
+      echo dark
+    else
+      echo light
+    fi
+    ;;
+  Linux)
+    # Only an explicit prefer-light means light; 'default', an unset key, or
+    # a missing gsettings all resolve to dark (the historical baseline here).
+    case "$(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null)" in
+      *prefer-light*) echo light ;;
+      *) echo dark ;;
+    esac
+    ;;
+  *) echo dark ;;
+esac

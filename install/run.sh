@@ -11,7 +11,8 @@
 #   2. lndir
 #   3. toolchain (fnm/node, pnpm, rustup, PKG tools, tm)
 #   4. manifest: LINK + MIRROR (skipped when submodule-deps not ready)
-#   5. manifest: HOOK (cursor/claude — need jq; darwin-keymap — LaunchAgent + hidutil)
+#   5. manifest: HOOK (cursor/claude — need jq; darwin-keymap — LaunchAgent + hidutil;
+#      darwin-appearance — LaunchAgent + swiftc)
 #
 # Flags:
 #   --migrate-tm   run `tm migrate` after building tm
@@ -90,6 +91,7 @@ apply_manifest_sync
 verify_kitty_ssh_conf
 link_kitty_os_conf
 link_alacritty_os_toml
+seed_appearance_themes
 
 if [ "$MIGRATE_TM" = 1 ]; then
   migrate_tmux_manager_config
