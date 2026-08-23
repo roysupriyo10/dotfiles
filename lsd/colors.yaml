@@ -1,0 +1,66 @@
+# lsd's built-in theme uses fixed 256-colour indices, which ignore the
+# terminal palette and wash out on a light background. This reproduces that
+# theme slot-for-slot using the 16 ANSI names, so it follows whichever
+# Gruvbox variant the terminal has loaded (see appearance-sync).
+#
+# crossterm naming: `dark_<x>` = normal ANSI 0-7, `<x>` = bright 8-15.
+# Gruvbox maps the 256-colour originals roughly as: pale yellows -> yellow,
+# blues -> blue, turquoise/cyan -> cyan, green3 -> green, orange -> yellow,
+# pink -> magenta, grey -> dark_grey (bright black).
+#
+# File-type colours (dir/symlink/exec/...) are not configurable here in lsd
+# 1.2.0 (`file_type` is serde-skipped) and any `filetype:` key makes lsd
+# silently reject the whole file. They come from LS_COLORS, which is ANSI
+# already. Check with: lsd -la --color=always | cat -v  (expect 38;5;0-15).
+
+user: yellow          # 230 Cornsilk1
+group: dark_yellow    # 187 LightYellow3
+
+permission:
+  read: dark_green
+  write: dark_yellow
+  exec: dark_red
+  exec-sticky: dark_magenta
+  no-access: dark_grey
+  octal: dark_cyan
+  acl: dark_cyan
+  context: cyan
+
+attributes:
+  archive: dark_green
+  read: dark_yellow
+  hidden: magenta
+  system: magenta
+
+date:
+  hour-old: green      # 40 Green3
+  day-old: dark_green  # 42 SpringGreen2
+  older: dark_cyan     # 36 DarkCyan
+
+size:
+  none: dark_grey      # 245 Grey
+  small: yellow        # 229 Wheat1
+  medium: dark_yellow  # 216 LightSalmon1
+  large: dark_red      # 172 Orange3
+
+inode:
+  valid: magenta       # 13 Pink
+  invalid: dark_grey
+
+links:
+  valid: magenta
+  invalid: dark_grey
+
+tree-edge: dark_grey
+
+git-status:
+  default: dark_grey
+  unmodified: dark_grey
+  ignored: dark_grey
+  new-in-index: dark_green
+  new-in-workdir: dark_green
+  typechange: dark_yellow
+  deleted: dark_red
+  renamed: dark_green
+  modified: dark_yellow
+  conflicted: dark_red
