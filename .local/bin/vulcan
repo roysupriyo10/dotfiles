@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+# Control vulcan, the figr-local devbox (ap-south-1).
+#
+#   vulcan [key]    start if stopped, wait for ssh, connect (key: ssh identity
+#                   file to use, e.g. `vulcan ~/.ssh/thalia`; omit to let ssh
+#                   config decide)
+#   vulcan stop     stop it now (disk persists; ~$20/mo idle)
+#   vulcan status   instance state
+#
+# Auto-stop lives on the box itself: no established ssh for 15m -> stop.
+# SSH goes over the tailnet; host "figr-local-devbox" is the MagicDNS name.
+
+set -euo pipefail
+
+PROFILE=supriyo_admin
+REGION=ap-south-1
+NAME=figr-local-devbox
+HOST=vulcan
+
+# SSO tokens expire; log in transparently instead of dying on the first call.
+if ! aws sts get-caller-identity --profile "$PROFILE" >/dev/null 2>&1; then
+  echo "aws session expired; logging in" >&2
+  aws sso login --profile "$PROFILE"
+fi
+
+iid() {
+  aws ec2 describe-instances --profile "$PROFILE" --region "$REGION" \
+    --filters "Name=tag:Name,Values=$NAME" \
+              "Name=instance-state-name,Values=pending,running,stopping,stopped" \
+    --query 'Reservations[0].Instances[0].InstanceId' --output text
+}
+
+state() {
+  aws ec2 describe-instances --profile "$PROFILE" --region "$REGION" \
+    --instance-ids "$1" \
+    --query 'Reservations[0].Instances[0].State.Name' --output text
+}
+
+ID=$(iid)
+[ "$ID" = "None" ] && { echo "no $NAME instance found" >&2; exit 1; }
+
+SSH_KEY=""
+case "${1:-}" in
+  stop|status) ;;
+  *) SSH_KEY="${1:-}"
+     [ -n "$SSH_KEY" ] && [ ! -f "$SSH_KEY" ] && {
+       echo "no such key file: $SSH_KEY" >&2; exit 1
+     } ;;
+esac
+
+case "${1:-}" in
+  stop)
+    aws ec2 stop-instances --profile "$PROFILE" --region "$REGION" \
+      --instance-ids "$ID" >/dev/null
+    echo "stopping $ID"
+    ;;
+  status)
+    echo "$ID $(state "$ID")"
+    ;;
+  *)
+    if [ "$(state "$ID")" != "running" ]; then
+      echo "starting $ID"
+      aws ec2 start-instances --profile "$PROFILE" --region "$REGION" \
+        --instance-ids "$ID" >/dev/null
+    fi
+    # Resolve through the tailscale daemon, not system DNS: a fresh node's
+    # name can be negative-cached by macOS while the box is already up.
+    printf 'waiting for tailnet'
+    TARGET=""
+    until TARGET=$(tailscale ip -4 "$HOST" 2>/dev/null) && [ -n "$TARGET" ]; do
+      printf '.'
+      sleep 5
+    done
+    printf '\nwaiting for ssh'
+    until nc -G 3 -z "$TARGET" 22 2>/dev/null; do
+      printf '.'
+      sleep 5
+    done
+    echo
+    # Connect by NAME so `Host *` + `IdentityFile ~/.ssh/%h` picks up
+    # ~/.ssh/vulcan (symlinked to this machine's key). The IP is only for
+    # the reachability wait above, where DNS can lag a fresh node.
+    if [ -n "$SSH_KEY" ]; then
+      exec ssh -t -i "$SSH_KEY" "rs10figr@$HOST"
+    fi
+    exec ssh -t "rs10figr@$HOST"
+    ;;
+esac

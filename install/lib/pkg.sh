@@ -16,7 +16,6 @@ pkg_yay() {
     sudo pacman -S --needed --noconfirm "$pkg"
     return 0
   fi
-  log "yay or pacman required to install $pkg" >&2
   return 1
 }
 
@@ -34,7 +33,17 @@ pkg_install() {
   linux_pkg="$1"
   brew_pkg="${2:-$1}"
   case "$OS" in
-    Linux) pkg_yay "$linux_pkg" ;;
+    Linux)
+      if pkg_yay "$linux_pkg"; then
+        return 0
+      fi
+      if command -v brew >/dev/null 2>&1; then
+        pkg_brew "$brew_pkg"
+        return $?
+      fi
+      log "yay, pacman or brew required to install $linux_pkg" >&2
+      return 1
+      ;;
     Darwin) pkg_brew "$brew_pkg" ;;
     *)
       log "unsupported OS for package install: $OS" >&2
