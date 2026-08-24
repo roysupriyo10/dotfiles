@@ -138,9 +138,6 @@ if [[ "$(uname)" == Darwin ]]; then
   esac
 fi
 
-if [[ "$(uname)" == Linux ]] && [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-fi
 # gnippartstoob llehs
 
 # re-init completion after ZLE plugins (fzf, autosuggestions, etc.)

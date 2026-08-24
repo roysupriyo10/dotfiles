@@ -29,9 +29,9 @@ install_env() {
   export GOPATH
   path_prepend "$GOPATH/bin"
 
-  if [ "$OS" = Darwin ]; then
-    brew_shellenv 2>/dev/null || true
-  fi
+  # Both Darwin (/opt/homebrew) and Linux (/home/linuxbrew) — brew_shellenv
+  # probes the platform prefixes itself and is a no-op where brew is absent.
+  brew_shellenv 2>/dev/null || true
 
   FNM_DIR="${FNM_DIR:-$HOME/.local/share/fnm}"
   export FNM_DIR
