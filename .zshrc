@@ -138,8 +138,8 @@ if [[ "$(uname)" == Darwin ]]; then
   esac
 fi
 
-if [[ "$(uname)" == Linux ]] && command -v /opt/homebrew/bin/brew &>/dev/null; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+if [[ "$(uname)" == Linux ]] && [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 # gnippartstoob llehs
 

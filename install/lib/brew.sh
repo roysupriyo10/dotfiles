@@ -18,6 +18,10 @@ brew_prefix() {
     /opt/homebrew/bin/brew --prefix
     return 0
   fi
+  if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+    /home/linuxbrew/.linuxbrew/bin/brew --prefix
+    return 0
+  fi
   if command -v brew >/dev/null 2>&1; then
     brew_run --prefix
     return 0
@@ -29,6 +33,11 @@ brew_shellenv() {
   if [ -x /opt/homebrew/bin/brew ]; then
     # shellcheck disable=SC2046
     eval "$(/opt/homebrew/bin/brew shellenv)"
+    return 0
+  fi
+  if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+    # shellcheck disable=SC2046
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     return 0
   fi
   prefix=$(brew_prefix 2>/dev/null) || return 1
