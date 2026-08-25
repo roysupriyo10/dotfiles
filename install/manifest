@@ -14,6 +14,7 @@ LINK .bashrc ${HOME}/.bashrc
 MIRROR kitty ${HOME}/.config/kitty
 MIRROR alacritty ${HOME}/.config/alacritty
 LINK lsd ${HOME}/.config/lsd
+LINK bat ${HOME}/.config/bat
 LINK tmux ${HOME}/.config/tmux
 LINK nvim ${HOME}/.config/nvim
 MIRROR .local/bin ${HOME}/.local/bin

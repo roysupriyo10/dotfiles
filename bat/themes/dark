@@ -1,0 +1,4 @@
+# Dark — Gruvbox Dark (bat's bundled theme, matches alacritty/kitty/tmux dark).
+# Selected via ~/.config/bat/config (symlink managed by appearance-sync).
+# bat re-reads its config on every invocation, so repointing is enough.
+--theme="gruvbox-dark"

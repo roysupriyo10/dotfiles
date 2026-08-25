@@ -80,6 +80,8 @@ case "${1:-}" in
     # Connect by NAME so `Host *` + `IdentityFile ~/.ssh/%h` picks up
     # ~/.ssh/vulcan (symlinked to this machine's key). The IP is only for
     # the reachability wait above, where DNS can lag a fresh node.
+    # No port forwards: localhost stays local; the box's stack is reached
+    # over tailnet HTTPS (figr-serve: 443 -> vite, TLS-TCP on the API ports).
     if [ -n "$SSH_KEY" ]; then
       exec ssh -t -i "$SSH_KEY" "rs10figr@$HOST"
     fi

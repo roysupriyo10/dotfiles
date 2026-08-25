@@ -56,6 +56,15 @@ follow_tmux() {
   tmux source-file "$dir/tmux.conf" >/dev/null 2>&1 || true
 }
 
+# bat: the whole config is per-mode (themes/<mode>); bat re-reads it on every
+# invocation, so repointing is enough. bat's own auto-detect (OSC 11) doesn't
+# get a reliable answer through tmux, hence explicit selection here.
+follow_bat() {
+  dir="$HOME/.config/bat"
+  [ -f "$dir/themes/$mode" ] || return 0
+  relink "themes/$mode" "$dir/config" || return 0
+}
+
 # Neovim: re-queries the terminal background on SIGUSR1 (core.autocmd.
 # background_sync), so 'background'-driven schemes follow. Must run after the
 # terminal followers so the terminal already answers with the new colour.
@@ -114,6 +123,7 @@ sync_all() {
   follow_alacritty
   follow_kitty
   follow_tmux
+  follow_bat
   follow_nvim
   follow_claude
   follow_wallpaper

@@ -15,5 +15,6 @@ sway/config.d/variables.d/04-monitor-positions.conf
 
 .DS_Store
 
-# per-appearance symlink managed by appearance-sync (tmux dir is LINKed, not mirrored)
+# per-appearance symlinks managed by appearance-sync (tmux/bat dirs are LINKed, not mirrored)
 /tmux/theme.conf
+/bat/config

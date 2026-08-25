@@ -135,21 +135,23 @@ link_alacritty_os_toml() {
   ln -sf "$target" "$conf_dir/os.toml"
 }
 
-# alacritty.toml / kitty.conf / tmux.conf also import theme.{toml,conf}; appearance-sync
-# owns those symlinks at runtime, but seed them here so a fresh install never
-# has a dangling import (and Linux hosts without a watcher still get the right
-# palette at install time).
+# alacritty.toml / kitty.conf / tmux.conf also import theme.{toml,conf}, and
+# bat's whole config is the per-mode file; appearance-sync owns those symlinks
+# at runtime, but seed them here so a fresh install never has a dangling import
+# (and Linux hosts without a watcher still get the right palette at install time).
 seed_appearance_themes() {
   sync="$HOME/.local/bin/appearance-sync"
   if [ -x "$sync" ]; then
     PATH="$HOME/.local/bin:$PATH" "$sync" || true
     return 0
   fi
-  for pair in "alacritty:toml" "kitty:conf" "tmux:conf"; do
-    app=${pair%%:*} ext=${pair##*:}
+  for pair in "alacritty:theme.toml:dark.toml" "kitty:theme.conf:dark.conf" \
+              "tmux:theme.conf:dark.conf" "bat:config:dark"; do
+    app=${pair%%:*} rest=${pair#*:}
+    link=${rest%%:*} target=${rest##*:}
     conf_dir="$HOME/.config/$app"
     [ -d "$conf_dir/themes" ] || continue
-    [ -e "$conf_dir/theme.$ext" ] || ln -sf "themes/dark.$ext" "$conf_dir/theme.$ext"
+    [ -e "$conf_dir/$link" ] || ln -sf "themes/$target" "$conf_dir/$link"
   done
 }
 
