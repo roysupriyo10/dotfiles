@@ -65,6 +65,15 @@ follow_bat() {
   relink "themes/$mode" "$dir/config" || return 0
 }
 
+# fzf: no config file of its own, but $FZF_DEFAULT_OPTS_FILE (exported by
+# .zshrc/.bashrc) points at theme, a per-mode symlink like bat's. fzf reads
+# the file on every invocation, so repointing is enough.
+follow_fzf() {
+  dir="$HOME/.config/fzf"
+  [ -f "$dir/themes/$mode" ] || return 0
+  relink "themes/$mode" "$dir/theme" || return 0
+}
+
 # Neovim: re-queries the terminal background on SIGUSR1 (core.autocmd.
 # background_sync), so 'background'-driven schemes follow. Must run after the
 # terminal followers so the terminal already answers with the new colour.
@@ -124,6 +133,7 @@ sync_all() {
   follow_kitty
   follow_tmux
   follow_bat
+  follow_fzf
   follow_nvim
   follow_claude
   follow_wallpaper

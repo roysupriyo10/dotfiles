@@ -136,7 +136,7 @@ link_alacritty_os_toml() {
 }
 
 # alacritty.toml / kitty.conf / tmux.conf also import theme.{toml,conf}, and
-# bat's whole config is the per-mode file; appearance-sync owns those symlinks
+# bat's / fzf's whole config is the per-mode file; appearance-sync owns those symlinks
 # at runtime, but seed them here so a fresh install never has a dangling import
 # (and Linux hosts without a watcher still get the right palette at install time).
 seed_appearance_themes() {
@@ -146,7 +146,7 @@ seed_appearance_themes() {
     return 0
   fi
   for pair in "alacritty:theme.toml:dark.toml" "kitty:theme.conf:dark.conf" \
-              "tmux:theme.conf:dark.conf" "bat:config:dark"; do
+              "tmux:theme.conf:dark.conf" "bat:config:dark" "fzf:theme:dark"; do
     app=${pair%%:*} rest=${pair#*:}
     link=${rest%%:*} target=${rest##*:}
     conf_dir="$HOME/.config/$app"

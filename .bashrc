@@ -10,6 +10,9 @@ HISTTIMEFORMAT="%F %T "
 
 export LANG=en_US.UTF-8
 export EDITOR=nvim
+# fzf colours: per-appearance symlink (-> themes/dark|light), repointed by
+# appearance-sync; fzf re-reads it per launch so no shell reload is needed.
+export FZF_DEFAULT_OPTS_FILE="$HOME/.config/fzf/theme"
 
 DOTFILES="${DOTFILES:-$HOME/dotfiles}"
 

@@ -1,0 +1,10 @@
+# Dark — Gruvbox Dark (hex values from alacritty/themes/dark.toml; bg/gutter
+# stay -1 so the terminal's opacity shows through).
+# Selected via ~/.config/fzf/theme (symlink managed by appearance-sync), read
+# through $FZF_DEFAULT_OPTS_FILE (.zshrc/.bashrc). fzf re-reads it on every
+# invocation, so repointing is enough — no shell reload.
+--color=dark
+--color=fg:#ebdbb2,bg:-1,hl:#fabd2f
+--color=fg+:#ebdbb2,bg+:#3c3836,hl+:#fabd2f
+--color=info:#83a598,prompt:#a89984,pointer:#fb4934,marker:#b8bb26,spinner:#fabd2f,header:#8ec07c
+--color=border:#665c54,separator:#665c54,scrollbar:#665c54,gutter:-1
