@@ -1,0 +1,15 @@
+#!/bin/sh
+# pgnew <user> <db> [host]  — create an isolated role + database on athena and print its URL
+set -eu
+[ $# -ge 2 ] || { echo "usage: pgnew <user> <db> [host]" >&2; exit 1; }
+u=$1 d=$2 h=${3:-athena}
+p=$(openssl rand -base64 24 | tr -d '/+=' | cut -c1-28)
+psql -h "$h" -U rs10 -d postgres -qAt -v ON_ERROR_STOP=1 <<SQL
+DO \$\$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '$u') THEN CREATE ROLE "$u" LOGIN PASSWORD '$p';
+  ELSE ALTER ROLE "$u" PASSWORD '$p'; END IF;
+END \$\$;
+SELECT 'CREATE DATABASE "$d" OWNER "$u"' WHERE NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = '$d')\gexec
+REVOKE CONNECT ON DATABASE "$d" FROM PUBLIC;
+SQL
+echo "postgres://$u:$p@$h:5432/$d"
