@@ -1,14 +1,25 @@
 #!/usr/bin/env bash
 # Control vulcan, the figr-local devbox (ap-south-1).
 #
-#   vulcan [key]    start if stopped, wait for ssh, connect (key: ssh identity
-#                   file to use, e.g. `vulcan ~/.ssh/thalia`; omit to let ssh
-#                   config decide)
-#   vulcan stop     stop it now (disk persists; ~$20/mo idle)
-#   vulcan status   instance state
+#   vulcan [key]      start if stopped, wait for ssh, connect over mosh (key: ssh
+#                     identity file for the mosh/ssh handshake, e.g.
+#                     `vulcan ~/.ssh/thalia`; omit to let ssh config decide)
+#   vulcan stop       stop it now (disk persists; ~$20/mo idle)
+#   vulcan status     instance state
+#   vulcan relaunch   image the disk, terminate, launch again in the first AZ
+#                     with capacity (done automatically when a start fails on
+#                     InsufficientInstanceCapacity)
 #
-# Auto-stop lives on the box itself: no established ssh for 15m -> stop.
-# SSH goes over the tailnet; host "figr-local-devbox" is the MagicDNS name.
+# Auto-stop lives on the box itself: no established ssh and no live mosh
+# session for 15m -> stop. Everything goes over the tailnet; host "vulcan" is
+# the MagicDNS name. Falls back to plain ssh when mosh is not installed here.
+#
+# Capacity: an EBS disk is pinned to one AZ, so when that AZ runs out of the
+# instance type the only way to keep the disk is snapshot -> relaunch from the
+# image in another AZ. The launch template is never edited; the instance type
+# and subnet are overridden per launch. The bootstrap user-data is idempotent
+# on a reused disk (tailscale identity, brew, fstab all guarded), so the new
+# box comes up as the same tailnet node.
 
 set -euo pipefail
 
@@ -16,24 +27,100 @@ PROFILE=supriyo_admin
 REGION=ap-south-1
 NAME=figr-local-devbox
 HOST=vulcan
+LT=lt-0ed91a5c7ec819b1f      # figr-local-devbox launch template, default version
+TYPE=m6i.xlarge              # 4 vCPU / 16 GiB; overrides the LT's m6i.2xlarge
+IMAGE_PREFIX="$NAME-disk-"   # disk images made here; the base AMI is "$NAME-ami"
+
+aws() { command aws --profile "$PROFILE" --region "$REGION" "$@"; }
 
 # SSO tokens expire; log in transparently instead of dying on the first call.
-if ! aws sts get-caller-identity --profile "$PROFILE" >/dev/null 2>&1; then
+if ! aws sts get-caller-identity >/dev/null 2>&1; then
   echo "aws session expired; logging in" >&2
-  aws sso login --profile "$PROFILE"
+  aws sso login
 fi
 
 iid() {
-  aws ec2 describe-instances --profile "$PROFILE" --region "$REGION" \
+  aws ec2 describe-instances \
     --filters "Name=tag:Name,Values=$NAME" \
               "Name=instance-state-name,Values=pending,running,stopping,stopped" \
     --query 'Reservations[0].Instances[0].InstanceId' --output text
 }
 
 state() {
-  aws ec2 describe-instances --profile "$PROFILE" --region "$REGION" \
-    --instance-ids "$1" \
+  aws ec2 describe-instances --instance-ids "$1" \
     --query 'Reservations[0].Instances[0].State.Name' --output text
+}
+
+itype() {
+  aws ec2 describe-instances --instance-ids "$1" \
+    --query 'Reservations[0].Instances[0].InstanceType' --output text
+}
+
+wait_state() {  # wait_state <id> <state>
+  until [ "$(state "$1")" = "$2" ]; do printf '.'; sleep 5; done; echo
+}
+
+# Snapshot the stopped disk into an AMI, terminate, launch from the launch
+# template with type/subnet overrides in the first AZ that has capacity.
+relaunch() {
+  local id=$1 az vpc sg vol ami sn new subnets out
+  if [ "$(state "$id")" != "stopped" ]; then
+    echo "stopping $id for relaunch"
+    aws ec2 stop-instances --instance-ids "$id" >/dev/null
+    wait_state "$id" stopped
+  fi
+  read -r az vpc sg vol < <(aws ec2 describe-instances --instance-ids "$id" \
+    --query 'Reservations[0].Instances[0].[Placement.AvailabilityZone,VpcId,SecurityGroups[0].GroupId,BlockDeviceMappings[0].Ebs.VolumeId]' \
+    --output text)
+
+  printf 'imaging disk %s' "$vol"
+  ami=$(aws ec2 create-image --instance-id "$id" --no-reboot \
+    --name "$IMAGE_PREFIX$(date +%Y%m%d-%H%M%S)" \
+    --tag-specifications "ResourceType=image,Tags=[{Key=Name,Value=$NAME}]" \
+                         "ResourceType=snapshot,Tags=[{Key=Name,Value=$NAME}]" \
+    --query ImageId --output text)
+  until [ "$(aws ec2 describe-images --image-ids "$ami" --query 'Images[0].State' --output text)" = "available" ]; do
+    printf '.'; sleep 10
+  done
+  echo " $ami"
+
+  echo "terminating $id"
+  aws ec2 terminate-instances --instance-ids "$id" >/dev/null
+  until [ "$(state "$id")" = "terminated" ]; do printf '.'; sleep 5; done; echo
+  # The LT leaves DeleteOnTermination off, so the old volume outlives the box.
+  aws ec2 delete-volume --volume-id "$vol" 2>/dev/null || true
+
+  # Current AZ first (it may have freed up), then the rest of the VPC.
+  subnets=$(aws ec2 describe-subnets --filters "Name=vpc-id,Values=$vpc" \
+    --query "sort_by(Subnets, &AvailabilityZone)[].[AvailabilityZone,SubnetId]" --output text \
+    | awk -v az="$az" '$1==az{print; next}{rest=rest $0 "\n"} END{printf "%s", rest}')
+  new=""
+  while read -r zone sn; do
+    [ -n "$sn" ] || continue
+    printf 'launching %s in %s' "$TYPE" "$zone"
+    if out=$(aws ec2 run-instances --count 1 \
+        --launch-template "LaunchTemplateId=$LT,Version=\$Default" \
+        --image-id "$ami" --instance-type "$TYPE" \
+        --network-interfaces "DeviceIndex=0,SubnetId=$sn,Groups=$sg,AssociatePublicIpAddress=true" \
+        --block-device-mappings "DeviceName=/dev/xvda,Ebs={VolumeType=gp3,DeleteOnTermination=true}" \
+        --query 'Instances[0].InstanceId' --output text 2>&1); then
+      new=$out; echo " -> $new"; break
+    fi
+    case "$out" in
+      *InsufficientInstanceCapacity*) echo " -> no capacity" ;;
+      *) echo; echo "$out" >&2; exit 1 ;;
+    esac
+  done <<< "$subnets"
+  [ -n "$new" ] || { echo "no capacity for $TYPE in any AZ; disk is safe in $ami" >&2; exit 1; }
+
+  # Keep the image just used as the one backup; drop older disk images.
+  aws ec2 describe-images --owners self --filters "Name=name,Values=$IMAGE_PREFIX*" \
+    --query "Images[?ImageId!='$ami'].[ImageId,BlockDeviceMappings[0].Ebs.SnapshotId]" --output text \
+  | while read -r old snap; do
+      [ -n "$old" ] || continue
+      aws ec2 deregister-image --image-id "$old"
+      [ -n "$snap" ] && [ "$snap" != "None" ] && aws ec2 delete-snapshot --snapshot-id "$snap"
+    done
 }
 
 ID=$(iid)
@@ -41,7 +128,7 @@ ID=$(iid)
 
 SSH_KEY=""
 case "${1:-}" in
-  stop|status) ;;
+  stop|status|relaunch) ;;
   *) SSH_KEY="${1:-}"
      [ -n "$SSH_KEY" ] && [ ! -f "$SSH_KEY" ] && {
        echo "no such key file: $SSH_KEY" >&2; exit 1
@@ -50,18 +137,37 @@ esac
 
 case "${1:-}" in
   stop)
-    aws ec2 stop-instances --profile "$PROFILE" --region "$REGION" \
-      --instance-ids "$ID" >/dev/null
+    aws ec2 stop-instances --instance-ids "$ID" >/dev/null
     echo "stopping $ID"
     ;;
   status)
-    echo "$ID $(state "$ID")"
+    echo "$ID $(state "$ID") $(itype "$ID")"
+    ;;
+  relaunch)
+    relaunch "$ID"
     ;;
   *)
-    if [ "$(state "$ID")" != "running" ]; then
+    S=$(state "$ID")
+    if [ "$S" = "stopping" ]; then
+      printf 'waiting for %s to stop' "$ID"; wait_state "$ID" stopped; S=stopped
+    fi
+    if [ "$S" = "stopped" ]; then
+      # TYPE is the single knob: a stopped box is resized in place before start.
+      if [ "$(itype "$ID")" != "$TYPE" ]; then
+        echo "resizing $ID to $TYPE"
+        aws ec2 modify-instance-attribute --instance-id "$ID" \
+          --instance-type "{\"Value\":\"$TYPE\"}"
+      fi
       echo "starting $ID"
-      aws ec2 start-instances --profile "$PROFILE" --region "$REGION" \
-        --instance-ids "$ID" >/dev/null
+      if ! out=$(aws ec2 start-instances --instance-ids "$ID" 2>&1); then
+        case "$out" in
+          *InsufficientInstanceCapacity*)
+            echo "no $TYPE capacity in this AZ; relaunching elsewhere with the same disk"
+            relaunch "$ID"
+            ;;
+          *) echo "$out" >&2; exit 1 ;;
+        esac
+      fi
     fi
     # Resolve through the tailscale daemon, not system DNS: a fresh node's
     # name can be negative-cached by macOS while the box is already up.
@@ -82,6 +188,19 @@ case "${1:-}" in
     # the reachability wait above, where DNS can lag a fresh node.
     # No port forwards: localhost stays local; the box's stack is reached
     # over tailnet HTTPS (figr-serve: 443 -> vite, TLS-TCP on the API ports).
+    #
+    # mosh, not ssh: local echo + UDP roaming over the tailnet, so typing is
+    # not round-trip bound and the session survives sleep / network changes.
+    # The handshake still rides ssh (same key, same config); the server is
+    # /usr/local/bin/mosh-server on the box (wrapper over the brew install,
+    # 15m client-silence timeout so idle-stop sees it like a closed ssh).
+    if command -v mosh >/dev/null 2>&1; then
+      if [ -n "$SSH_KEY" ]; then
+        exec mosh --ssh="ssh -i $SSH_KEY" "rs10figr@$HOST"
+      fi
+      exec mosh "rs10figr@$HOST"
+    fi
+    echo "mosh not installed locally (brew install mosh); falling back to ssh" >&2
     if [ -n "$SSH_KEY" ]; then
       exec ssh -t -i "$SSH_KEY" "rs10figr@$HOST"
     fi
