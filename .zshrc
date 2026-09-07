@@ -54,6 +54,11 @@ esac
 [ -s "$BUN_INSTALL/_bun_zsh" ] && source "$BUN_INSTALL/_bun_zsh"
 # nub
 
+# deno
+export DENO_INSTALL="$HOME/.deno"
+. $DENO_INSTALL/env
+# oned
+
 # local/bin
 export LOCAL_HOME="$HOME/.local"
 case ":$PATH:" in
