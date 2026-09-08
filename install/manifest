@@ -37,3 +37,4 @@ DARWIN HOOK darwin-appearance
 HOOK cursor
 HOOK claude
 HOOK agy
+HOOK codex

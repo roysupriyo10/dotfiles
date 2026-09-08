@@ -34,6 +34,7 @@ run_hook() {
     cursor) run_hook_cursor ;;
     claude) run_hook_claude ;;
     agy) run_hook_agy ;;
+    codex) run_hook_codex ;;
     darwin-keymap) run_hook_darwin_keymap ;;
     darwin-appearance) run_hook_darwin_appearance ;;
     *)

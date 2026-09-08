@@ -1,0 +1,3 @@
+# Codex's native equivalent of agent-statusline; custom command renderers are unsupported.
+[tui]
+status_line = ["model-with-reasoning", "total-input-tokens", "total-output-tokens", "used-tokens", "context-used", "context-window-size", "context-remaining"]

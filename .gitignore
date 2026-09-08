@@ -19,3 +19,5 @@ sway/config.d/variables.d/04-monitor-positions.conf
 /tmux/theme.conf
 /bat/config
 /fzf/theme
+
+__pycache__

@@ -54,6 +54,8 @@ SYNC=1
 . "$INSTALL_DIR/lib/cursor.sh"
 # shellcheck source=lib/claude.sh
 . "$INSTALL_DIR/lib/claude.sh"
+# shellcheck source=lib/codex.sh
+. "$INSTALL_DIR/lib/codex.sh"
 # shellcheck source=lib/agy.sh
 . "$INSTALL_DIR/lib/agy.sh"
 # shellcheck source=lib/manifest.sh
