@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+# Launch Claude Code against the Kiro gateway on Thalia.
+set -euo pipefail
+
+envfile="${0:A:h}/kiro-claude.env"
+[[ -r $envfile ]] || {
+  print -u2 "kiro-claude: missing $envfile"
+  exit 1
+}
+source "$envfile"
+[[ -n ${BASE_URL:-} && -n ${KIRO_API_KEY:-} ]] || {
+  print -u2 "kiro-claude: set BASE_URL and KIRO_API_KEY in $envfile"
+  exit 1
+}
+
+unset ANTHROPIC_AUTH_TOKEN CLAUDE_CODE_USE_BEDROCK CLAUDE_CODE_USE_VERTEX CLAUDE_CODE_USE_FOUNDRY CLAUDE_CODE_USE_MANTLE
+exec env \
+  ANTHROPIC_BASE_URL="$BASE_URL" \
+  ANTHROPIC_API_KEY="$KIRO_API_KEY" \
+  claude --model claude-opus-5 --effort max "$@"
