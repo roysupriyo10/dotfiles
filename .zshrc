@@ -56,7 +56,7 @@ esac
 
 # deno
 export DENO_INSTALL="$HOME/.deno"
-. $DENO_INSTALL/env
+[[ -f "$DENO_INSTALL/env" ]] && . "$DENO_INSTALL/env"
 # oned
 
 # local/bin
