@@ -19,6 +19,7 @@ LINK fzf ${HOME}/.config/fzf
 LINK tmux ${HOME}/.config/tmux
 LINK nvim ${HOME}/.config/nvim
 MIRROR .local/bin ${HOME}/.local/bin
+LINK rpaste/rpaste ${HOME}/.local/bin/rpaste
 
 LINUX LINK .zprofile ${HOME}/.zprofile
 LINUX LINK sway ${HOME}/.config/sway

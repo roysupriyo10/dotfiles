@@ -18,3 +18,7 @@
 	path = tmux-manager
 	url = https://github.com/roysupriyo10/tmux-manager
 	ignore = all
+[submodule "rpaste"]
+	path = rpaste
+	url = github.com:roysupriyo10/rpaste
+	ignore = all
