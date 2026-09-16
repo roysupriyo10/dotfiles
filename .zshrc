@@ -169,3 +169,8 @@ fi
   && source "$DOTFILES/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[path_prefix]=none
+
+# rpaste — load NSPasteboard shim in SSH sessions (added by rpaste install)
+if [ -n "${SSH_CONNECTION:-}" ] && [ -f "${XDG_STATE_HOME:-$HOME/.local/state}/rpaste/rpaste-inject.dylib" ]; then
+  export DYLD_INSERT_LIBRARIES="${XDG_STATE_HOME:-$HOME/.local/state}/rpaste/rpaste-inject.dylib${DYLD_INSERT_LIBRARIES:+:$DYLD_INSERT_LIBRARIES}"
+fi
