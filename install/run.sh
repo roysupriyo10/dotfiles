@@ -58,6 +58,8 @@ SYNC=1
 . "$INSTALL_DIR/lib/codex.sh"
 # shellcheck source=lib/agy.sh
 . "$INSTALL_DIR/lib/agy.sh"
+# shellcheck source=lib/rpaste.sh
+. "$INSTALL_DIR/lib/rpaste.sh"
 # shellcheck source=lib/manifest.sh
 . "$INSTALL_DIR/lib/manifest.sh"
 # shellcheck source=lib/toolchain.sh
