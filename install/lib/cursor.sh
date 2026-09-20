@@ -36,6 +36,7 @@ run_hook() {
     agy) run_hook_agy ;;
     codex) run_hook_codex ;;
     rpaste) run_hook_rpaste ;;
+    tmux-plugins) run_hook_tmux_plugins ;;
     darwin-keymap) run_hook_darwin_keymap ;;
     darwin-appearance) run_hook_darwin_appearance ;;
     *)

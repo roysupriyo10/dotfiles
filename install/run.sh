@@ -12,7 +12,7 @@
 #   3. toolchain (fnm/node, pnpm, rustup, PKG tools, tm)
 #   4. manifest: LINK + MIRROR (skipped when submodule-deps not ready)
 #   5. manifest: HOOK (cursor/claude — need jq; darwin-keymap — LaunchAgent + hidutil;
-#      darwin-appearance — LaunchAgent + swiftc)
+#      darwin-appearance — LaunchAgent + swiftc; tmux-plugins — clones TPM)
 #
 # Flags:
 #   --migrate-tm   run `tm migrate` after building tm
@@ -60,6 +60,8 @@ SYNC=1
 . "$INSTALL_DIR/lib/agy.sh"
 # shellcheck source=lib/rpaste.sh
 . "$INSTALL_DIR/lib/rpaste.sh"
+# shellcheck source=lib/tmux-plugins.sh
+. "$INSTALL_DIR/lib/tmux-plugins.sh"
 # shellcheck source=lib/manifest.sh
 . "$INSTALL_DIR/lib/manifest.sh"
 # shellcheck source=lib/toolchain.sh

@@ -40,3 +40,4 @@ HOOK claude
 HOOK agy
 HOOK codex
 HOOK rpaste
+HOOK tmux-plugins
