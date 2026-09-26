@@ -23,3 +23,5 @@ sway/config.d/variables.d/04-monitor-positions.conf
 __pycache__
 
 .local/bin/kiro-claude.env
+
+research
