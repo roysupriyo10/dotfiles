@@ -47,6 +47,21 @@ follow_kitty() {
   pkill -USR1 -x kitty 2>/dev/null || true
 }
 
+# foot: foot.ini holds both palettes and includes theme.ini, which only picks
+# initial-color-theme for new windows. foot never reloads its config, so
+# running instances (and a --server, if any) are switched by signal instead:
+# SIGUSR1 = dark, SIGUSR2 = light.
+follow_foot() {
+  dir="$HOME/.config/foot"
+  [ -f "$dir/themes/$mode.ini" ] || return 0
+  relink "themes/$mode.ini" "$dir/theme.ini" || return 0
+  case "$mode" in
+    dark) sig=USR1 ;;
+    light) sig=USR2 ;;
+  esac
+  pkill "-$sig" -x foot 2>/dev/null || true
+}
+
 # tmux: tmux.conf sources theme.conf (rose-pine variant). Re-source so the
 # plugin re-applies; only if a server is running.
 follow_tmux() {
@@ -131,6 +146,7 @@ follow_claude() {
 sync_all() {
   follow_alacritty
   follow_kitty
+  follow_foot
   follow_tmux
   follow_bat
   follow_fzf

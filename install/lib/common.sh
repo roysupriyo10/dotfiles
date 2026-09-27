@@ -146,7 +146,8 @@ seed_appearance_themes() {
     return 0
   fi
   for pair in "alacritty:theme.toml:dark.toml" "kitty:theme.conf:dark.conf" \
-              "tmux:theme.conf:dark.conf" "bat:config:dark" "fzf:theme:dark"; do
+              "tmux:theme.conf:dark.conf" "bat:config:dark" "fzf:theme:dark" \
+              "foot:theme.ini:dark.ini"; do
     app=${pair%%:*} rest=${pair#*:}
     link=${rest%%:*} target=${rest##*:}
     conf_dir="$HOME/.config/$app"
