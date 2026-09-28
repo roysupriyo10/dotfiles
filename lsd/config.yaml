@@ -94,7 +94,7 @@ size: default
 # == Permission ==
 # Specify the format of the permission column
 # Possible value: rwx, octal
-permission: rwx
+# permission: rwx   # requires lsd >= 1.0; rwx is the default anyway
 
 # == Sorting ==
 sorting:
@@ -122,7 +122,7 @@ total-size: false
 # == Hyperlink ==
 # Attach hyperlink to filenames
 # Possible values: always, auto, never
-hyperlink: never
+# hyperlink: never   # requires lsd >= 1.0; never is the default anyway
 
 # == Symlink arrow ==
 # Specifies how the symlink arrow display, chars in both ascii and utf8
@@ -131,4 +131,4 @@ symlink-arrow: ⇒
 # == Header ==
 # Whether to display block headers.
 # Possible values: false, true
-header: false
+# header: false   # requires lsd >= 1.0; false is the default anyway

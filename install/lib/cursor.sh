@@ -37,6 +37,8 @@ run_hook() {
     codex) run_hook_codex ;;
     rpaste) run_hook_rpaste ;;
     tmux-plugins) run_hook_tmux_plugins ;;
+    ssh-server) run_hook_ssh_server ;;
+    ssh-client) run_hook_ssh_client ;;
     darwin-keymap) run_hook_darwin_keymap ;;
     darwin-appearance) run_hook_darwin_appearance ;;
     *)

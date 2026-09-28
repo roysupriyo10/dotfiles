@@ -41,3 +41,5 @@ HOOK agy
 HOOK codex
 HOOK rpaste
 HOOK tmux-plugins
+HOOK ssh-server
+HOOK ssh-client
