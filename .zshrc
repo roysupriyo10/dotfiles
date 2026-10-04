@@ -91,6 +91,10 @@ alias gfo="git fetch origin"
 # sesaila
 
 # push local $TERM (+ foot-direct) terminfo, then ssh (foot / any non-kitten term)
+if [[ -x "$HOME/.local/bin/ssh" ]]; then
+  ssh() { "$HOME/.local/bin/ssh" "$@" }
+fi
+
 assh() {
   {
     infocmp -x "$TERM" 2>/dev/null
@@ -102,11 +106,14 @@ alias fssh=assh
 
 # kitty: kitten ssh (handles terminfo + remote kitten)
 kssh() {
-  kitty +kitten ssh "$@"
+  rpaste kitty-ssh "$@"
 }
 
+if command -v agent-run >/dev/null 2>&1; then
+  codex()  { agent-run codex "$@" }
+  claude() { agent-run claude "$@" }
+fi
 if command -v keep-awake >/dev/null 2>&1; then
-  claude() { keep-awake --label claude -- claude "$@" }
   agent()  { keep-awake --label agent  -- agent  "$@" }
   agy()    { keep-awake --label agy    -- agy    "$@" }
 fi
@@ -170,7 +177,4 @@ fi
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 
-# rpaste — load NSPasteboard shim in SSH sessions (added by rpaste install)
-if [ -n "${SSH_CONNECTION:-}" ] && [ -f "${XDG_STATE_HOME:-$HOME/.local/state}/rpaste/rpaste-inject.dylib" ]; then
-  export DYLD_INSERT_LIBRARIES="${XDG_STATE_HOME:-$HOME/.local/state}/rpaste/rpaste-inject.dylib${DYLD_INSERT_LIBRARIES:+:$DYLD_INSERT_LIBRARIES}"
-fi
+# rpaste scopes native clipboard setup to agent-run, above.

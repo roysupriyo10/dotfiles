@@ -18,6 +18,7 @@
 # Flags:
 #   --migrate-tm   run `tm migrate` after building tm
 #   --no-sync      skip the git pull (used by bootstrap.sh)
+#   --rpaste-native install optional native clipboard support (Xvfb on Linux)
 set -euo pipefail
 
 INSTALL_DIR="$(CDPATH= cd -- "$(dirname "$0")" && pwd)"
@@ -27,6 +28,7 @@ PNPM_HOME="${PNPM_HOME:-$HOME/.local/share/pnpm}"
 FNM_DIR="${FNM_DIR:-$HOME/.local/share/fnm}"
 INSTALL_FNM_SHELL="${INSTALL_FNM_SHELL:-bash}"
 MIGRATE_TM=0
+RPASTE_NATIVE="${RPASTE_NATIVE:-1}"
 SYNC=1
 
 # shellcheck source=lib/common.sh
@@ -74,6 +76,7 @@ for arg in "$@"; do
   case "$arg" in
     --migrate-tm) MIGRATE_TM=1 ;;
     --no-sync) SYNC=0 ;;
+    --rpaste-native) RPASTE_NATIVE=1 ;;
     *)
       log "unknown flag: $arg" >&2
       exit 1

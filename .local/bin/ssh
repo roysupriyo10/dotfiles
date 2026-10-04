@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Add the clipboard tunnel to interactive shells; other SSH uses pass through.
+set -euo pipefail
+if [ -x "$HOME/.local/bin/rpaste" ]; then
+  exec "$HOME/.local/bin/rpaste" ssh-auto "$@"
+fi
+exec /usr/bin/ssh "$@"

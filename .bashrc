@@ -21,6 +21,15 @@ DOTFILES="${DOTFILES:-$HOME/dotfiles}"
 . "$DOTFILES/install/lib/env.sh"
 install_env
 
+if [ -x "$HOME/.local/bin/ssh" ]; then
+  ssh() { "$HOME/.local/bin/ssh" "$@"; }
+fi
+
+if command -v agent-run >/dev/null 2>&1; then
+  codex()  { agent-run codex "$@"; }
+  claude() { agent-run claude "$@"; }
+fi
+
 # pnpm/rust/scripts/gopath — install_env
 # mpnp / tsur / stpircs lanosrep
 

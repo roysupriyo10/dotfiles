@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Open an interactive SSH shell with a tunnel to this machine's clipboard.
+set -euo pipefail
+exec rpaste ssh "$@"

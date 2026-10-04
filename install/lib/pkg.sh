@@ -9,12 +9,12 @@ pkg_yay() {
   if command -v yay >/dev/null 2>&1; then
     log "installing $pkg (yay)..."
     yay -S --needed --noconfirm "$pkg"
-    return 0
+    return $?
   fi
   if command -v pacman >/dev/null 2>&1; then
     log "installing $pkg (pacman)..."
     sudo pacman -S --needed --noconfirm "$pkg"
-    return 0
+    return $?
   fi
   return 1
 }
