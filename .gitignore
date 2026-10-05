@@ -10,6 +10,7 @@
 /~
 
 .local/bin/mimo-claude.env
+.local/bin/mimo-codex.env
 
 sway/config.d/variables.d/04-monitor-positions.conf
 
