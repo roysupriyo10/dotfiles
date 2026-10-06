@@ -35,9 +35,11 @@
 # on a reused disk (tailscale identity, brew, fstab all guarded), so the new
 # box comes up as the same tailnet node.
 #
-# Spot: the box is a persistent spot request with interruption behaviour
-# "stop", so an interruption looks exactly like the idle auto-stop and the
-# disk survives; `vulcan` then starts it again (or relaunches on no capacity).
+# Spot: off for now (SPOT is empty, the box is on-demand). With SPOT set the
+# box is a persistent spot request with interruption behaviour "stop", so an
+# interruption looks exactly like the idle auto-stop and the disk survives;
+# `vulcan` then starts it again (or relaunches on no capacity). That stop is a
+# real shutdown, not a hibernate: an interruption loses the session.
 # A spot instance cannot be resized in place, so a TYPE change means relaunch.
 
 set -euo pipefail
@@ -50,7 +52,8 @@ LT=lt-0ed91a5c7ec819b1f      # figr-local-devbox launch template, default versio
 TYPE=c8i.4xlarge             # 16 vCPU / 32 GiB; overrides the LT's m6i.2xlarge
 DISK=500                     # root GiB; overrides the LT's 200. Can only grow,
                              # and must cover the disk image being launched.
-SPOT="MarketType=spot,SpotOptions={SpotInstanceType=persistent,InstanceInterruptionBehavior=stop}"
+SPOT=                        # on-demand; for spot:
+# SPOT="MarketType=spot,SpotOptions={SpotInstanceType=persistent,InstanceInterruptionBehavior=stop}"
 IMAGE_PREFIX="$NAME-disk-"   # disk images made here; the base AMI is "$NAME-ami"
 
 aws() { command aws --profile "$PROFILE" --region "$REGION" "$@"; }
@@ -158,13 +161,13 @@ relaunch() {  # relaunch <id> [ami]
   new=""
   while read -r zone sn; do
     [ -n "$sn" ] || continue
-    printf 'launching %s (spot) in %s' "$TYPE" "$zone"
+    printf 'launching %s%s in %s' "$TYPE" "${SPOT:+ (spot)}" "$zone"
     # DeleteOnTermination stays off: the disk is the working state and must
     # outlive any terminate; relaunch deletes it explicitly once imaged.
     if out=$(aws ec2 run-instances --count 1 \
         --launch-template "LaunchTemplateId=$LT,Version=\$Default" \
         --image-id "$ami" --instance-type "$TYPE" \
-        --instance-market-options "$SPOT" \
+        ${SPOT:+--instance-market-options "$SPOT"} \
         --hibernation-options Configured=true \
         --network-interfaces "DeviceIndex=0,SubnetId=$sn,Groups=$sg,AssociatePublicIpAddress=true" \
         --block-device-mappings "DeviceName=/dev/xvda,Ebs={VolumeSize=$DISK,VolumeType=gp3,DeleteOnTermination=false}" \
