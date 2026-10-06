@@ -19,6 +19,7 @@
       "memory",
       "backlight",
       "battery",
+      "custom/user",
       "clock",
       "tray"
     ],
@@ -67,6 +68,12 @@
         "format-disconnected": "Bluetooth: N/A",
         "format-off": "Bluetooth: Off",
         "on-click": "blueman-manager"
+    },
+    "custom/user": {
+        "format": "{}",
+        "exec": "whoami",
+        "interval": "once",
+        "tooltip": false
     },
     "clock": {
       "interval": 5,

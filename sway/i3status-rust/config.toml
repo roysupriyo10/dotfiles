@@ -94,6 +94,13 @@ hide_when_empty = true
 format = " Awake: $text "
 
 [[block]]
+block = "custom"
+command = "whoami"
+shell = "bash"
+interval = "once"
+format = " $text "
+
+[[block]]
 block = "time"
 interval = 1
 format = "  $timestamp.datetime(f:'%Y-%m-%d %A %I:%M:%S %p')"

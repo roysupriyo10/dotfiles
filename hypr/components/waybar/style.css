@@ -43,6 +43,7 @@
 #tray,
 #backlight,
 #clock,
+#custom-user,
 #battery,
 #custom-private-ip,
 #bluetooth,
@@ -55,6 +56,10 @@
 
 #custom-private-ip {
   color: @lavender;
+}
+
+#custom-user {
+  color: @teal;
 }
 
 #clock {
