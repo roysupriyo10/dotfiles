@@ -1,0 +1,13 @@
+# Package names per package manager, read by pkg_install (lib/pkg.sh).
+#
+#   <pkg> <brew> <dnf>
+#
+# pkg  — yay/pacman name; this is what toolchain entries and hooks ask for
+# brew — homebrew formula, "-" when there is none
+# dnf  — dnf package, "-" when there is none
+#
+# Only exceptions need a row. An unlisted package has the same name under
+# homebrew and is not offered to dnf, so dnf hosts get it from homebrew.
+
+xorg-server-xvfb  xorg-server  xorg-x11-server-Xvfb
+ydotool           -            -

@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# Copy stdin (or the arguments) to the clipboard of the machine you are sitting
+# at:   pwd | clip      clip < notes.txt      clip some text
+#
+# Sitting at this machine, that is the native tool (pbcopy / wl-copy / xclip).
+# Over SSH it is OSC 52 — the escape sequence tmux and Claude Code use — so the
+# terminal on your end sets its own clipboard and nothing has to run there:
+#   in tmux:   tmux load-buffer -w, which forwards it (set-clipboard, tmux.conf)
+#   bare ssh:  written straight to the terminal
+#
+# A single line is copied without its trailing newline, so pasting it into a
+# prompt does not press Enter; anything longer is copied as is.
+set -euo pipefail
+
+if [ "$#" -gt 0 ]; then
+  data="$*"
+elif [ -t 0 ]; then
+  printf 'usage: <command> | clip    or    clip <text>\n' >&2
+  exit 1
+else
+  # The x keeps the trailing newlines that $(...) would strip.
+  data=$(cat; printf x)
+  data=${data%x}
+  case "$data" in
+    *$'\n'*$'\n'*) ;;
+    *$'\n') data=${data%$'\n'} ;;
+  esac
+fi
+
+if [ -z "$data" ]; then
+  printf 'clip: nothing to copy\n' >&2
+  exit 1
+fi
+
+# SSH_* inside a tmux pane is whatever it was when the pane started; tmux's own
+# copy is refreshed on every attach, so it knows where the person is now.
+remote() {
+  if [ -n "${TMUX:-}" ]; then
+    tmux show-environment SSH_CONNECTION 2>/dev/null | grep -q '^SSH_CONNECTION='
+  else
+    [ -n "${SSH_CONNECTION:-}${SSH_TTY:-}" ]
+  fi
+}
+
+native() {
+  if [ "$(uname -s)" = Darwin ]; then
+    pbcopy
+  elif [ -n "${WAYLAND_DISPLAY:-}" ] && command -v wl-copy >/dev/null 2>&1; then
+    wl-copy
+  elif [ -n "${DISPLAY:-}" ] && command -v xclip >/dev/null 2>&1; then
+    xclip -selection clipboard
+  else
+    return 1
+  fi
+}
+
+if ! remote && printf '%s' "$data" | native 2>/dev/null; then
+  exit 0
+fi
+if [ -n "${TMUX:-}" ] && printf '%s' "$data" | tmux load-buffer -w - 2>/dev/null; then
+  exit 0
+fi
+if { printf '\033]52;c;%s\a' "$(printf '%s' "$data" | base64 | tr -d '\r\n')" > /dev/tty; } 2>/dev/null; then
+  exit 0
+fi
+
+printf 'clip: no clipboard tool, tmux or terminal to copy through\n' >&2
+exit 1

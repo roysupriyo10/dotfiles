@@ -6,9 +6,10 @@
 #
 # CUSTOM <name>  — fnm, pnpm, rustup, tmux-manager (lib/tools/*.sh)
 # PKG <pkg> <cmd> [brew-pkg]
-#   pkg      — yay/pacman package (Linux)
+#   pkg      — yay/pacman package; its homebrew / dnf names come from
+#              install/packages, and it is skipped where nothing ships it
 #   cmd      — binary to check on PATH
-#   brew-pkg — homebrew formula (defaults to pkg)
+#   brew-pkg — homebrew formula, overriding install/packages
 
 CUSTOM fnm
 CUSTOM pnpm

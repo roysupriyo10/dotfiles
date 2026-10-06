@@ -30,7 +30,7 @@ install_rpaste_ssh() {
   local config=/etc/ssh/sshd_config work
   command -v sshd >/dev/null 2>&1 || return 0
   [ -f "$config" ] || return 0
-  if ! grep -qiE '^[[:space:]]*Include[[:space:]]+(/etc/ssh/)?sshd_config\.d/\*' "$config"; then
+  if ! _ssh_peek "$config" grep -qiE '^[[:space:]]*Include[[:space:]]+(/etc/ssh/)?sshd_config\.d/\*' "$config"; then
     log "rpaste: $config needs an Include for sshd_config.d/*" >&2
     return 1
   fi

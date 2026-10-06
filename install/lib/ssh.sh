@@ -9,9 +9,12 @@
 # Additive: only files named after the ones in this repo are ever written.
 # sshd_config, ~/.ssh/config content and other drop-ins are never edited, and
 # both sshd and ssh take the first value they see, so existing settings win.
+# AuthenticationMethods is the exception — it would switch off password logins
+# another drop-in turns on — so 40-hardening.conf stays off such a host.
 #
 # Idempotent: a file is written only when it differs from the repo copy, and
-# sshd is reloaded only when something changed. Nothing needs sudo on a re-run.
+# sshd is reloaded only when something changed. A re-run needs sudo only to
+# look into a root-only /etc/ssh (Fedora family).
 #
 # Safe: the result is checked with `sshd -t` before the reload; on failure
 # every file written by this run is put back the way it was. A reload keeps
@@ -31,6 +34,27 @@ _ssh_sudo() {
   else
     sudo "$@"
   fi
+}
+
+# _ssh_peek <path> <cmd...> — run a read-only command that has to see <path>.
+# Fedora-family hosts keep sshd_config and sshd_config.d root-only; elsewhere
+# no sudo is used.
+_ssh_peek() {
+  peek_path=$1
+  shift
+  if [ -r "$peek_path" ] || [ ! -e "$peek_path" ]; then
+    "$@"
+  else
+    _ssh_sudo "$@"
+  fi
+}
+
+# _ssh_host_password_dropin <sshd_config.d> — print the first drop-in there
+# that turns password logins on. Ours never do, so a hit is the host's own.
+_ssh_host_password_dropin() {
+  _ssh_peek "$1" sh -c '
+    grep -liE "^[[:space:]]*(PasswordAuthentication|KbdInteractiveAuthentication|ChallengeResponseAuthentication)[[:space:]]+yes" "$1"/* 2>/dev/null | head -n 1
+  ' sh "$1" | grep .
 }
 
 # Restore what _ssh_install_root_dir replaced, using the undo list it wrote.
@@ -58,14 +82,14 @@ _ssh_install_root_dir() {
   for src in "$src_dir"/*.conf; do
     [ -f "$src" ] || continue
     dst="$dst_dir/$(basename "$src")"
-    if [ -f "$dst" ] && cmp -s "$src" "$dst"; then
+    if _ssh_peek "$dst_dir" cmp -s "$src" "$dst" 2>/dev/null; then
       continue
     fi
 
     backup=""
-    if [ -e "$dst" ]; then
+    if _ssh_peek "$dst_dir" test -e "$dst"; then
       backup="$backup_dir/$(basename "$dst_dir").$(basename "$dst")"
-      cp "$dst" "$backup" || return 1
+      _ssh_peek "$dst_dir" cp "$dst" "$backup" || return 1
     fi
     log "installing $dst"
     # Numeric ids and no -D: root's group is "wheel" on macOS, and BSD
@@ -106,10 +130,15 @@ run_hook_ssh_server() {
     return 0
   fi
 
+  if [ "$(id -u)" != 0 ] && ! command -v sudo >/dev/null 2>&1; then
+    log "warning: sudo required for ssh-server hook — skipping" >&2
+    return 0
+  fi
+
   # Drop-ins only take effect through this Include; adding it would mean
   # editing sshd_config, which this hook never does. Linux distros include
   # sshd_config.d/*.conf, macOS sshd_config.d/*.
-  if ! grep -qiE '^[[:space:]]*Include[[:space:]]+(/etc/ssh/)?sshd_config\.d/\*' "$sshd_config" 2>/dev/null; then
+  if ! _ssh_peek "$sshd_config" grep -qiE '^[[:space:]]*Include[[:space:]]+(/etc/ssh/)?sshd_config\.d/\*' "$sshd_config" 2>/dev/null; then
     log "warning: $sshd_config does not include sshd_config.d/* — skipping ssh-server hook" >&2
     return 0
   fi
@@ -121,16 +150,20 @@ run_hook_ssh_server() {
     return 0
   fi
 
-  if [ "$(id -u)" != 0 ] && ! command -v sudo >/dev/null 2>&1; then
-    log "warning: sudo required for ssh-server hook — skipping" >&2
-    return 0
-  fi
-
   work=$(mktemp -d) || return 0
   : > "$work/sshd.undo"
   : > "$work/sysctl.undo"
 
-  if ! _ssh_install_root_dir "$src_sshd" "$dst_sshd" "$work/sshd.undo" "$work"; then
+  # Password logins a host drop-in turns on are the admin's decision; keys-only
+  # would undo it, so that host gets everything but the hardening.
+  mkdir "$work/source"
+  cp "$src_sshd"/*.conf "$work/source/"
+  if host_dropin=$(_ssh_host_password_dropin "$dst_sshd"); then
+    log "$(basename "$host_dropin") enables password logins — leaving 40-hardening.conf off this host"
+    rm -f "$work/source/40-hardening.conf"
+  fi
+
+  if ! _ssh_install_root_dir "$work/source" "$dst_sshd" "$work/sshd.undo" "$work"; then
     log "warning: could not write to $dst_sshd — rolling back" >&2
     _ssh_rollback "$work/sshd.undo"
     rm -rf "$work"

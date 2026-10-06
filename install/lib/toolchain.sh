@@ -26,9 +26,13 @@ _process_toolchain_line() {
 pkg_tool() {
   linux_pkg=$1
   cmd=$2
-  brew_pkg=${3:-$linux_pkg}
+  brew_pkg=${3:-}
 
   if command -v "$cmd" >/dev/null 2>&1; then
+    return 0
+  fi
+  if [ -z "$brew_pkg" ] && ! pkg_available "$linux_pkg"; then
+    log "$linux_pkg is not packaged for this host — skipping"
     return 0
   fi
   if ! pkg_install "$linux_pkg" "$brew_pkg"; then
